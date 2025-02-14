@@ -1,0 +1,31 @@
+<!-- 轮播图 -->
+<view class="swiper">
+  <swiper 
+  autoplay="true" 
+  interval="3000" 
+  circular="true"
+  indicator-dots="true" 
+  indicator-color="#fff"
+  indicator-active-color="#ff6666"
+  >
+    <swiper-item>
+      <image src="/assets/swiper/swiper1.png" mode=""/>
+    </swiper-item>
+    <swiper-item>
+      <image src="/assets/swiper/swiper2.png" mode=""/>
+    </swiper-item>
+    <swiper-item>
+      <image src="/assets/swiper/swiper3.png" mode=""/>
+    </swiper-item>
+  </swiper>
+</view>
+<!-- 区域 -->
+<view>
+  <navigator url="/pages/login/login">
+    <button>点击登录</button>
+  </navigator>
+  <text>------------------------------------------------------</text>
+  <navigator url="/pages/register/register">
+    <button>点击注册</button>
+  </navigator>
+</view>

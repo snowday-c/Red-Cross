@@ -1,0 +1,46 @@
+{
+  "entryPagePath": "pages/index/index",
+  "pages": [
+    "pages/index/index",
+    "pages/login/login",
+    "pages/register/register",
+    "pages/study/study",
+    "pages/myself/myself"
+
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#ff6666",
+    "navigationBarTitleText": "红十字救生员培训管理系统",
+    "enablePullDownRefresh": true,
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#efefef",
+    "visualEffectInBackground": "hidden"
+  },
+  "tabBar": {
+    "selectedColor": "#ff6666",
+    "color": "#666",
+    "list": [
+      {
+        "text": "首页",
+        "pagePath": "pages/index/index",
+        "iconPath": "assets/tabBar/index.png",
+        "selectedIconPath": "assets/tabBar/index01.png"
+      },
+      {
+        "text": "学习",
+        "pagePath": "pages/study/study",
+        "iconPath": "assets/tabBar/study.png",
+        "selectedIconPath": "assets/tabBar/study01.png"
+      },
+      {
+        "text": "个人",
+        "pagePath": "pages/myself/myself",
+        "iconPath": "assets/tabBar/myself.png",
+        "selectedIconPath": "assets/tabBar/myself01.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

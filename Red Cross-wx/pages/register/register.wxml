@@ -1,0 +1,9 @@
+<view class="container">
+  <view class="register-form">
+    <input class="input-field" type="email" placeholder="请输入邮箱" bindinput="onEmailInput" />
+    <input class="input-field" type="password" placeholder="请输入密码" bindinput="onPasswordInput" />
+    <input class="input-field" type="password" placeholder="确认密码" bindinput="onConfirmPasswordInput" />
+    <button class="btn" bindtap="onRegister">注册</button>
+    <text>已有账号？ <navigator url="/pages/login/login">立即登录</navigator></text>
+  </view>
+</view>

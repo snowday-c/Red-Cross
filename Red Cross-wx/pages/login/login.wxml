@@ -1,0 +1,10 @@
+<view class="container">
+  <view class="login-form">
+    <text>邮箱:</text>
+    <input class="input-field" type="email" placeholder="请输入邮箱" bindinput="onEmailInput" />
+    <text>密码:</text>
+    <input class="input-field" type="password" placeholder="请输入密码" bindinput="onPasswordInput" />
+    <button class="btn" bindtap="onLogin">登录</button>
+    <text>没有账号？ <navigator url="/pages/register/register">立即注册</navigator></text>
+  </view>
+</view>

@@ -1,0 +1,22 @@
+<!--pages/myself/myself.wxml-->
+<view class="container">
+  <view class="profile">
+    <image class="avatar" src="{{avatarUrl}}" bindtap="changeAvatar" />
+    <view wx:if="{{isEditingUsername}}">
+      <input class="username-input" value="{{username}}" bindinput="onUsernameInput" placeholder="输入用户名" />
+    </view>
+    <view wx:else>
+      <text class="username-text">{{username}}</text>
+    </view>
+  </view>
+  <view class="divider"></view>
+  <button class="btn" wx:if="{{isEditingUsername}}" bindtap="saveUsername">保存用户名</button>
+  <view class="divider" wx:if="{{isEditingUsername}}"></view>
+  <button class="btn" bindtap="navigateToHistoryScores">个人历史成绩</button>
+  <view class="divider"></view>
+  <button class="btn" bindtap="navigateToCertificates">个人证书</button>
+  <view class="divider"></view>
+  <button class="btn" bindtap="navigateToVenueBookings">历史场地预约</button>
+  <view class="divider"></view>
+  <button class="btn" bindtap="navigateToNotifications">消息通知</button>
+</view>
