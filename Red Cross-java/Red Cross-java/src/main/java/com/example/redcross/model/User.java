@@ -1,38 +1,44 @@
 package com.example.redcross.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
+@TableName("user")
 public class User {
 
-    private int user_id;
-    private String user_name;
-    private String picture_url;
+    @TableId(value = "user_id", type = IdType.AUTO)
+    private int userId;
+    private String userName;
+    private String pictureUrl;
     private String email;
     private String account;
     private String password;
-    private int user_type;
+    private int userType;
 
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public String getUser_name() {
-        return user_name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getPicture_url() {
-        return picture_url;
+    public String getPictureUrl() {
+        return pictureUrl;
     }
 
-    public void setPicture_url(String picture_url) {
-        this.picture_url = picture_url;
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 
     public String getEmail() {
@@ -59,28 +65,24 @@ public class User {
         this.password = password;
     }
 
-    public int getUser_type() {
-        return user_type;
+    public int getUserType() {
+        return userType;
     }
 
-    public void setUser_type(int user_type) {
-        this.user_type = user_type;
+    public void setUserType(int userType) {
+        this.userType = userType;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "user_id=" + user_id +
-                ", user_name='" + user_name + '\'' +
-                ", picture_url='" + picture_url + '\'' +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", pictureUrl='" + pictureUrl + '\'' +
                 ", email='" + email + '\'' +
                 ", account='" + account + '\'' +
                 ", password='" + password + '\'' +
-                ", user_type=" + user_type +
+                ", userType=" + userType +
                 '}';
     }
-
-
-
-
 }
