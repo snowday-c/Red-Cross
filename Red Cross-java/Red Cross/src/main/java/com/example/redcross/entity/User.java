@@ -1,5 +1,6 @@
 package com.example.redcross.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -8,7 +9,7 @@ import lombok.Data;
 @TableName(value = "user")
 public class User {
 
-    @TableId(value = "user_id")
+    @TableId(value = "user_id", type = IdType.AUTO)
     private int userId;
 
     private String userName;
@@ -17,7 +18,7 @@ public class User {
 
     private String email;
 
-    private String account;
+    private int account;
 
     private String password;
 

@@ -1,10 +1,15 @@
 package com.example.redcross.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.redcross.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
-public interface UserMapper extends BaseMapper<User> {
+import java.util.List;
 
+@Mapper
+public interface UserMapper {
+    List<User> getAllUsers(); // 查询所有用户
+
+    User login(int account, String password); // 登录
+
+    User register(User user); // 注册
 }
