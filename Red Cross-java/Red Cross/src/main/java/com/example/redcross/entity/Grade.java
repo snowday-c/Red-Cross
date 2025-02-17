@@ -8,9 +8,9 @@ import lombok.Data;
 public class Grade {
 
     @TableId(value = "grade_id", type = IdType.AUTO)
-    private int gradeId;
+    private Integer gradeId;
 
-    private int userId;
+    private Integer userId;
 
     private String grade;
 

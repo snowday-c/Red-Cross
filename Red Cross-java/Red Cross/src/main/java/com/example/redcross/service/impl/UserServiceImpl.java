@@ -20,8 +20,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(int account, String password) {
-        return userMapper.login(account, password);
+    public User login(String account, String password) {
+        User user = userMapper.login(account, password);
+        if (user == null) {
+            throw new RuntimeException("登录失败：账号或密码错误");
+        }
+        return user;
     }
 
     @Override

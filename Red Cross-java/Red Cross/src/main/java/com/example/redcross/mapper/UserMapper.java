@@ -9,7 +9,7 @@ import java.util.List;
 public interface UserMapper {
     List<User> getAllUsers(); // 查询所有用户
 
-    User login(int account, String password); // 登录
+    User login(String account, String password); // 登录
 
     User register(User user); // 注册
 }

@@ -10,7 +10,7 @@ import lombok.Data;
 public class User {
 
     @TableId(value = "user_id", type = IdType.AUTO)
-    private int userId;
+    private Integer userId;
 
     private String userName;
 
@@ -18,10 +18,10 @@ public class User {
 
     private String email;
 
-    private int account;
+    private String account;
 
     private String password;
 
-    private int userType;
+    private Integer userType;
 
 }

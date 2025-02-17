@@ -22,11 +22,15 @@ public class UserController {
         return userService.getAllUsers(); // 返回所有用户
     }
 
-    @PostMapping ("/register")
-
+    @PostMapping("/register")
+    public User register(User user) {
+        return userService.register(user); // 注册用户
+    }
 
     @GetMapping("/login")
-    public User login(int account, String password) {
+    public User login(String account, String password) {
+        System.out.println("login: " + account + " " + password);
         return userService.login(account, password); // 登录
     }
+
 }
