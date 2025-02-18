@@ -1,8 +1,12 @@
 package com.example.redcross.controller;
 
+import com.example.redcross.common.Result;
 import com.example.redcross.entity.User;
 import com.example.redcross.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,23 +18,31 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
 
-    @GetMapping("/all")
-    public List<User> getAllUsers() {
-        return userService.getAllUsers(); // 返回所有用户
+    @GetMapping("/all") // 返回所有用户
+    public Result getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return Result.success(users);
     }
 
-    @PostMapping("/register")
-    public User register(User user) {
-        return userService.register(user); // 注册用户
+    @PostMapping("/register") // 注册用户
+    public Result registerUser(User user) {
+        userService.register(user);
+        return Result.success();
     }
 
-    @GetMapping("/login")
-    public User login(String account, String password) {
-        System.out.println("login: " + account + " " + password);
-        return userService.login(account, password); // 登录
+    @GetMapping("/login") // 登录
+    public Result login(String username, String password) {
+        User user = userService.login(username, password);
+        if (user == null) {
+            return Result.error("用户名或密码错误");
+        }
+        return Result.success(user);
     }
+
 
 }
