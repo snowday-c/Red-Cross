@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.redcross.mapper.MessageMapper">
+    <!-- 显示公共消息 -->
+    <select id="getPublicMessages" resultType="com.example.redcross.entity.Message">
+        SELECT *
+        FROM message
+        WHERE message_type = '0'
+    </select>
+
+</mapper>
