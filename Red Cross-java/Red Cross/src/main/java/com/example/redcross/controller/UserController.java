@@ -89,13 +89,13 @@ public class UserController {
         return Result.error("修改失败");
     }
     //修改密码
-//    @PostMapping("/update/password")
-//    public Result updatePassword(@RequestParam("account") String account,
-//                                 @RequestParam("oldPassword") String oldPassword,
-//                                 @RequestParam("newPassword") String newPassword) {
-//        if (userService.updatePassword(account, oldPassword, newPassword)) {
-//            return Result.success();
-//        }
-//        return Result.error("修改失败");
-//    }
+    @PostMapping("/update/password")
+    public Result updatePassword(@RequestParam("account") String account,
+                                 @RequestParam("oldPassword") String oldPassword,
+                                 @RequestParam("newPassword") String newPassword) {
+        if (userService.updatePassword(account, oldPassword, newPassword)) {
+            return Result.success();
+        }
+        return Result.error("修改失败，请检查账号和密码是否正确");
+    }
 }

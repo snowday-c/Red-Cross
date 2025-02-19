@@ -22,4 +22,6 @@ public interface UserService {
     Boolean isSuperAdmin(String account);
 
     Boolean updateUserInfo(User user);
+
+    Boolean updatePassword(String account, String oldPassword, String newPassword);
 }

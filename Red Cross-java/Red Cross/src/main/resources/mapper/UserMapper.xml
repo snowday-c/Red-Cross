@@ -43,7 +43,7 @@
         UPDATE user SET user_name = #{userName}, picture_url = #{pictureUrl}, email = #{email} WHERE account = #{account}
     </update>
     <!-- 更新用户密码 -->
-    <update id="updateUserPassword" parameterType="com.example.redcross.entity.User">
-        UPDATE user SET password = #{password} WHERE account = #{account}
+    <update id="updatePassword" parameterType="String">
+        UPDATE user SET password = #{newPassword} WHERE account = #{account} AND password = #{oldPassword}
     </update>
 </mapper>

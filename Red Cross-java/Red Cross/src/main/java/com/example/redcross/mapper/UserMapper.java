@@ -28,4 +28,6 @@ public interface UserMapper {
     Boolean isSuperAdmin(String account);
 
     Boolean updateUserInfo(User user);
+
+    Boolean updatePassword(String account, String oldPassword, String newPassword);
 }
