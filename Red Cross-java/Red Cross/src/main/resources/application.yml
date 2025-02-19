@@ -9,11 +9,16 @@ spring:
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-#mybatis-plus:
-#
-#  configuration:
-#    map-underscore-to-camel-case: true
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml # 指定 Mapper XML 文件的位置
   type-aliases-package: com.example.redcross.entity # 实体类所在的包
+  configuration:
+    map-underscore-to-camel-case: true
+#sql语句显示
+logging:
+  level:
+    com.example.redcross.mapper: DEBUG

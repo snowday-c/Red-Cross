@@ -1,16 +1,25 @@
 package com.example.redcross.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.logging.log4j.message.Message;
+import com.example.redcross.entity.Message;
 
 import java.util.List;
 
 @Mapper
 public interface MessageMapper {
 
-    List<Message> getPublicMessages();//显示全部公共信息
+    //显示全部公共消息
+    List<Message> getPublicMessages();
 
-//    void addMessage(Message message);//添加公共信息
-//
+    //添加公共消息
+    void createPublicMessage(Message message);
+
+    void deletePublicMessage(String title);
+
+    void createPrivateMessage(Message message);
+
+    void deletePrivateMessage(String title);
+
+
 //    void deleteMessage(int messageId);//删除公共信息
 }

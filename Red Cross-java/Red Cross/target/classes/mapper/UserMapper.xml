@@ -6,16 +6,44 @@
 <mapper namespace="com.example.redcross.mapper.UserMapper">
     <!-- 查询所有用户 -->
     <select id="getAllUsers" resultType="com.example.redcross.entity.User">
-        SELECT user_id, user_name, picture_url, email, account, password, user_type
+        SELECT user_id, user_name, picture_url, email, account, user_type
         FROM user
+    </select>
+    <!--查询邮箱是否已注册-->
+    <select id="isEmailExist" parameterType="java.lang.String" resultType="Boolean">
+        SELECT COUNT(*) FROM user WHERE email = #{email}
     </select>
     <!-- 注册用户 -->
     <insert id="register" parameterType="com.example.redcross.entity.User">
         INSERT INTO user (user_name, picture_url, email, account, password, user_type)
-        VALUES (#{userName}, #{pictureUrl}, #{email}, #{account}, #{password}, #{userType})
+        VALUES (#{userName}, #{pictureUrl}, #{email}, #{account}, #{password}, 0)
     </insert>
-    <!-- 登录 -->
-    <select id="login" parameterType="com.example.redcross.entity.User" resultType="com.example.redcross.entity.User">
-        SELECT * FROM user WHERE account = #{account} AND password = #{password}
+    <!-- 用户登录 -->
+    <select id="login" parameterType="com.example.redcross.entity.User" resultType="Boolean">
+        SELECT COUNT(*) FROM user WHERE account = #{account} AND password = #{password} AND user_type = 0
     </select>
+    <!-- 管理员登录 -->
+    <select id="admin" parameterType="com.example.redcross.entity.User" resultType="Boolean">
+        SELECT COUNT(*) FROM user WHERE account = #{account} AND password = #{password} AND (user_type = 1 OR user_type = 2)
+    </select>
+    <!-- 注销用户-->
+    <delete id="logout" parameterType="com.example.redcross.entity.User" >
+            DELETE FROM user WHERE account = #{account} AND password = #{password} AND user_type = 0
+    </delete>
+    <!-- 检查是否为超级管理员 -->
+    <select id="isSuperAdmin" parameterType="com.example.redcross.entity.User" resultType="Boolean">
+        SELECT COUNT(*) FROM user WHERE account = #{account} AND user_type = 2
+    </select>
+    <!-- 更新用户权限 -->
+    <update id="updateUserType" parameterType="com.example.redcross.entity.User">
+        UPDATE user SET user_type = #{userType} WHERE account = #{changedAccount}
+    </update>
+    <!-- 更新用户信息 -->
+    <update id="updateUserInfo" parameterType="com.example.redcross.entity.User">
+        UPDATE user SET user_name = #{userName}, picture_url = #{pictureUrl}, email = #{email} WHERE account = #{account}
+    </update>
+    <!-- 更新用户密码 -->
+    <update id="updateUserPassword" parameterType="com.example.redcross.entity.User">
+        UPDATE user SET password = #{password} WHERE account = #{account}
+    </update>
 </mapper>

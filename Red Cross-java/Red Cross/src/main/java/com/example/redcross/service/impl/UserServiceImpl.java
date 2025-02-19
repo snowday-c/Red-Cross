@@ -16,20 +16,47 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() {
-        return userMapper.getAllUsers(); // 调用 Mapper 方法
+        return userMapper.getAllUsers(); // 重新全部用户
     }
 
     @Override
-    public User login(String account, String password) {
-        User user = userMapper.login(account, password);
-        if (user == null) {
-            throw new RuntimeException("登录失败：账号或密码错误");
-        }
-        return user;
-    }
-
-    @Override
-    public User register(User user) {
+    // 注册
+    public int register(User user) {
         return userMapper.register(user);
+    }
+
+    @Override
+    public Boolean isEmailExist(String email) {
+        return userMapper.isEmailExist(email);
+    }
+
+    @Override
+    public Boolean login(String account, String password) {
+        return userMapper.login(account, password);
+    }
+
+    @Override
+    public Boolean admin(String account, String password) {
+        return userMapper.admin(account, password);
+    }
+
+    @Override
+    public Boolean logout(String account, String password) {
+        return userMapper.logout(account, password);
+    }
+
+    @Override
+    public Boolean updateUserType(String account,String changedAccount, Integer userType) {
+        return userMapper.updateUserType(account,changedAccount, userType);
+    }
+
+    @Override
+    public Boolean isSuperAdmin(String account) {
+        return userMapper.isSuperAdmin(account);
+    }
+
+    @Override
+    public Boolean updateUserInfo(User user) {
+        return userMapper.updateUserInfo(user);
     }
 }

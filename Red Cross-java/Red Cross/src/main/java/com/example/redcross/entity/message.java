@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @TableName("message")
-public class message {
+public class Message {
 
     @TableId(value = "message_id", type = IdType.AUTO)
     private Integer messageId;

@@ -7,9 +7,25 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    List<User> getAllUsers(); // 查询所有用户
+    // 查询所有用户
+    List<User> getAllUsers();
 
-    User login(String account, String password); // 登录
+    // 注册
+    int register(User user);
 
-    User register(User user); // 注册
+    //重新邮箱是否存在
+    Boolean isEmailExist(String email);
+
+    // 登录
+    Boolean login(String account, String password);
+
+    Boolean admin(String account, String password);
+
+    Boolean logout(String account, String password);
+
+    Boolean updateUserType(String account,String changedAccount, Integer userType);
+
+    Boolean isSuperAdmin(String account);
+
+    Boolean updateUserInfo(User user);
 }
