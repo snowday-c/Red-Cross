@@ -17,6 +17,8 @@
             prefix-icon="el-icon-lock"
             show-password
           ></el-input>
+          <!-- 显示错误信息 -->
+          <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" native-type="submit" class="login-button">登录</el-button>
@@ -47,21 +49,27 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' },
         ],
       },
+      errorMessage: ''  // 错误信息
     };
   },
   methods: {
     login() {
       this.$refs.loginForm.validate(async (valid) => {
         if (valid) {
-          // 登录逻辑
-          let response = await axios.post('http://localhost:8090/user/login', this.loginForm);
-          console.log(response);
-          if (response.data.code === 0) {
-            this.$router.push('/management');
-          } else {
-            this.$message.error('账号或密码错误');
+          // 管理员登录
+          try {
+            let res = await axios.post('http://localhost:8090/user/login', {
+              account: this.loginForm.account,
+              password: this.loginForm.password
+            });
+            if (res.data.code == 0) {
+              this.$router.push('/management');
+            } else {
+              this.errorMessage = '账号或密码错误';  // 设置错误信息
+            }
+          } catch (error) {
+            this.errorMessage = '登录请求失败，请稍后再试';  // 网络错误时的提示
           }
-
         } else {
           return false;
         }
@@ -111,5 +119,11 @@ export default {
 
 .register-link a:hover {
   text-decoration: underline;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
 }
 </style>
