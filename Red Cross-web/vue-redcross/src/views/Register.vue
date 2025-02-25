@@ -12,6 +12,14 @@
           ></el-input>
         </el-form-item>
 
+        <!-- 账号 -->
+         <el-form-item prop="account">
+          <el-input
+            v-model="registerForm.account"
+            placeholder="请输入账号"
+            prefix-icon="el-icon-user"
+          ></el-input>
+         </el-form-item>
         <!-- 密码 -->
         <el-form-item prop="password">
           <el-input
@@ -71,12 +79,14 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: 'Register',
   data() {
     return {
       registerForm: {
         username: '',
+        account: '',
         password: '',
         confirmPassword: '',
         email: '',
@@ -85,6 +95,9 @@ export default {
       registerRules: {
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
+        ],
+        account: [
+          { required: true, message: '请输入账号', trigger: 'blur' },
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
@@ -117,11 +130,19 @@ export default {
   methods: {
     // 注册逻辑
     register() {
-      this.$refs.registerForm.validate((valid) => {
+      this.$refs.registerForm.validate(async (valid) => {
         if (valid) {
           // 注册逻辑
-          console.log('注册成功', this.registerForm);
-          this.$router.push('/login');
+          let res = await axios.post('http://localhost:8090/user/register', {
+            userName: this.registerForm.username, 
+            account: this.registerForm.account, 
+            password: this.registerForm.password, 
+            email: this.registerForm.email, 
+            code: this.registerForm.code});
+          if (res.data.code == 0) {
+            this.$message.success('注册成功，即将跳转登录页面');
+            this.$router.push('/login');
+          }
         } else {
           return false;
         }
@@ -130,11 +151,17 @@ export default {
 
     // 发送验证码
     sendCode() {
-      this.$refs.registerForm.validateField('email', (valid) => {
+      this.$refs.registerForm.validateField('email', async (valid) => {
         if (!valid) {
-          this.isCodeSent = true;
-          this.startCountdown();
-          console.log('验证码已发送至:', this.registerForm.email);
+          let res = await axios.post('http://localhost:8090/user/email/sendCode', { email: this.registerForm.email })
+          if (res.data.code == 0) {
+            this.$message.success('验证码已发送至邮箱，请注意查收');
+            this.isCodeSent = true;
+            this.startCountdown();
+          } else {
+            this.$message.error('验证码发送失败，请稍后再试');
+          }
+
         }
       });
     },
