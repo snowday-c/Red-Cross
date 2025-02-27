@@ -1,15 +1,23 @@
 <template>
   <div>
-    <h1>用户管理</h1>
     <el-table :data="userList" style="width: 100%" border>
-      <el-table-column prop="userName" label="用户名" width="180"></el-table-column>
-      <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
-      <el-table-column prop="account" label="账号"></el-table-column>
-      <el-table-column prop="userType" label="用户类型"></el-table-column>
+      <el-table-column prop="userName" label="用户名" width="150"></el-table-column>
+      <el-table-column prop="email" label="邮箱" width="230"></el-table-column>
+      <el-table-column prop="account" label="账号" width="210"></el-table-column>
+      <el-table-column label="用户类型" width="160">
+        <template slot-scope="scope">
+          {{ getUserTypeText(scope.row.userType) }}
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope.row)">修改</el-button>
-          <el-button type="info" size="small" @click="handleEditUserType(scope.row)">修改用户类型</el-button>
+          <!-- 如果是超级管理员，显示无法修改 -->
+          <span v-if="scope.row.userType === 2" class="disabled-text">无法修改</span>
+          <!-- 否则显示两个按钮 -->
+          <template v-else>
+            <el-button type="primary" size="small" @click="handleEdit(scope.row)">修改用户信息</el-button>
+            <el-button type="info" size="small" @click="handleEditUserType(scope.row)">修改用户类型</el-button>
+          </template>
         </template>
       </el-table-column>
     </el-table>
@@ -38,9 +46,9 @@
       <el-form :model="currentUser" label-width="80px">
         <el-form-item label="用户类型">
           <el-select v-model="currentUser.userType" placeholder="请选择用户类型">
-            <el-option label="用户" value="0"></el-option>
-            <el-option label="管理员" value="1"></el-option>
-            <el-option label="超级管理员" value="2"></el-option>
+            <el-option label="用户" :value="0"></el-option>
+            <el-option label="管理员" :value="1"></el-option>
+            <!-- 移除超级管理员选项 -->
           </el-select>
         </el-form-item>
       </el-form>
@@ -70,29 +78,23 @@ export default {
   methods: {
     async fetchUsers() {
       try {
-        const response = await axios.get('http://localhost:8090/user/all'); // 替换为你的API地址
-        let users = response.data.data;
-
-        // 转换用户类型数字为文字
-        this.userList = users.map(user => {
-          switch (user.userType) {
-            case 0:
-              user.userType = '用户';
-              break;
-            case 1:
-              user.userType = '管理员';
-              break;
-            case 2:
-              user.userType = '超级管理员';
-              break;
-            default:
-              user.userType = '未知';
-          }
-          return user;
-        });
-        console.log('转换后的用户列表:', this.userList); // 打印转换后的用户列表
+        const response = await axios.get('/api/user/all'); 
+        this.userList = response.data.data; // 直接使用原始数据
+        console.log('用户列表:', this.userList); // 打印用户列表
       } catch (error) {
         console.error('获取用户数据失败:', error);
+      }
+    },
+    getUserTypeText(userType) {
+      switch (userType) {
+        case 0:
+          return '用户';
+        case 1:
+          return '管理员';
+        case 2:
+          return '超级管理员';
+        default:
+          return '未知';
       }
     },
     handleEdit(user) {
@@ -107,7 +109,7 @@ export default {
     },
     async saveUser() {
       try {
-        let res = await axios.post('http://localhost:8090/user/update/userInfo', this.currentUser);
+        let res = await axios.post('/api/user/update/userInfo', this.currentUser);
         if (res.data.code == 0) {
           this.dialogVisible = false; // 关闭对话框
           this.fetchUsers(); // 重新获取用户数据
@@ -120,13 +122,13 @@ export default {
     },
     async saveUserType() {
       try {
-        // 这里发送的 currentUser.userType 是数字类型（0 或 1）
-        let res = await axios.post('http://localhost:8090/user/update/userType', { 
-          userId: this.currentUser.userId,          //管理员id
-          changedUserId: this.currentUser.userId,   //被修改者id
-          userType: this.currentUser.userType });   //修改后的用户类型
+        let res = await axios.post('/api/user/update/userType', { 
+          userId: localStorage.getItem('userId'),       // 管理员id
+          changedUserId: this.currentUser.userId,      // 被修改者ID
+          userType: Number(this.currentUser.userType)  // 确保是数字类型
+        });
         if (res.data.code == 0) {
-          this.userTypeDialogVisible = false; // 关闭修改用户类型对话框
+          this.userTypeDialogVisible = false; // 关闭对话框
           this.fetchUsers(); // 重新获取用户数据
         } else {
           this.$message.error('保存用户类型失败:' + res.data.message);
@@ -140,8 +142,9 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
+.disabled-text {
+  color: #999; /* 灰色文字 */
+  font-style: italic; /* 斜体 */
+  cursor: not-allowed; /* 禁用鼠标指针 */
 }
 </style>

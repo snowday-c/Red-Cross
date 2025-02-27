@@ -63,6 +63,8 @@ export default {
               password: this.loginForm.password
             });
             if (res.data.code == 0) {
+              localStorage.setItem('CurrentUser',JSON.stringify(res.data.data));
+              localStorage.setItem('userId', res.data.data.userId);
               this.$router.push('/management');
             } else {
               this.errorMessage = '账号或密码错误';  // 设置错误信息

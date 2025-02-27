@@ -5,11 +5,14 @@ import com.example.redcross.entity.User;
 import java.util.List;
 
 public interface UserService {
+    public void sendVerificationCode(String to, String subject, String content); // 发送验证码
     List<User> getAllUsers(); // 查询所有用户
 
-    int register(User user); // 注册
+    Integer register(User user); // 注册
 
     Boolean isEmailExist(String email);
+
+    Boolean isAccountExist(String account);
 
     Boolean login(String account, String password);
 
@@ -17,11 +20,19 @@ public interface UserService {
 
     Boolean logout(String account, String password);
 
-    Boolean updateUserType(String account,String changedAccount ,Integer userType);
+    Boolean updateUserType(Integer userId ,Integer changedUserId,Integer userType);
 
-    Boolean isSuperAdmin(String account);
+    Boolean isSuperAdmin(Integer userId);
 
     Boolean updateUserInfo(User user);
 
     Boolean updatePassword(String account, String oldPassword, String newPassword);
+
+    Boolean forgetPassword(String account, String newPassword);
+
+    User getUserByAccount(String account);
+
+    User getUserById(Integer id);
+
+    Integer getUserId(String account);
 }

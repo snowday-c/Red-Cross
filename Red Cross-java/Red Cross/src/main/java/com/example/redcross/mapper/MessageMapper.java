@@ -11,15 +11,18 @@ public interface MessageMapper {
     //显示全部公共消息
     List<Message> getPublicMessages();
 
-    //添加公共消息
-    void createPublicMessage(Message message);
+    //显示全部私人消息
+    List<Message> getPrivateMessages();
 
-    void deletePublicMessage(String title);
+    //显示指定用户的私人消息
+    List<Message> getPrivateMessagesByReceiver(String receiver);
 
-    void createPrivateMessage(Message message);
+    //添加消息
+    void createMessage(Message message);
 
-    void deletePrivateMessage(String title);
+    //删除信息
+    void deleteMessage(Integer messageId);
 
-
-//    void deleteMessage(int messageId);//删除公共信息
+    //修改信息
+    void updateMessage(Message message);
 }

@@ -10,25 +10,32 @@
         FROM message
         WHERE message_type = '0'
     </select>
-
-    <!-- 添加公共消息 -->
-    <insert id="createPublicMessage" parameterType="com.example.redcross.entity.Message">
-        INSERT INTO message (message_type, title, content, sender,time)
-        VALUES (0, #{title}, #{content}, #{sender},NOW())
-    </insert>
-    <!-- 删除公共消息 -->
-    <delete id="deletePublicMessage" parameterType="String">
-        DELETE FROM message
-        WHERE title = #{title}
-    </delete>
-    <!-- 添加私人消息 -->
-    <insert id="createPrivateMessage" parameterType="com.example.redcross.entity.Message">
+    <!-- 显示全部私人消息 -->
+    <select id="getPrivateMessages" resultType="com.example.redcross.entity.Message">
+        SELECT *
+        FROM message
+        WHERE message_type = '1'
+    </select>
+    <!-- 显示指定用户的私人消息 -->
+    <select id="getPrivateMessagesByReceiver" resultType="com.example.redcross.entity.Message">
+        SELECT *
+        FROM message
+        WHERE message_type = '1' AND receiver = #{receiver}
+    </select>
+    <!-- 添加消息 -->
+    <insert id="createMessage" parameterType="com.example.redcross.entity.Message">
         INSERT INTO message (message_type, title, content, sender,receiver,time)
-        VALUES (1, #{title}, #{content}, #{sender},#{receiver},NOW())
+        VALUES (#{messageType}, #{title}, #{content}, #{sender},#{receiver}, NOW())
     </insert>
-    <!-- 删除私人消息 -->
-    <delete id="deletePrivateMessage" parameterType="String">
+    <!-- 删除消息 -->
+    <delete id="deleteMessage" parameterType="Integer">
         DELETE FROM message
-        WHERE title = #{title}
+        WHERE message_id = #{messageId}
     </delete>
+    <!-- 修改消息 -->
+    <update id="updateMessage" parameterType="com.example.redcross.entity.Message">
+        UPDATE message
+        SET title = #{title}, content = #{content}, sender = #{sender}, receiver = #{receiver}, time = NOW()
+        WHERE message_id = #{messageId}
+    </update>
 </mapper>

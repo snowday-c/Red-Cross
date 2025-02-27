@@ -27,4 +27,10 @@ public class GlobalExceptionHandler {
     public Result userError(HttpServletRequest request, UserException e){
         return Result.error(e.getMsg());
     }
+
+    @ExceptionHandler(MessageException.class)
+    @ResponseBody
+    public Result messageError(HttpServletRequest request, MessageException e){
+        return Result.error(e.getMsg());
+    }
 }

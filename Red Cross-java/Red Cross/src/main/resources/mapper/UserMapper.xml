@@ -9,9 +9,31 @@
         SELECT user_id, user_name, picture_url, email, account, user_type
         FROM user
     </select>
-    <!--查询邮箱是否已注册-->
+    <!--查询邮箱是否已存在-->
     <select id="isEmailExist" parameterType="java.lang.String" resultType="Boolean">
         SELECT COUNT(*) FROM user WHERE email = #{email}
+    </select>
+    <!-- 查询账户是否已存在 -->
+    <select id="isAccountExist" parameterType="java.lang.String" resultType="Boolean">
+        SELECT COUNT(*) FROM user WHERE account = #{account}
+    </select>
+    <!-- 检查是否为超级管理员 -->
+    <select id="isSuperAdmin" parameterType="com.example.redcross.entity.User" resultType="Boolean">
+        SELECT COUNT(*) FROM user WHERE user_id = #{userId} AND user_type = 2
+    </select>
+    <!-- 通过ID查询用户 -->
+    <select id="getUserById" parameterType="java.lang.Integer" resultType="com.example.redcross.entity.User">
+        SELECT user_id, user_name, picture_url, email, account, user_type
+        FROM user WHERE user_id = #{userId}
+    </select>
+    <!-- 通过账号查询用户 -->
+    <select id="getUserByAccount" parameterType="java.lang.String" resultType="com.example.redcross.entity.User">
+        SELECT user_id, user_name, picture_url, email, account, user_type
+        FROM user WHERE account = #{Account}
+    </select>
+    <!-- 通过账号获取id -->
+    <select id="getUserId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT user_id FROM user WHERE account = #{account}
     </select>
     <!-- 注册用户 -->
     <insert id="register" parameterType="com.example.redcross.entity.User">
@@ -20,7 +42,7 @@
     </insert>
     <!-- 用户登录 -->
     <select id="login" parameterType="com.example.redcross.entity.User" resultType="Boolean">
-        SELECT COUNT(*) FROM user WHERE account = #{account} AND password = #{password} AND user_type = 0
+        SELECT COUNT(*) FROM user WHERE account = #{account} AND password = #{password}
     </select>
     <!-- 管理员登录 -->
     <select id="admin" parameterType="com.example.redcross.entity.User" resultType="Boolean">
@@ -30,13 +52,9 @@
     <delete id="logout" parameterType="com.example.redcross.entity.User" >
             DELETE FROM user WHERE account = #{account} AND password = #{password} AND user_type = 0
     </delete>
-    <!-- 检查是否为超级管理员 -->
-    <select id="isSuperAdmin" parameterType="com.example.redcross.entity.User" resultType="Boolean">
-        SELECT COUNT(*) FROM user WHERE account = #{account} AND user_type = 2
-    </select>
     <!-- 更新用户权限 -->
     <update id="updateUserType" parameterType="com.example.redcross.entity.User">
-        UPDATE user SET user_type = #{userType} WHERE account = #{changedAccount}
+        UPDATE user SET user_type = #{userType} WHERE user_id = #{changedUserId}
     </update>
     <!-- 更新用户信息 -->
     <update id="updateUserInfo" parameterType="com.example.redcross.entity.User">
@@ -45,5 +63,9 @@
     <!-- 更新用户密码 -->
     <update id="updatePassword" parameterType="String">
         UPDATE user SET password = #{newPassword} WHERE account = #{account} AND password = #{oldPassword}
+    </update>
+    <!-- 忘记密码 -->
+    <update id="forgetPassword" parameterType="String">
+        UPDATE user SET password = #{newPassword} WHERE  account = #{account}
     </update>
 </mapper>

@@ -21,26 +21,31 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void createPublicMessage(Message message) {
+    public List<Message> getPrivateMessages() {
+        return MessageMapper.getPrivateMessages();
+    }
 
-        MessageMapper.createPublicMessage(message);
+    @Override
+    public List<Message> getPrivateMessagesByReceiver(String receiver) {
+        return MessageMapper.getPrivateMessagesByReceiver(receiver);
+    }
+
+    @Override
+    public void createMessage(Message message) {
+
+        MessageMapper.createMessage(message);
 
     }
 
     @Override
-    public void deletePublicMessage(String title) {
+    public void deleteMessage(Integer messageId) {
 
-        MessageMapper.deletePublicMessage(title);
+        MessageMapper.deleteMessage(messageId);
     }
 
     @Override
-    public void createPrivateMessage(Message message) {
-        MessageMapper.createPrivateMessage(message);
-    }
-
-    @Override
-    public void deletePrivateMessage(String title) {
-        MessageMapper.deletePrivateMessage(title);
+    public void updateMessage(Message message) {
+        MessageMapper.updateMessage(message);
     }
 
 

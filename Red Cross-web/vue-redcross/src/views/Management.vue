@@ -1,8 +1,17 @@
 <template>
   <el-container style="height: 100vh;">
-    <!-- 项目名称 -->
-    <el-header style="background-color: #304156; color: #fff; line-height: 60px; text-align: left; padding-left: 20px;">
-      红十字救生员培训管理
+    <!-- 头部 -->
+    <el-header style="background-color: #304156; color: #fff; line-height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+      <!-- 项目名称 -->
+      <div style="font-size: 20px;">
+        红十字救生员培训管理
+      </div>
+
+      <!-- 用户信息和退出按钮 -->
+      <div style="display: flex; align-items: center;">
+        <span style="margin-right: 20px;">欢迎，{{ currentUser.userName }}</span>
+        <el-button type="danger" size="small" @click="handleLogout">退出登录</el-button>
+      </div>
     </el-header>
 
     <el-container>
@@ -50,6 +59,32 @@
 <script>
 export default {
   name: 'Management',
+  data() {
+    return {
+      currentUser: {}, // 当前用户信息
+    };
+  },
+  created() {
+    this.getCurrentUser(); // 获取当前用户信息
+  },
+  methods: {
+    // 获取当前用户信息
+    getCurrentUser() {
+      const user = JSON.parse(localStorage.getItem('CurrentUser')); // 从本地存储获取用户信息
+      if (user) {
+        this.currentUser = user;
+      } else {
+        this.$message.warning('未检测到登录信息，请重新登录');
+        this.$router.push('/login'); // 跳转到登录页面
+      }
+    },
+    // 退出登录
+    handleLogout() {
+      localStorage.removeItem('CurrentUser'); // 清除用户信息
+      this.$router.push('/login'); // 跳转到登录页面
+      this.$message.success('退出登录成功');
+    },
+  },
 };
 </script>
 

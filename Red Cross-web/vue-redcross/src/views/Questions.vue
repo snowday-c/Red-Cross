@@ -1,6 +1,200 @@
 <template>
-    <div>
-      <h1>试题管理</h1>
-      <p>这里是试题管理内容</p>
+  <div>
+    <h1>试题管理</h1>
+
+    <!-- 添加题目按钮和题型筛选 -->
+    <div style="margin-bottom: 20px;">
+      <el-button type="primary" @click="openAddDialog">添加题目</el-button>
+      <el-select v-model="selectedQuestionType" placeholder="请选择题型" @change="handleTypeChange" style="margin-left: 10px;">
+        <el-option label="全部" :value="null"></el-option>
+        <el-option label="选择题" :value="1"></el-option>
+        <el-option label="判断题" :value="2"></el-option>
+        <el-option label="填空题" :value="3"></el-option>
+      </el-select>
     </div>
-  </template>
+
+    <!-- 题目表格 -->
+    <el-table :data="questions" style="width: 100%" border>
+      <el-table-column prop="questionId" label="题目ID" width="100"></el-table-column>
+      <el-table-column prop="questionType" label="题型" width="120">
+        <template slot-scope="scope">
+          {{ getQuestionTypeName(scope.row.questionType) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="question" label="题目内容"></el-table-column>
+      <el-table-column prop="answer" label="答案"></el-table-column>
+      <el-table-column label="操作" width="200">
+        <template slot-scope="scope">
+          <el-button type="text" @click="openEditDialog(scope.row)">编辑</el-button>
+          <el-button type="text" @click="deleteQuestion(scope.row.questionId)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <!-- 添加题目对话框 -->
+    <el-dialog title="添加题目" :visible.sync="addDialogVisible" width="30%">
+      <el-form :model="newQuestion" label-width="80px">
+        <el-form-item label="题型">
+          <el-select v-model="newQuestion.questionType" placeholder="请选择题型">
+            <el-option label="选择题" :value="1"></el-option>
+            <el-option label="判断题" :value="2"></el-option>
+            <el-option label="填空题" :value="3"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="题目">
+          <el-input v-model="newQuestion.question" type="textarea"></el-input>
+        </el-form-item>
+        <el-form-item label="答案">
+          <el-input v-model="newQuestion.answer"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="addQuestion">确定</el-button>
+      </span>
+    </el-dialog>
+
+    <!-- 编辑题目对话框 -->
+    <el-dialog title="编辑题目" :visible.sync="editDialogVisible" width="30%">
+      <el-form :model="currentQuestion" label-width="80px">
+        <el-form-item label="题型">
+          <el-select v-model="currentQuestion.questionType" placeholder="请选择题型">
+            <el-option label="选择题" :value="1"></el-option>
+            <el-option label="判断题" :value="2"></el-option>
+            <el-option label="填空题" :value="3"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="题目">
+          <el-input v-model="currentQuestion.question" type="textarea"></el-input>
+        </el-form-item>
+        <el-form-item label="答案">
+          <el-input v-model="currentQuestion.answer"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="updateQuestion">确定</el-button>
+      </span>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      questions: [], // 题目列表
+      newQuestion: { // 新增题目数据
+        questionType: null,
+        question: '',
+        answer: ''
+      },
+      currentQuestion: {}, // 当前编辑的题目
+      addDialogVisible: false, // 添加题目对话框显示状态
+      editDialogVisible: false, // 编辑题目对话框显示状态
+      selectedQuestionType: null // 用户选择的题型
+    };
+  },
+  created() {
+    this.fetchQuestions();
+  },
+  methods: {
+    // 获取所有题目
+    async fetchQuestions() {
+      try {
+        const response = await axios.get('/api/question/all');
+        this.questions = response.data.data;
+      } catch (error) {
+        console.error('获取题目失败:', error);
+      }
+    },
+
+    // 根据题型获取题目
+    async fetchQuestionsByType(questionType) {
+      try {
+        const response = await axios.post('/api/question/type', { questionType });
+        this.questions = response.data.data;
+      } catch (error) {
+        console.error('获取题型题目失败:', error);
+      }
+    },
+
+    // 处理题型筛选
+    handleTypeChange(value) {
+      if (value === null) {
+        // 如果选择“全部”，获取所有题目
+        this.fetchQuestions();
+      } else {
+        // 否则获取指定题型的题目
+        this.fetchQuestionsByType(value);
+      }
+    },
+
+    // 打开添加题目对话框
+    openAddDialog() {
+      this.newQuestion = { questionType: null, question: '', answer: '' };
+      this.addDialogVisible = true;
+    },
+
+    // 添加题目
+    async addQuestion() {
+      try {
+        await axios.post('/api/question/add', this.newQuestion);
+        this.addDialogVisible = false;
+        this.fetchQuestions(); // 重新加载题目列表
+      } catch (error) {
+        console.error('添加题目失败:', error);
+      }
+    },
+
+    // 打开编辑题目对话框
+    openEditDialog(question) {
+      this.currentQuestion = { ...question };
+      this.editDialogVisible = true;
+    },
+
+    // 更新题目
+    async updateQuestion() {
+      try {
+        await axios.post('/api/question/update', this.currentQuestion);
+        this.editDialogVisible = false;
+        this.fetchQuestions(); // 重新加载题目列表
+      } catch (error) {
+        console.error('更新题目失败:', error);
+      }
+    },
+
+    // 删除题目
+    async deleteQuestion(questionId) {
+      try {
+        await axios.post('/api/question/delete', { questionId });
+        this.fetchQuestions(); // 重新加载题目列表
+      } catch (error) {
+        console.error('删除题目失败:', error);
+      }
+    },
+
+    // 获取题型名称
+    getQuestionTypeName(questionType) {
+      switch (questionType) {
+        case 1:
+          return '选择题';
+        case 2:
+          return '判断题';
+        case 3:
+          return '填空题';
+        default:
+          return '未知题型';
+      }
+    }
+  }
+};
+</script>
+
+<style scoped>
+h1 {
+  margin-bottom: 20px;
+}
+</style>

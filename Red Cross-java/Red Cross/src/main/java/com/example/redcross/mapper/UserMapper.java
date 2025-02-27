@@ -7,27 +7,36 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    // 查询所有用户
-    List<User> getAllUsers();
+    List<User> getAllUsers();    // 查询所有用户
 
-    // 注册
-    int register(User user);
+    Integer register(User user);    // 注册
 
-    //重新邮箱是否存在
-    Boolean isEmailExist(String email);
+    Boolean isEmailExist(String email);    // 邮箱是否存在
 
-    // 登录
-    Boolean login(String account, String password);
+    Boolean isAccountExist(String account);    // 账号是否存在
 
-    Boolean admin(String account, String password);
+    Boolean isSuperAdmin(Integer userId);    // 是否超级管理员
 
-    Boolean logout(String account, String password);
+    Boolean login(String account, String password);    // 登录
 
-    Boolean updateUserType(String account,String changedAccount, Integer userType);
+    Boolean admin(String account, String password);    // 管理员登录
 
-    Boolean isSuperAdmin(String account);
+    Boolean logout(String account, String password);    // 用户注销
 
-    Boolean updateUserInfo(User user);
+    //修改用户权限
+    Boolean updateUserType(Integer userId,Integer changedUserId, Integer userType);
 
+    Boolean updateUserInfo(User user);    // 修改用户信息
+
+    // 修改密码
     Boolean updatePassword(String account, String oldPassword, String newPassword);
+
+    // 忘记密码
+    Boolean forgetPassword(String account, String newPassword);
+
+    User getUserByAccount(String account);
+
+    User getUserById(Integer id);
+
+    Integer getUserId(String account);
 }
