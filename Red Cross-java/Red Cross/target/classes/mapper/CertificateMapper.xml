@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.redcross.mapper.CertificateMapper">
+    <!--  将生成证书插入数据库  -->
+    <insert id="gainCertificate"  >
+            insert into certificate ( user_id, certificate_title, certificate_content, certificate_time)
+            values ( #{userId}, #{certificateTitle}, #{certificateContent},NOW() )
+    </insert>
+    <!--  查询用户的证书  -->
+    <select id="listCertificate" resultType="com.example.redcross.entity.Certificate">
+        select * from certificate where user_id = #{userId}
+    </select>
+    <!--  删除用户的证书  -->
+    <delete id="deleteCertificate">
+        delete from certificate where certificate_id = #{certificateId}
+    </delete>
+</mapper>
