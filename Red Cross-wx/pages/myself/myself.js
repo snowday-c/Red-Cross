@@ -1,145 +1,153 @@
-// pages/myself/myself.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-    avatarUrl: '/assets/default-avatar.png', // 默认头像路径
-    username: '默认用户名',
-    isEditingUsername: false // 控制用户名编辑状态
+    userInfo: {}, // 用户信息
+    showEditModal: false // 是否显示修改弹窗
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-    // 可以在这里加载用户的头像和用户名
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
-  },
-
-  changeAvatar() {
-    wx.showActionSheet({
-      itemList: ['修改头像', '修改用户名'],
-      success: (res) => {
-        if (res.tapIndex === 0) {
-          this.chooseNewAvatar();
-        } else if (res.tapIndex === 1) {
-          this.modifyUsername();
-        }
-      },
-      fail(res) {
-        console.log(res.errMsg);
-      }
+  onLoad() {
+    // 从本地缓存中获取用户信息
+    const userInfo = wx.getStorageSync('userInfo');
+    this.setData({
+      userInfo
     });
   },
 
-  chooseNewAvatar() {
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['original', 'compressed'],
-      sourceType: ['album', 'camera'],
-      success: (res) => {
-        const tempFilePaths = res.tempFilePaths;
-        this.setData({
-          avatarUrl: tempFilePaths[0]
+  // 显示修改选项弹窗
+  showEditOptions() {
+    this.setData({
+      showEditModal: true
+    });
+  },
+
+  // 隐藏修改选项弹窗
+  hideEditOptions() {
+    this.setData({
+      showEditModal: false
+    });
+  },
+
+  // 修改头像
+  changeAvatar() {
+    wx.chooseMedia({
+      count: 1, // 只能选择一张图片
+      success(res) {
+        const tempFilePath = res.tempFiles[0].tempFilePath;
+        const fs = wx.getFileSystemManager();
+        
+        // 将图片文件转为二进制数据
+        fs.readFile({
+          filePath: tempFilePath,
+          encoding: 'base64', // 将文件编码为base64
+          success: (fileRes) => {
+            const base64Data = fileRes.data;
+
+            // 上传二进制数据到服务器
+            wx.request({
+              url: 'http://localhost:8090/user/update/userInfo',
+              method: 'POST',
+              header: {
+                'Content-Type': 'application/json'
+              },
+              data: {
+                userId: wx.getStorageSync('userInfo').userId,
+                userName: wx.getStorageSync('userInfo').userName,
+                pictureUrl: base64Data, // 将图片的二进制数据发送到后端
+                account: wx.getStorageSync('userInfo').account,
+                email: wx.getStorageSync('userInfo').email
+              },
+              success(res) {
+                const data = res.data;
+                if (data.code === '0') {
+                  wx.showToast({
+                    title: '头像修改成功',
+                    icon: 'success'
+                  });
+                  // 更新本地缓存中的用户信息
+                  const userInfo = wx.getStorageSync('userInfo');
+                  userInfo.pictureUrl = data.data.pictureUrl; // 假设服务器返回的是新头像的URL
+                  wx.setStorageSync('userInfo', userInfo);
+                } else {
+                  wx.showToast({
+                    title: data.message || '头像修改失败',
+                    icon: 'none'
+                  });
+                }
+              },
+              fail() {
+                wx.showToast({
+                  title: '上传失败',
+                  icon: 'none'
+                });
+              }
+            });
+          },
+          fail() {
+            wx.showToast({
+              title: '读取文件失败',
+              icon: 'none'
+            });
+          }
         });
       }
     });
+    this.hideEditOptions();
   },
 
-  modifyUsername() {
-    this.setData({
-      isEditingUsername: true
+  // 修改用户名
+  changeUsername() {
+    const that = this; // 保存当前页面的 this 上下文
+    wx.showModal({
+      title: '修改用户名',
+      content: '请输入新的用户名',
+      editable: true,
+      success(res) {
+        if (res.confirm && res.content) {
+          const newUsername = res.content;
+          wx.request({
+            url: 'http://localhost:8090/user/update/userInfo',
+            method: 'POST',
+            header: {
+              'Content-Type': 'application/json'
+            },
+            data: {
+              userId: wx.getStorageSync('userInfo').userId,
+              pictureUrl: wx.getStorageSync('userInfo').pictureUrl,
+              userName: newUsername,
+              account: wx.getStorageSync('userInfo').account,
+              email: wx.getStorageSync('userInfo').email
+            },
+            success(res) {
+              if (res.data.code === '0') {
+                wx.showToast({
+                  title: '用户名修改成功',
+                  icon: 'success'
+                });
+                // 更新本地缓存中的用户信息
+                const userInfo = wx.getStorageSync('userInfo');
+                userInfo.userName = newUsername;
+                wx.setStorageSync('userInfo', userInfo);
+  
+                // 更新页面数据，触发重新渲染
+                that.setData({
+                  userInfo: userInfo
+                });
+              } else {
+                wx.showToast({
+                  title: res.data.message || '用户名修改失败',
+                  icon: 'none'
+                });
+              }
+            },
+            fail() {
+              wx.showToast({
+                title: '网络请求失败',
+                icon: 'none'
+              });
+            }
+          });
+        }
+      }
     });
-  },
-
-  onUsernameInput(e) {
-    this.setData({
-      username: e.detail.value
-    });
-  },
-
-  saveUsername() {
-    this.setData({
-      isEditingUsername: false
-    });
-    // 在这里保存用户名到服务器或本地存储
-    wx.showToast({
-      title: '用户名已保存',
-      icon: 'success'
-    });
-  },
-
-  navigateToHistoryScores() {
-    wx.navigateTo({
-      url: ''
-    });
-  },
-
-  navigateToCertificates() {
-    wx.navigateTo({
-      url: ''
-    });
-  },
-
-  navigateToVenueBookings() {
-    wx.navigateTo({
-      url: ''
-    });
-  },
-
-  navigateToNotifications() {
-    wx.navigateTo({
-      url: ''
-    });
+    this.hideEditOptions();
   }
-})
+});

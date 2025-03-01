@@ -1,13 +1,13 @@
 Page({
   data: {
-    email: '',
+    account: '',
     password: ''
   },
 
-  // 获取邮箱输入
-  onEmailInput(e) {
+  // 获取账号输入
+  onAccountInput(e) {
     this.setData({
-      email: e.detail.value
+      account: e.detail.value
     });
   },
 
@@ -20,11 +20,11 @@ Page({
 
   // 登录按钮点击
   onLogin() {
-    const { email, password } = this.data;
+    const { account, password } = this.data;
 
-    if (!email || !password) {
+    if (!account || !password) {
       wx.showToast({
-        title: '邮箱和密码不能为空',
+        title: '账号和密码不能为空',
         icon: 'none'
       });
       return;
@@ -32,20 +32,24 @@ Page({
 
     // 登录验证
     wx.request({
-      url: 'https://yourapi.com/login', // API接口
+      url: 'http://localhost:8090/user/login',
       method: 'POST',
+      header: {
+        'Content-Type': 'application/json'
+      },
       data: {
-        email,
+        account,
         password
       },
       success(res) {
-        if (res.data.success) {
-          wx.navigateTo({
+        if (res.data.code === '0') {
+          wx.setStorageSync('userInfo', res.data.data);
+          wx.switchTab({
             url: '/pages/myself/myself' // 登录成功后跳转到个人中心
           });
         } else {
           wx.showToast({
-            title: '登录失败，请检查邮箱和密码',
+            title: res.data.message || '登录失败，请检查账号和密码',
             icon: 'none'
           });
         }
@@ -56,6 +60,13 @@ Page({
           icon: 'none'
         });
       }
+    });
+  },
+
+  // 跳转到注册页面
+  navigateToRegister() {
+    wx.navigateTo({
+      url: '/pages/register/register'
     });
   }
 });

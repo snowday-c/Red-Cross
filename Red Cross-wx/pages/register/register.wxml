@@ -1,9 +1,20 @@
 <view class="container">
-  <view class="register-form">
-    <input class="input-field" type="email" placeholder="请输入邮箱" bindinput="onEmailInput" />
-    <input class="input-field" type="password" placeholder="请输入密码" bindinput="onPasswordInput" />
-    <input class="input-field" type="password" placeholder="确认密码" bindinput="onConfirmPasswordInput" />
-    <button class="btn" bindtap="onRegister">注册</button>
-    <text>已有账号？ <navigator url="/pages/login/login">立即登录</navigator></text>
+  <view class="header">
+    <text class="title">注册</text>
+  </view>
+  <view class="form">
+    <input class="input" placeholder="请输入用户名" bindinput="onUsernameInput" />
+    <input class="input" placeholder="请输入账号" bindinput="onAccountInput" />
+    <input class="input" placeholder="请输入密码" password bindinput="onPasswordInput" />
+    <input class="input" placeholder="请再次输入密码" password bindinput="onConfirmPasswordInput" />
+    <input class="input" placeholder="请输入邮箱" bindinput="onEmailInput" />
+    <view class="captcha-container">
+      <input class="captcha-input" placeholder="请输入验证码" bindinput="onCaptchaInput" />
+      <button class="captcha-btn" bindtap="sendCaptcha">发送验证码</button>
+    </view>
+    <button class="register-btn" bindtap="onRegister">注册</button>
+  </view>
+  <view class="footer">
+    <text class="login-text" bindtap="navigateToLogin">已有账号？立即登录</text>
   </view>
 </view>

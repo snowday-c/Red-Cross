@@ -1,14 +1,24 @@
 Page({
   data: {
-    email: '',
+    username: '',
+    account: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    email: '',
+    captcha: ''
   },
 
-  // 获取邮箱输入
-  onEmailInput(e) {
+  // 获取用户名输入
+  onUsernameInput(e) {
     this.setData({
-      email: e.detail.value
+      username: e.detail.value
+    });
+  },
+
+  // 获取账号输入
+  onAccountInput(e) {
+    this.setData({
+      account: e.detail.value
     });
   },
 
@@ -26,13 +36,35 @@ Page({
     });
   },
 
+  // 获取邮箱输入
+  onEmailInput(e) {
+    this.setData({
+      email: e.detail.value
+    });
+  },
+
+  // 获取验证码输入
+  onCaptchaInput(e) {
+    this.setData({
+      captcha: e.detail.value
+    });
+  },
+
+  // 发送验证码
+  sendCaptcha() {
+    wx.showToast({
+      title: '验证码已发送',
+      icon: 'none'
+    });
+  },
+
   // 注册按钮点击
   onRegister() {
-    const { email, password, confirmPassword } = this.data;
+    const { username, account, password, confirmPassword, email, captcha } = this.data;
 
-    if (!email || !password || !confirmPassword) {
+    if (!username || !account || !password || !confirmPassword || !email || !captcha) {
       wx.showToast({
-        title: '邮箱和密码不能为空',
+        title: '请填写完整信息',
         icon: 'none'
       });
       return;
@@ -40,32 +72,38 @@ Page({
 
     if (password !== confirmPassword) {
       wx.showToast({
-        title: '密码不一致',
+        title: '两次输入的密码不一致',
         icon: 'none'
       });
       return;
     }
 
-    // 假设有一个API进行注册
+    // 注册请求
     wx.request({
-      url: 'https://yourapi.com/register', // 替换为你的API接口
+      url: 'http://localhost:8090/user/register',
       method: 'POST',
+      header: {
+        'Content-Type': 'application/json'
+      },
       data: {
+        username,
+        account,
+        password,
         email,
-        password
+        captcha
       },
       success(res) {
-        if (res.data.success) {
+        if (res.data.code === '0') {
           wx.showToast({
-            title: '注册成功！',
+            title: '注册成功',
             icon: 'success'
           });
           wx.navigateTo({
-            url: '/pages/login/login' // 注册成功后跳转到登录页
+            url: '/pages/login/login' // 注册成功后跳转到登录页面
           });
         } else {
           wx.showToast({
-            title: '注册失败，请稍后再试',
+            title: res.data.message || '注册失败',
             icon: 'none'
           });
         }
@@ -76,6 +114,13 @@ Page({
           icon: 'none'
         });
       }
+    });
+  },
+
+  // 跳转到登录页面
+  navigateToLogin() {
+    wx.navigateTo({
+      url: '/pages/login/login'
     });
   }
 });

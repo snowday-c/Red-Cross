@@ -1,10 +1,13 @@
 <view class="container">
-  <view class="login-form">
-    <text>邮箱:</text>
-    <input class="input-field" type="email" placeholder="请输入邮箱" bindinput="onEmailInput" />
-    <text>密码:</text>
-    <input class="input-field" type="password" placeholder="请输入密码" bindinput="onPasswordInput" />
-    <button class="btn" bindtap="onLogin">登录</button>
-    <text>没有账号？ <navigator url="/pages/register/register">立即注册</navigator></text>
+  <view class="header">
+    <text class="title">登录</text>
+  </view>
+  <view class="form">
+    <input class="input" placeholder="请输入账号" bindinput="onAccountInput" />
+    <input class="input" placeholder="请输入密码" password bindinput="onPasswordInput" />
+    <button class="login-btn" bindtap="onLogin">登录</button>
+  </view>
+  <view class="footer">
+    <text class="register-text" bindtap="navigateToRegister">没有账号？立即注册</text>
   </view>
 </view>

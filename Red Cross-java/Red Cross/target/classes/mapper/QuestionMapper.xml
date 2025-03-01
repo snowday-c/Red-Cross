@@ -29,5 +29,45 @@
             answer = #{answer}
         WHERE question_id = #{questionId}
     </update>
-
+    <!--生成试卷，随机从题库中抽取题目，固定为选择题3道，判断题2道，填空题1道-->
+    <select id="getExam" resultType="com.example.redcross.entity.Question">
+            (SELECT * FROM question WHERE question_type = '1' ORDER BY RAND() LIMIT 3)
+            UNION ALL
+            (SELECT * FROM question WHERE question_type = '2' ORDER BY RAND() LIMIT 2)
+            UNION ALL
+            (SELECT * FROM question WHERE question_type = '3' ORDER BY RAND() LIMIT 1)
+    </select>
+    <!-- 将生成试卷的题目id和用户id存入试卷表中 -->
+    <insert id="insertExam" >
+        INSERT INTO exam ( question_ids , user_id)
+        VALUES ( #{questionIds, jdbcType=VARCHAR} , #{userId})
+    </insert>
+    <!-- 根据用户id查询最新试卷，并获取试卷的题目question_ids -->
+    <select id="findLatestExamByUserId" resultType="com.example.redcross.entity.Exam">
+            SELECT * FROM exam WHERE user_id = #{userId} ORDER BY exam_id DESC LIMIT 1
+    </select>
+    <!-- 将用户答案存入答案表中 -->
+    <update id="insertUserAnswer">
+        UPDATE exam
+        SET answers = #{userAnswersJson, jdbcType=VARCHAR}
+        WHERE exam_id = #{examId}
+    </update>
+    <!-- 根据question_ids查询题目 -->
+    <select id="getQuestionsByIds" resultType="com.example.redcross.entity.Question">
+        SELECT * FROM question WHERE question_id IN
+        <foreach collection="questionIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        ORDER BY FIELD(question_id,
+        <foreach collection="questionIds" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </select>
+    <!-- 将分数插入到试卷表中 -->
+    <update id="updateExamScore" >
+        UPDATE exam
+        SET score = #{score}
+        WHERE exam_id = #{examId}
+    </update>
 </mapper>

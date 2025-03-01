@@ -29,7 +29,32 @@
   font-size: 16px;
 }
 
-.login-btn {
+.captcha-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.captcha-input {
+  flex: 1;
+  height: 50px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.captcha-btn {
+  width: 120px;
+  height: 50px;
+  background-color: #07c160;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.register-btn {
   width: 100%;
   height: 50px;
   background-color: #07c160;
@@ -43,7 +68,7 @@
   margin-top: 20px;
 }
 
-.register-text {
+.login-text {
   color: #07c160;
   font-size: 16px;
   text-decoration: underline;

@@ -1,63 +1,81 @@
-/* pages/myself/myself.wxss */
 .container {
-  padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  padding: 20px;
 }
 
-.profile {
+.header {
   display: flex;
+  flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
-  width: 100%;
+}
+
+.avatar-container {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 10px;
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  margin-right: 15px;
-  cursor: pointer;
-  border: 2px solid #ccc;
+  width: 100%;
+  height: 100%;
 }
 
-.username-input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
+.username {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
 }
 
-.username-text {
+.content {
+  width: 100%;
+}
+
+.item {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.label {
   font-size: 16px;
   color: #333;
 }
 
-.divider {
+.edit-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 1px;
-  background-color: #e0e0e0;
-  margin: 10px 0;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.btn {
-  width: 100%;
+.modal-content {
+  width: 80%;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.option {
   padding: 15px;
-  margin: 10px 0;
-  background-color: #5b97d8;
-  color: white;
-  border: none;
-  border-radius: 5px;
   text-align: center;
   font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #333;
+  border-bottom: 1px solid #eee;
 }
 
-.btn:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
+.option:last-child {
+  border-bottom: none;
+}
+
+.cancel {
+  color: #f00;
 }
