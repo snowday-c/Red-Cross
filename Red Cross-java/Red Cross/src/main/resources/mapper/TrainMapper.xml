@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.redcross.mapper.TrainMapper">
+
+    <!-- 生成培训 -->
+    <insert id="PublishTrain" >
+        INSERT INTO train (train_time,train_people, train_place,train_type)
+        VALUES (#{trainTime}, #{trainPeople}, #{trainPlace},0)
+    </insert>
+    <!--更新培训信息 -->
+    <update id="UpdateTrain">
+        UPDATE train SET train_time = #{trainTime},train_people = #{trainPeople},
+                         train_place = #{trainPlace},train_type = #{trainType} WHERE train_id = #{trainId}
+    </update>
+    <!--  删除培训-->
+    <delete id="DeleteTrain">
+        DELETE FROM train WHERE train_id = #{trainId}
+    </delete>
+</mapper>
