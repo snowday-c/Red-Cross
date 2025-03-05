@@ -1,6 +1,9 @@
 package com.example.redcross.mapper;
 
+import com.example.redcross.entity.Train;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface TrainMapper {
@@ -14,4 +17,17 @@ public interface TrainMapper {
     //删除培训
     Integer DeleteTrain(Integer trainId);
 
+    Integer CurrentTrainPeople(Integer trainId);
+
+    Integer IsJoinTrain(Integer trainId, Integer userId);
+
+    Integer JoinTrain(Integer trainId, Integer userId);
+
+    Integer MaxTrainPeople(Integer trainId);
+
+    Integer CancelTrain(Integer trainId, Integer userId);
+
+    Integer UpdateRetrain(Integer trainId, Integer userId, String trainPlace, String trainTime);
+
+    List<Train> getAllTrains();
 }

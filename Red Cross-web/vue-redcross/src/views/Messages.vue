@@ -75,6 +75,7 @@
 <script>
 import axios from 'axios';
 import moment from 'moment'; // 用于格式化时间
+import { MessageBox } from 'element-ui'; // 引入 MessageBox 组件
 
 export default {
   data() {
@@ -157,20 +158,40 @@ export default {
     // 删除消息
     async handleDeleteMessage(message) {
       try {
+        // 弹出确认对话框
+        await MessageBox.confirm('确定要删除该消息吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        });
+
+        // 用户点击确定后，发送删除请求
         const response = await axios.post('/api/message/delete', { 
-        messageId: message.messageId });
+          messageId: message.messageId 
+        });
+
         if (response.data.code == 0) {
+          // 刷新消息列表
           if (message.messageType === 0) {
             this.fetchPublicMessages(); // 刷新公共消息
           } else {
             this.fetchPrivateMessages(); // 刷新个人消息
           }
+          this.$message({
+            type: 'success',
+            message: '删除成功！'
+          });
         } else {
           this.$message.error('删除失败: ' + response.data.message);
         }
       } catch (error) {
-        console.error('删除失败:', error);
-        this.$message.error('删除失败: ' + error.message);
+        if (error !== 'cancel') { // 用户点击了取消
+          console.error('删除失败:', error);
+          this.$message({
+            type: 'error',
+            message: '删除失败'
+          });
+        }
       }
     },
   },

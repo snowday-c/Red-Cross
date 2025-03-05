@@ -1,6 +1,5 @@
 package com.example.redcross.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -9,11 +8,16 @@ import lombok.Data;
 @TableName(value = "retrain")
 public class Retrain {
 
-    @TableId(value = "user_id", type = IdType.AUTO)
-    private Integer userId;
+    @TableId(value = "train_id")
+    private Integer trainId;
+
+    private String userId;
+
+    private Integer trainPlace;
 
     private String trainTime;
 
     private String trainNext;
+
 
 }

@@ -4,6 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.redcross.mapper.TrainMapper">
+    <!-- 查询所有培训 -->
+    <select id="getAllTrains" resultType="com.example.redcross.entity.Train">
+        SELECT * FROM train
+    </select>
 
     <!-- 生成培训 -->
     <insert id="PublishTrain" >
@@ -19,4 +23,47 @@
     <delete id="DeleteTrain">
         DELETE FROM train WHERE train_id = #{trainId}
     </delete>
+    <!-- 查询城市可报名人数 -->
+    <select id="MaxTrainPeople" resultType="int">
+        SELECT train_people FROM train WHERE train_id = #{trainId}
+    </select>
+    <!-- 查询城市已报名人数 -->
+    <select id="CurrentTrainPeople" resultType="int">
+        SELECT current_people FROM train WHERE train_id = #{trainId}
+    </select>
+    <!-- 查询用户是否报名 -->
+    <select id="IsJoinTrain" resultType="int">
+        SELECT COUNT(*)
+        FROM train
+        WHERE train_id = #{trainId}
+          AND JSON_CONTAINS(user_ids, CAST(#{userId} AS JSON));
+    </select>
+    <!-- 进行报名 -->
+    <update id="JoinTrain">
+        UPDATE train
+        SET current_people = current_people + 1,
+            user_ids = JSON_ARRAY_APPEND(user_ids, '$', #{userId})
+        WHERE train_id = #{trainId} AND train_type = 0;
+    </update>
+
+    <!-- 报名成功插入复训表 -->
+    <insert id="UpdateRetrain">
+        INSERT INTO retrain (train_id, user_id, train_place, train_time, train_next)
+        VALUES (
+                   #{trainId},
+                   #{userId},
+                   #{trainPlace},
+                   #{trainTime},
+                   DATE_ADD(#{trainTime}, INTERVAL 6 MONTH)
+               );
+    </insert>
+    <!-- 取消报名 -->
+    <update id="CancelTrain">
+        UPDATE train
+        SET current_people = current_people - 1,
+            user_ids = JSON_REMOVE(user_ids, JSON_UNQUOTE(JSON_SEARCH(user_ids, 'one', CAST(#{userId} AS JSON))))
+                WHERE train_id = #{trainId}
+                                                          AND JSON_CONTAINS(user_ids, CAST(#{userId} AS JSON));
+    </update>
+
 </mapper>

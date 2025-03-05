@@ -81,6 +81,7 @@
 
 <script>
 import axios from 'axios';
+import { MessageBox } from 'element-ui'; // 引入 MessageBox 组件
 
 export default {
   data() {
@@ -169,10 +170,30 @@ export default {
     // 删除题目
     async deleteQuestion(questionId) {
       try {
+        // 弹出确认对话框
+        await MessageBox.confirm('确定要删除该题目吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        });
+
+        // 用户点击确定后，发送删除请求
         await axios.post('/api/question/delete', { questionId });
-        this.fetchQuestions(); // 重新加载题目列表
+
+        // 刷新题目列表
+        this.fetchQuestions();
+        this.$message({
+          type: 'success',
+          message: '删除成功！'
+        });
       } catch (error) {
-        console.error('删除题目失败:', error);
+        if (error !== 'cancel') { // 用户点击了取消
+          console.error('删除题目失败:', error);
+          this.$message({
+            type: 'error',
+            message: '删除失败'
+          });
+        }
       }
     },
 
