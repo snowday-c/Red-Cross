@@ -1,5 +1,6 @@
 package com.example.redcross.controller;
 
+import com.example.redcross.common.JwtTokenUtils;
 import com.example.redcross.common.Result;
 import com.example.redcross.email.VerificationCodeUtil;
 import com.example.redcross.entity.User;
@@ -64,6 +65,11 @@ public class UserController {
         // 登录成功返回用户，失败返回错误信息
         if (userService.login(account, password)) {
             User CurrentUser = userService.getUserByAccount(account);
+            Integer userId = CurrentUser.getUserId();
+            String token = JwtTokenUtils.genToken(userId.toString(), password);
+            CurrentUser.setToken(token);
+            // 手动剔除不需要的字段
+            CurrentUser.setAccount(null);  // 剔除账号
             return Result.success(CurrentUser);
         }
         throw new UserException("用户名或密码错误");
@@ -73,9 +79,14 @@ public class UserController {
     public Result admin(@RequestBody User user) {
         String account = user.getAccount();
         String password = user.getPassword();
-        // 登录成功返回用户，失败返回错误信息,
+        // 登录成功返回用户，失败返回错误信息
         if (userService.admin(account, password)) {
             User CurrentUser = userService.getUserByAccount(account);
+            Integer userId = CurrentUser.getUserId();
+            String token = JwtTokenUtils.genToken(userId.toString(), password);
+            CurrentUser.setToken(token);
+            // 手动剔除不需要的字段
+            CurrentUser.setAccount(null);  // 剔除账号
             return Result.success(CurrentUser);
         }
         throw new UserException("用户名或密码错误");

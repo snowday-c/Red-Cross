@@ -32,7 +32,9 @@
 </template>
 
 <script>
-import axios from 'axios';
+
+import request from '@/utils/request';
+
 export default {
   name: 'Login',
   data() {
@@ -58,13 +60,14 @@ export default {
         if (valid) {
           // 管理员登录
           try {
-            let res = await axios.post('http://localhost:8090/user/login', {
+            let res = await request.post('/user/login', {
               account: this.loginForm.account,
               password: this.loginForm.password
             });
             if (res.data.code == 0) {
               localStorage.setItem('CurrentUser',JSON.stringify(res.data.data));
               localStorage.setItem('userId', res.data.data.userId);
+              localStorage.setItem('token', res.data.data.token);
               this.$router.push('/management');
             } else {
               this.errorMessage = '账号或密码错误';  // 设置错误信息

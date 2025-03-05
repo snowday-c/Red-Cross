@@ -79,7 +79,8 @@
 </template>
 
 <script>
-import axios from 'axios';
+import request from '@/utils/request';
+
 export default {
   name: 'Register',
   data() {
@@ -133,7 +134,7 @@ export default {
       this.$refs.registerForm.validate(async (valid) => {
         if (valid) {
           // 注册逻辑
-          let res = await axios.post('http://localhost:8090/user/register', {
+          let res = await request.post('/user/register', {
             userName: this.registerForm.username, 
             account: this.registerForm.account, 
             password: this.registerForm.password, 
@@ -153,7 +154,7 @@ export default {
     sendCode() {
       this.$refs.registerForm.validateField('email', async (valid) => {
         if (!valid) {
-          let res = await axios.post('http://localhost:8090/user/email/sendCode', { email: this.registerForm.email })
+          let res = await request.post('/user/email/sendCode', { email: this.registerForm.email })
           if (res.data.code == 0) {
             this.$message.success('验证码已发送至邮箱，请注意查收');
             this.isCodeSent = true;

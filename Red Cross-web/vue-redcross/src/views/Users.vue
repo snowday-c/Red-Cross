@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import request from '@/utils/request';
 
 export default {
   data() {
@@ -78,7 +78,7 @@ export default {
   methods: {
     async fetchUsers() {
       try {
-        const response = await axios.get('/api/user/all'); 
+        const response = await request.get('/user/all'); 
         this.userList = response.data.data; // 直接使用原始数据
         console.log('用户列表:', this.userList); // 打印用户列表
       } catch (error) {
@@ -109,7 +109,7 @@ export default {
     },
     async saveUser() {
       try {
-        let res = await axios.post('/api/user/update/userInfo', this.currentUser);
+        let res = await request.post('/user/update/userInfo', this.currentUser);
         if (res.data.code == 0) {
           this.dialogVisible = false; // 关闭对话框
           this.fetchUsers(); // 重新获取用户数据
@@ -122,8 +122,8 @@ export default {
     },
     async saveUserType() {
       try {
-        let res = await axios.post('/api/user/update/userType', { 
-          userId: localStorage.getItem('userId'),       // 管理员id
+        let res = await request.post('/user/update/userType', { 
+          userId: localStorage.getItem('userId'),       // 当前登录管理员id
           changedUserId: this.currentUser.userId,      // 被修改者ID
           userType: Number(this.currentUser.userType)  // 确保是数字类型
         });

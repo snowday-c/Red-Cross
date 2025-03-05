@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import request from '@/utils/request';
 import dayjs from 'dayjs';
 import { MessageBox } from 'element-ui'; // 引入 MessageBox 组件
 
@@ -94,7 +94,7 @@ export default {
     // 获取培训列表
     async fetchTrainList() {
       try {
-        const response = await axios.get('http://localhost:8090/train/all');
+        const response = await request.get('/train/all');
         this.trainList = response.data.data;
       } catch (error) {
         console.error('获取培训列表失败:', error);
@@ -142,7 +142,7 @@ export default {
         };
 
         // 发送请求
-        await axios.post('http://localhost:8090/train/publish', requestData);
+        await request.post('/train/publish', requestData);
 
         // 关闭对话框并刷新培训列表
         this.publishDialogVisible = false;
@@ -159,7 +159,7 @@ export default {
     // 确认修改培训
     async confirmEdit() {
       try {
-        await axios.post('http://localhost:8090/train/update', this.currentTrain);
+        await request.post('/train/update', this.currentTrain);
         this.editDialogVisible = false;
         this.fetchTrainList(); // 重新获取培训列表
       } catch (error) {
@@ -177,7 +177,7 @@ export default {
         });
 
         // 用户点击确定后，发送删除请求
-        await axios.post('http://localhost:8090/train/delete', { trainId: train.trainId });
+        await request.post('/train/delete', { trainId: train.trainId });
 
         // 刷新培训列表
         this.fetchTrainList();

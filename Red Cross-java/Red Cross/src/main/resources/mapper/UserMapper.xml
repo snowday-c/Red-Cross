@@ -23,7 +23,7 @@
     </select>
     <!-- 通过ID查询用户 -->
     <select id="getUserById" parameterType="java.lang.Integer" resultType="com.example.redcross.entity.User">
-        SELECT user_id, user_name, picture_url, email, account, user_type
+        SELECT user_id, user_name, picture_url, email, account, user_type, password
         FROM user WHERE user_id = #{userId}
     </select>
     <!-- 通过账号查询用户 -->
@@ -42,11 +42,11 @@
     </insert>
     <!-- 用户登录 -->
     <select id="login" parameterType="com.example.redcross.entity.User" resultType="Boolean">
-        SELECT COUNT(*) FROM user WHERE account = #{account} AND password = #{password}
+        SELECT user_id,user_name,picture_url FROM user WHERE account = #{account} AND password = #{password}
     </select>
     <!-- 管理员登录 -->
     <select id="admin" parameterType="com.example.redcross.entity.User" resultType="Boolean">
-        SELECT COUNT(*) FROM user WHERE account = #{account} AND password = #{password} AND (user_type = 1 OR user_type = 2)
+        SELECT user_id,user_name,picture_url FROM user WHERE account = #{account} AND password = #{password} AND (user_type = 1 OR user_type = 2)
     </select>
     <!-- 注销用户-->
     <delete id="logout" parameterType="com.example.redcross.entity.User" >

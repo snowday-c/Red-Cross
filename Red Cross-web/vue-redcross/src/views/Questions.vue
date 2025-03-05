@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import request from '@/utils/request';
 import { MessageBox } from 'element-ui'; // 引入 MessageBox 组件
 
 export default {
@@ -105,7 +105,7 @@ export default {
     // 获取所有题目
     async fetchQuestions() {
       try {
-        const response = await axios.get('/api/question/all');
+        const response = await request.get('/question/all');
         this.questions = response.data.data;
       } catch (error) {
         console.error('获取题目失败:', error);
@@ -115,7 +115,7 @@ export default {
     // 根据题型获取题目
     async fetchQuestionsByType(questionType) {
       try {
-        const response = await axios.post('/api/question/type', { questionType });
+        const response = await request.post('/question/type', { questionType });
         this.questions = response.data.data;
       } catch (error) {
         console.error('获取题型题目失败:', error);
@@ -142,7 +142,7 @@ export default {
     // 添加题目
     async addQuestion() {
       try {
-        await axios.post('/api/question/add', this.newQuestion);
+        await request.post('/question/add', this.newQuestion);
         this.addDialogVisible = false;
         this.fetchQuestions(); // 重新加载题目列表
       } catch (error) {
@@ -159,7 +159,7 @@ export default {
     // 更新题目
     async updateQuestion() {
       try {
-        await axios.post('/api/question/update', this.currentQuestion);
+        await request.post('/question/update', this.currentQuestion);
         this.editDialogVisible = false;
         this.fetchQuestions(); // 重新加载题目列表
       } catch (error) {
@@ -178,7 +178,7 @@ export default {
         });
 
         // 用户点击确定后，发送删除请求
-        await axios.post('/api/question/delete', { questionId });
+        await request.post('/question/delete', { questionId });
 
         // 刷新题目列表
         this.fetchQuestions();

@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import request from '@/utils/request';
 import moment from 'moment'; // 用于格式化时间
 import { MessageBox } from 'element-ui'; // 引入 MessageBox 组件
 
@@ -96,7 +96,7 @@ export default {
     // 获取公共消息
     async fetchPublicMessages() {
       try {
-        const response = await axios.get('/api/message/public');
+        const response = await request.get('/message/public');
         this.publicMessages = response.data.data;
       } catch (error) {
         console.error('获取公共消息失败:', error);
@@ -105,7 +105,7 @@ export default {
     // 获取个人消息
     async fetchPrivateMessages() {
       try {
-        const response = await axios.get('/api/message/private');
+        const response = await request.get('/message/private');
         this.privateMessages = response.data.data;
       } catch (error) {
         console.error('获取个人消息失败:', error);
@@ -138,8 +138,8 @@ export default {
     // 保存消息（新增或修改）
     async saveMessage() {
       try {
-        const url = this.currentMessage.messageId ? '/api/message/update' : '/api/message/add';
-        const response = await axios.post(url, this.currentMessage);
+        const url = this.currentMessage.messageId ? '/message/update' : '/message/add';
+        const response = await request.post(url, this.currentMessage);
         if (response.data.code == 0) {
           this.dialogVisible = false;
           if (this.currentMessage.messageType === 0) {
@@ -166,7 +166,7 @@ export default {
         });
 
         // 用户点击确定后，发送删除请求
-        const response = await axios.post('/api/message/delete', { 
+        const response = await request.post('/message/delete', { 
           messageId: message.messageId 
         });
 

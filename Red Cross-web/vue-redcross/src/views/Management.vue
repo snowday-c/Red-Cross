@@ -81,6 +81,8 @@ export default {
     // 退出登录
     handleLogout() {
       localStorage.removeItem('CurrentUser'); // 清除用户信息
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
       this.$router.push('/login'); // 跳转到登录页面
       this.$message.success('退出登录成功');
     },
