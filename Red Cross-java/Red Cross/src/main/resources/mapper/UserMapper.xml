@@ -66,6 +66,6 @@
     </update>
     <!-- 忘记密码 -->
     <update id="forgetPassword" parameterType="String">
-        UPDATE user SET password = #{newPassword} WHERE  account = #{account}
+        UPDATE user SET password = #{newPassword} WHERE  account = #{account} AND email = #{email}
     </update>
 </mapper>

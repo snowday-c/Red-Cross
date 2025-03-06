@@ -28,7 +28,7 @@ public interface UserService {
 
     Boolean updatePassword(String account, String oldPassword, String newPassword);
 
-    Boolean forgetPassword(String account, String newPassword);
+    Boolean forgetPassword(String account, String email, String newPassword);
 
     User getUserByAccount(String account);
 

@@ -32,7 +32,7 @@ public interface UserMapper {
     Boolean updatePassword(String account, String oldPassword, String newPassword);
 
     // 忘记密码
-    Boolean forgetPassword(String account, String newPassword);
+    Boolean forgetPassword(String account,String email, String newPassword);
 
     User getUserByAccount(String account);
 

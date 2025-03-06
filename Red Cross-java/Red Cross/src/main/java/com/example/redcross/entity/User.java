@@ -40,4 +40,6 @@ public class User {
     @TableField(exist = false)
     private String token;//token
 
+    @TableField(exist = false)
+    private String code;//验证码
 }

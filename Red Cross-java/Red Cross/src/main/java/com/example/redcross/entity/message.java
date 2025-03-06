@@ -24,4 +24,5 @@ public class Message {
 
     private String time;
 
+//    private String status;
 }

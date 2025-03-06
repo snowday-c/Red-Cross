@@ -86,8 +86,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean forgetPassword(String account, String newPassword) {
-        return userMapper.forgetPassword(account, newPassword);
+    public Boolean forgetPassword(String account, String email, String newPassword) {
+        return userMapper.forgetPassword(account, email, newPassword);
     }
 
     @Override
