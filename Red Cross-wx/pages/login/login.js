@@ -32,7 +32,7 @@ Page({
 
     // 登录验证
     wx.request({
-      url: 'http://localhost:8090/user/login',
+      url: 'http://localhost:8090/api/user/login',
       method: 'POST',
       header: {
         'Content-Type': 'application/json'
@@ -63,9 +63,16 @@ Page({
     });
   },
 
+  // 跳转到忘记密码页面
+  navigateToForgetPassword() {
+    wx.redirectTo({
+      url: '/pages/forgetPassword/forgetPassword'
+    });
+  },
+
   // 跳转到注册页面
   navigateToRegister() {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/register/register'
     });
   }

@@ -29,13 +29,13 @@
   font-size: 16px;
 }
 
-.captcha-container {
+.code-container {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.captcha-input {
+.code-input {
   flex: 1;
   height: 50px;
   padding: 10px;
@@ -45,7 +45,7 @@
   margin-right: 10px;
 }
 
-.captcha-btn {
+.code-btn {
   width: 120px;
   height: 50px;
   background-color: #07c160;
@@ -57,7 +57,7 @@
 .register-btn {
   width: 100%;
   height: 50px;
-  background-color: #07c160;
+  background-color: #077dc1;
   color: #fff;
   font-size: 18px;
   border-radius: 8px;

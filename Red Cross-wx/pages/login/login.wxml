@@ -5,6 +5,7 @@
   <view class="form">
     <input class="input" placeholder="请输入账号" bindinput="onAccountInput" />
     <input class="input" placeholder="请输入密码" password bindinput="onPasswordInput" />
+    <text class="forgetPassword-text" bindtap="navigateToForgetPassword">忘记密码</text>
     <button class="login-btn" bindtap="onLogin">登录</button>
   </view>
   <view class="footer">

@@ -5,8 +5,8 @@
     "pages/login/login",
     "pages/register/register",
     "pages/study/study",
-    "pages/myself/myself"
-
+    "pages/myself/myself",
+    "pages/forgetPassword/forgetPassword"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ff6666",

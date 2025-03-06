@@ -8,9 +8,9 @@
     <input class="input" placeholder="请输入密码" password bindinput="onPasswordInput" />
     <input class="input" placeholder="请再次输入密码" password bindinput="onConfirmPasswordInput" />
     <input class="input" placeholder="请输入邮箱" bindinput="onEmailInput" />
-    <view class="captcha-container">
-      <input class="captcha-input" placeholder="请输入验证码" bindinput="onCaptchaInput" />
-      <button class="captcha-btn" bindtap="sendCaptcha">发送验证码</button>
+    <view class="code-container">
+      <input class="code-input" placeholder="请输入验证码" bindinput="onCodeInput" />
+      <button class="code-btn" bindtap="sendCode">发送验证码</button>
     </view>
     <button class="register-btn" bindtap="onRegister">注册</button>
   </view>
