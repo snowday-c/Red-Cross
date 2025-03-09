@@ -17,6 +17,10 @@
     <select id="isAccountExist" parameterType="java.lang.String" resultType="Boolean">
         SELECT COUNT(*) FROM user WHERE account = #{account}
     </select>
+    <!-- 查询用户名是否已存在 -->
+    <select id="isUserNameExist" parameterType="java.lang.String" resultType="Boolean">
+        SELECT COUNT(*) FROM user WHERE user_name = #{userName}
+    </select>
     <!-- 检查是否为超级管理员 -->
     <select id="isSuperAdmin" parameterType="com.example.redcross.entity.User" resultType="Boolean">
         SELECT COUNT(*) FROM user WHERE user_id = #{userId} AND user_type = 2

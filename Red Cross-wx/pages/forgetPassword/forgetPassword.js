@@ -99,5 +99,12 @@ Page({
             }
         }
     });
-}
+},
+
+  // 跳转到登录页面
+  navigateToLogin() {
+    wx.redirectTo({
+      url: '/pages/login/login'
+    });
+  }
 });

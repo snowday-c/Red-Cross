@@ -24,8 +24,4 @@
   <navigator url="/pages/login/login">
     <button>点击登录</button>
   </navigator>
-  <text>------------------------------------------------------</text>
-  <navigator url="/pages/register/register">
-    <button>点击注册</button>
-  </navigator>
 </view>

@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #f8f8f8;
+  min-height: 100vh;
+}
+
+.message-list {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.message-item {
+  background-color: #fff;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.message-time {
+  font-size: 12px; /* 缩小时间字体 */
+  color: #999;
+  position: absolute;
+  top: 10px;
+  left: 15px;
+}
+
+.message-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 25px; /* 为时间留出空间 */
+  display: block; /* 标题独占一行 */
+}
+
+.message-content {
+  font-size: 14px;
+  color: #666;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+.empty-tip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 16px;
+  color: #999;
+}

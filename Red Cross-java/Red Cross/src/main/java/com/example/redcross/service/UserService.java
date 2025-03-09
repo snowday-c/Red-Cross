@@ -14,6 +14,8 @@ public interface UserService {
 
     Boolean isAccountExist(String account);
 
+    boolean isUserNameExist(String userName);
+
     Boolean login(String account, String password);
 
     Boolean admin(String account, String password);
@@ -35,4 +37,6 @@ public interface UserService {
     User getUserById(Integer id);
 
     Integer getUserId(String account);
+
+
 }

@@ -1,0 +1,22 @@
+<view class="container">
+  <!-- 消息列表 -->
+  <view class="message-list">
+    <block wx:for="{{messageList}}" wx:key="messageId">
+      <view class="message-item" bindtap="toggleMessage" data-index="{{index}}">
+        <!-- 消息时间 -->
+        <text class="message-time">{{item.time}}</text>
+        <!-- 消息标题 -->
+        <text class="message-title">{{item.title}}</text>
+        <!-- 消息内容，点击后显示 -->
+        <view class="message-content" wx:if="{{item.expanded}}">
+          <text>{{item.content}}</text>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 无消息时的提示 -->
+  <view wx:if="{{messageList.length === 0}}" class="empty-tip">
+    <text>暂无消息</text>
+  </view>
+</view>

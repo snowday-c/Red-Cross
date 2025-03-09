@@ -51,6 +51,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isUserNameExist(String userName) {
+        return userMapper.isUserNameExist(userName);
+    }
+
+    @Override
     public Boolean login(String account, String password) {
         return userMapper.login(account, password);
     }

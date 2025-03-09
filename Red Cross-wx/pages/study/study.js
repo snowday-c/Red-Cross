@@ -1,66 +1,53 @@
-// pages/study/study.js
 Page({
-
   /**
    * 页面的初始数据
    */
   data: {
-
+    userInfo: null, // 用户信息
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    // 从本地存储中获取用户信息
+    const userInfo = wx.getStorageSync('userInfo');
+    this.setData({
+      userInfo,
+    });
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
+   * 检查用户是否登录
    */
-  onReady() {
-
+  checkLogin() {
+    if (!this.data.userInfo) {
+      wx.showToast({
+        title: '请先登录',
+        icon: 'none',
+      });
+      return false;
+    }
+    return true;
   },
 
   /**
-   * 生命周期函数--监听页面显示
+   * 跳转到考试页面
    */
-  onShow() {
-
+  navigateToExam() {
+    if (!this.checkLogin()) return; // 检查用户是否登录
+    wx.navigateTo({
+      url: '/pages/exam/exam',
+    });
   },
 
   /**
-   * 生命周期函数--监听页面隐藏
+   * 跳转到培训页面
    */
-  onHide() {
-
+  navigateToTrain() {
+    if (!this.checkLogin()) return; // 检查用户是否登录
+    wx.navigateTo({
+      url: '/pages/train/train',
+    });
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
-  }
-})
+});

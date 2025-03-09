@@ -6,7 +6,13 @@
     "pages/register/register",
     "pages/study/study",
     "pages/myself/myself",
-    "pages/forgetPassword/forgetPassword"
+    "pages/exam/exam",
+    "pages/train/train",
+    "pages/forgetPassword/forgetPassword",
+    "pages/historyScores/historyScores",
+    "pages/certificates/certificates",
+    "pages/historyTrains/historyTrains",
+    "pages/messages/messages"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ff6666",

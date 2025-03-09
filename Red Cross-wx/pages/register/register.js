@@ -66,7 +66,7 @@ Page({
     }
 
     wx.request({
-      url: 'http://localhost:8090/api/user/email/sendCode', // 发送验证码的接口
+      url: 'http://localhost:8090/api/user/email/sendCode', // 发送验证码
       method: 'POST',
       data: { email },
       success: (res) => {
@@ -96,8 +96,9 @@ Page({
   startCountdown() {
     this.setData({ isCodeSent: true, codeButtonText: `60秒后重发` });
 
+    let countdown = 60;
     const timer = setInterval(() => {
-      let countdown = this.data.countdown - 1;
+      countdown -= 1;
       this.setData({ countdown, codeButtonText: `${countdown}秒后重发` });
 
       if (countdown <= 0) {
@@ -129,7 +130,7 @@ Page({
 
     // 先验证验证码
     wx.request({
-      url: 'http://localhost:8090/api/user/email/verifyCode', // 验证验证码的接口
+      url: 'http://localhost:8090/api/user/email/verifyCode', // 验证验证码
       method: 'POST',
       data: { email, code },
       success: (res) => {

@@ -3,8 +3,14 @@
     <text class="title">登录</text>
   </view>
   <view class="form">
-    <input class="input" placeholder="请输入账号" bindinput="onAccountInput" />
-    <input class="input" placeholder="请输入密码" password bindinput="onPasswordInput" />
+    <view class="form-item">
+      <text class="label">账号：</text>
+      <input class="input" placeholder="请输入账号" bindinput="onAccountInput" />
+    </view>
+    <view class="form-item">
+      <text class="label">密码：</text>
+      <input class="input" placeholder="请输入密码" password bindinput="onPasswordInput" />
+    </view>
     <text class="forgetPassword-text" bindtap="navigateToForgetPassword">忘记密码</text>
     <button class="login-btn" bindtap="onLogin">登录</button>
   </view>

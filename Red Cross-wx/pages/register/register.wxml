@@ -3,16 +3,33 @@
     <text class="title">注册</text>
   </view>
   <view class="form">
-    <input class="input" placeholder="请输入用户名" bindinput="onUsernameInput" />
-    <input class="input" placeholder="请输入账号" bindinput="onAccountInput" />
-    <input class="input" placeholder="请输入密码" password bindinput="onPasswordInput" />
-    <input class="input" placeholder="请再次输入密码" password bindinput="onConfirmPasswordInput" />
-    <input class="input" placeholder="请输入邮箱" bindinput="onEmailInput" />
-    <view class="code-container">
-      <input class="code-input" placeholder="请输入验证码" bindinput="onCodeInput" />
-      <button class="code-btn" bindtap="sendCode">发送验证码</button>
+    <view class="input-group">
+      <text class="label">用户名：</text>
+      <input class="input" placeholder="请输入用户名" bindinput="onUsernameInput" />
     </view>
-    <button class="register-btn" bindtap="onRegister">注册</button>
+    <view class="input-group">
+      <text class="label">账号：</text>
+      <input class="input" placeholder="请输入账号" bindinput="onAccountInput" />
+    </view>
+    <view class="input-group">
+      <text class="label">密码：</text>
+      <input class="input" placeholder="请输入密码" password bindinput="onPasswordInput" />
+    </view>
+    <view class="input-group">
+      <text class="label">确认密码：</text>
+      <input class="input" placeholder="请再次输入密码" password bindinput="onConfirmPasswordInput" />
+    </view>
+    <view class="input-group">
+      <text class="label">邮箱：</text>
+      <input class="input" placeholder="请输入邮箱" bindinput="onEmailInput" />
+    </view>
+    <view class="input-group">
+      <text class="label">验证码：</text>
+      <input class="input" placeholder="请输入验证码" bindinput="onCodeInput" />
+
+    </view>
+    <button class="code-btn" bindtap="sendCode" disabled="{{isCodeSent}}">{{codeButtonText}}</button>
+    <button class="submit-btn" bindtap="onRegister">注册</button>
   </view>
   <view class="footer">
     <text class="login-text" bindtap="navigateToLogin">已有账号？立即登录</text>

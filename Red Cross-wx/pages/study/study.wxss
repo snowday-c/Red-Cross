@@ -1,0 +1,61 @@
+.exam, .train {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-height: 200px;
+}
+
+.exam {
+  background-color: #fce4e4; /* 红色调的背景 */
+}
+
+.train {
+  background-color: #e3f7e3; /* 绿色调的背景 */
+}
+
+button {
+  width: 200px;
+  height: 45px;
+  margin-top: 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  border-radius: 25px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.exam text, .train text {
+  font-size: 20px;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+}
+
+.view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.subtext {
+  display: block;
+  margin-top: 10px;
+  white-space: pre-wrap;
+  color: rgb(245, 26, 26);
+}

@@ -2,11 +2,12 @@
 <view class="exam">
   <text>红十字救生员安全知识竞赛</text>
   <span class="subtext">(达到一定分数即可获得证书)</span>
-  <button>前往参赛</button>
+  <button bindtap="navigateToExam">前往参赛</button>
 </view>
-<!-- 线下培训-->
+
+<!-- 线下培训 -->
 <view class="train">
   <text>红十字救生员技能培训</text>
   <span class="subtext">(培训课程不定期开放，请注意消息通知)</span>
-  <button>前往培训</button>
+  <button bindtap="navigateToTrain">前往培训</button>
 </view>

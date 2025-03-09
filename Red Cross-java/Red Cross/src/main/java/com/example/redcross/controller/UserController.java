@@ -73,6 +73,10 @@ public class UserController {
         if (userService.isEmailExist(user.getEmail())) {
             throw new UserException("此邮箱已注册");
         }
+        //若用户名已注册，则返回错误信息
+        if (userService.isUserNameExist(user.getUserName())) {
+            throw new UserException("此用户名已注册");
+        }
 
         userService.register(user);
         return Result.success();
@@ -89,7 +93,7 @@ public class UserController {
             String token = JwtTokenUtils.genToken(userId.toString(), password);
             CurrentUser.setToken(token);
             // 手动剔除不需要的字段
-            CurrentUser.setAccount(null);  // 剔除账号
+//            CurrentUser.setAccount(null);  // 剔除账号
             return Result.success(CurrentUser);
         }
         throw new UserException("用户名或密码错误");
@@ -106,7 +110,7 @@ public class UserController {
             String token = JwtTokenUtils.genToken(userId.toString(), password);
             CurrentUser.setToken(token);
             // 手动剔除不需要的字段
-            CurrentUser.setAccount(null);  // 剔除账号
+//            CurrentUser.setAccount(null);  // 剔除账号
             return Result.success(CurrentUser);
         }
         throw new UserException("用户名或密码错误");

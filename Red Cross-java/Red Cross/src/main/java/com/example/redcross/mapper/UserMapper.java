@@ -39,4 +39,6 @@ public interface UserMapper {
     User getUserById(Integer id);
 
     Integer getUserId(String account);
+
+    boolean isUserNameExist(String userName);
 }

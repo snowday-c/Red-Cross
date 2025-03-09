@@ -2,23 +2,23 @@
   <view class="header">
     <!-- 用户头像 -->
     <view class="avatar-container" bindtap="showEditOptions">
-      <image class="avatar" src="{{userInfo.pictureUrl ? '/assets/avatar/' + userInfo.pictureUrl + '.jpg' : '/assets/avatar/101.jpg'}}" />
+      <image class="avatar" src="{{userInfo.pictureUrl ? '/assets/avatar/' + userInfo.pictureUrl + '.jpg' : '/assets/avatar/avatar0.jpg'}}" />
     </view>
 
     <!-- 用户名 -->
-    <text class="username">{{userInfo.userName || '默认用户名'}}</text>
+    <text class="username">{{userInfo.userName || '未登录'}}</text>
   </view>
   <view class="content">
-    <view class="item">
-      <text class="label">个人历史成绩</text>
+    <view class="item" bindtap="navigateToHistoryScores">
+      <text class="label">历史成绩</text>
     </view>
-    <view class="item">
-      <text class="label">个人证书</text>
+    <view class="item" bindtap="navigateToCertificates">
+      <text class="label">荣誉证书</text>
     </view>
-    <view class="item">
-      <text class="label">历史场地预约</text>
+    <view class="item" bindtap="navigateToHistoryTrains">
+      <text class="label">历史培训</text>
     </view>
-    <view class="item">
+    <view class="item" bindtap="navigateToMessages">
       <text class="label">消息通知</text>
     </view>
   </view>

@@ -3,10 +3,12 @@
   flex-direction: column;
   align-items: center;
   padding: 40px;
+  background-color: #f8f8f8;
+  min-height: 100vh;
 }
 
 .header {
-  margin-bottom: 40px;
+  margin-bottom: 0px;
 }
 
 .title {
@@ -17,16 +19,30 @@
 
 .form {
   width: 100%;
+  max-width: 400px;
+}
+
+.form-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.label {
+  width: 50px;
+  font-size: 16px;
+  color: #333;
+  margin-right: 10px;
 }
 
 .input {
-  width: 100%;
+  flex: 1;
   height: 50px;
-  margin-bottom: 20px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 16px;
+  background-color: #fff;
 }
 
 .login-btn {
@@ -39,8 +55,13 @@
   margin-top: 20px;
 }
 
+.login-btn:active {
+  background-color: #05a050; /* 按钮点击效果 */
+}
+
 .footer {
   margin-top: 20px;
+  text-align: center;
 }
 
 .register-text {
@@ -49,8 +70,11 @@
   text-decoration: underline;
 }
 
-.forgetPassword-text{
+.forgetPassword-text {
   color: #c10d07;
   font-size: 16px;
   text-decoration: underline;
+  display: block;
+  text-align: right;
+  margin-bottom: 20px;
 }
