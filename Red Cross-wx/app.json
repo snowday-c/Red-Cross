@@ -7,6 +7,8 @@
     "pages/study/study",
     "pages/myself/myself",
     "pages/exam/exam",
+    "pages/examStart/examStart",
+    "pages/examResult/examResult",
     "pages/train/train",
     "pages/forgetPassword/forgetPassword",
     "pages/historyScores/historyScores",

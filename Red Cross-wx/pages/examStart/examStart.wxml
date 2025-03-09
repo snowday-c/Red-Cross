@@ -1,0 +1,50 @@
+<view class="container">
+  <!-- 倒计时显示 -->
+  <view class="countdown">
+    <text>{{formattedTime}}</text>
+  </view>
+
+  <!-- 考试题目列表 -->
+  <view class="question-list">
+    <block wx:for="{{questions}}" wx:key="questionId">
+      <view class="question-item">
+        <!-- 题目 -->
+        <text class="question-text">{{index + 1}}. {{item.question}}</text>
+
+        <!-- 选择题 -->
+        <view wx:if="{{item.questionType === 1}}" class="options">
+          <radio-group bindchange="handleRadioChange" data-index="{{index}}">
+            <label wx:for="{{['A', 'B', 'C', 'D']}}" wx:key="*this">
+              <radio value="{{item}}" /> {{item}}
+            </label>
+          </radio-group>
+        </view>
+
+        <!-- 判断题 -->
+        <view wx:if="{{item.questionType === 2}}" class="options">
+          <radio-group bindchange="handleRadioChange" data-index="{{index}}">
+            <label>
+              <radio value="T" /> 正确
+            </label>
+            <label>
+              <radio value="F" /> 错误
+            </label>
+          </radio-group>
+        </view>
+
+        <!-- 填空题 -->
+        <view wx:if="{{item.questionType === 3}}" class="fill-blank">
+          <input
+            type="text"
+            placeholder="请输入答案"
+            bindinput="handleInputChange"
+            data-index="{{index}}"
+          />
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 提交按钮 -->
+  <button class="submit-btn" bindtap="submitAnswers">提交答案</button>
+</view>

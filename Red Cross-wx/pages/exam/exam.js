@@ -1,66 +1,62 @@
-// pages/exam/exam.js
+const app = getApp();
+
 Page({
-
   /**
-   * 页面的初始数据
+   * 开始考试
    */
-  data: {
+  startExam() {
+    wx.showModal({
+      title: '考试提醒',
+      content: '开始考试后不能中断，确认开始考试吗？',
+      confirmText: '确认',
+      cancelText: '取消',
+      success: (res) => {
+        if (res.confirm) {
+          // 用户点击确认，跳转到考试页面
+          app.request({
+            url: '/question/exam',
+            method: 'POST',
+            header: {
+              'Content-Type': 'application/json'
+            },
+            data: {
+              userId: wx.getStorageSync('userInfo').userId
+            },
+            success(res) {
+              if (res.data.code === '0') {
+                wx.setStorageSync('questions', res.data.data);
+                wx.redirectTo({
+                  url: '/pages/examStart/examStart',
+                });
+              } else {
+                wx.showToast({
+                  title: res.data.message || '考试加载失败，请稍后重试',
+                  icon: 'none'
+                });
+              }
+            },
+            fail() {
+              wx.showToast({
+                title: '网络请求失败',
+                icon: 'none'
+              });
+            }
+          });
 
+        } else if (res.cancel) {
+          // 用户点击取消，不执行任何操作
+          console.log('用户取消考试');
+        }
+      },
+    });
   },
 
   /**
-   * 生命周期函数--监听页面加载
+   * 取消考试
    */
-  onLoad(options) {
-
+  cancelExam() {
+    wx.switchTab({
+      url: '/pages/study/study', // 回到原页面
+    });
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
-  }
-})
+});

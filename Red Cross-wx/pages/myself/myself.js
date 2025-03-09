@@ -3,7 +3,20 @@ const app = getApp();
 Page({
   data: {
     userInfo: {}, // 用户信息
-    showEditModal: false // 是否显示修改弹窗
+    showEditModal: false, // 是否显示修改弹窗
+    showAvatarPicker: false, // 是否显示头像选择弹窗
+    avatarList: [
+      '/assets/avatar/avatar1.jpg',
+      '/assets/avatar/avatar2.jpg',
+      '/assets/avatar/avatar3.jpg',
+      '/assets/avatar/avatar4.jpg',
+      '/assets/avatar/avatar5.jpg',
+      '/assets/avatar/avatar6.jpg',
+      '/assets/avatar/avatar7.jpg',
+      '/assets/avatar/avatar8.jpg',
+      '/assets/avatar/avatar9.jpg',
+      '/assets/avatar/avatar10.jpg',
+    ]
   },
 
   onLoad() {
@@ -11,6 +24,36 @@ Page({
     const userInfo = wx.getStorageSync('userInfo');
     this.setData({
       userInfo
+    });
+  },
+
+  onShow() {
+    // 每次页面显示时，从本地缓存中获取用户信息并更新页面数据
+    const userInfo = wx.getStorageSync('userInfo');
+    this.setData({
+      userInfo
+    });
+  },
+  
+  // 退出登录
+  logout() {
+    wx.showModal({
+      title: '提示',
+      content: '确定要退出登录吗？',
+      success: (res) => {
+        if (res.confirm) {
+          // 清除本地缓存中的用户信息
+          wx.removeStorageSync('userInfo');
+          // 更新页面数据
+          this.setData({
+            userInfo: {}
+          });
+          wx.showToast({
+            title: '已退出登录',
+            icon: 'none'
+          });
+        }
+      }
     });
   },
 
@@ -74,72 +117,73 @@ Page({
     });
   },
 
-  // 修改头像
+  // 显示头像选择弹窗
   changeAvatar() {
     if (!this.checkLogin()) return;
-  
-    // 显示头像选择弹窗
-    wx.showActionSheet({
-      itemList: ['头像1', '头像2', '头像3', '头像4'], // 可供选择的头像名称
+    this.setData({
+      showAvatarPicker: true
+    });
+    this.hideEditOptions();
+  },
+
+  // 隐藏头像选择弹窗
+  hideAvatarPicker() {
+    this.setData({
+      showAvatarPicker: false
+    });
+  },
+
+  // 选择头像
+  selectAvatar(e) {
+    const index = e.currentTarget.dataset.index;
+    const selectedAvatar = this.data.avatarList[index];
+
+    // 上传选择的头像名称到后端
+    app.request({
+      url: '/user/update/userInfo',
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/json'
+      },
+      data: {
+        userId: wx.getStorageSync('userInfo').userId,
+        userName: wx.getStorageSync('userInfo').userName,
+        pictureUrl: selectedAvatar, // 发送选择的头像路径
+        account: wx.getStorageSync('userInfo').account,
+        email: wx.getStorageSync('userInfo').email
+      },
       success: (res) => {
-        const selectedIndex = res.tapIndex;
-        const avatarNames = ['avatar1', 'avatar2', 'avatar3', 'avatar4']; // 对应的图片文件名
-        const selectedAvatar = avatarNames[selectedIndex];
-  
-        // 上传选择的头像名称到后端
-        app.request({
-          url: '/user/update/userInfo',
-          method: 'POST',
-          header: {
-            'Content-Type': 'application/json'
-          },
-          data: {
-            userId: wx.getStorageSync('userInfo').userId,
-            userName: wx.getStorageSync('userInfo').userName,
-            pictureUrl: selectedAvatar, // 发送选择的头像名称
-            account: wx.getStorageSync('userInfo').account,
-            email: wx.getStorageSync('userInfo').email
-          },
-          success: (res) => {
-            const data = res.data;
-            if (data.code === '0') {
-              wx.showToast({
-                title: '头像修改成功',
-                icon: 'success'
-              });
-              // 更新本地缓存中的用户信息
-              const userInfo = wx.getStorageSync('userInfo');
-              userInfo.pictureUrl = selectedAvatar; // 更新头像名称
-              wx.setStorageSync('userInfo', userInfo);
-  
-              // 更新页面数据，触发重新渲染
-              this.setData({
-                userInfo: userInfo
-              });
-            } else {
-              wx.showToast({
-                title: data.message || '头像修改失败',
-                icon: 'none'
-              });
-            }
-          },
-          fail: () => {
-            wx.showToast({
-              title: '上传失败',
-              icon: 'none'
-            });
-          }
-        });
+        const data = res.data;
+        if (data.code === '0') {
+          wx.showToast({
+            title: '头像修改成功',
+            icon: 'success'
+          });
+          // 更新本地缓存中的用户信息
+          const userInfo = wx.getStorageSync('userInfo');
+          userInfo.pictureUrl = selectedAvatar; // 更新头像路径
+          wx.setStorageSync('userInfo', userInfo);
+
+          // 更新页面数据，触发重新渲染
+          this.setData({
+            userInfo: userInfo
+          });
+        } else {
+          wx.showToast({
+            title: data.message || '头像修改失败',
+            icon: 'none'
+          });
+        }
       },
       fail: () => {
         wx.showToast({
-          title: '选择取消',
+          title: '上传失败',
           icon: 'none'
         });
       }
     });
-  
-    this.hideEditOptions();
+
+    this.hideAvatarPicker();
   },
 
   // 修改用户名
@@ -176,7 +220,7 @@ Page({
                 const userInfo = wx.getStorageSync('userInfo');
                 userInfo.userName = newUsername;
                 wx.setStorageSync('userInfo', userInfo);
-  
+
                 // 更新页面数据，触发重新渲染
                 that.setData({
                   userInfo: userInfo

@@ -19,7 +19,7 @@ App({
     const { url, method = 'GET', data = {}, header = {} } = options;
 
     // 请求拦截器：添加全局请求头（如 token）
-    const token = wx.getStorageSync('token');
+    const token = wx.getStorageSync('userInfo').token;
     if (token) {
       header['token'] = token;
     }

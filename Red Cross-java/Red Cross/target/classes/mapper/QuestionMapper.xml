@@ -31,11 +31,11 @@
     </update>
     <!--生成试卷，随机从题库中抽取题目，固定为选择题3道，判断题2道，填空题1道-->
     <select id="getExam" resultType="com.example.redcross.entity.Question">
-            (SELECT * FROM question WHERE question_type = '1' ORDER BY RAND() LIMIT 3)
+            (SELECT question_id, question_type, question FROM question WHERE question_type = '1' ORDER BY RAND() LIMIT 3)
             UNION ALL
-            (SELECT * FROM question WHERE question_type = '2' ORDER BY RAND() LIMIT 2)
+            (SELECT question_id, question_type, question FROM question WHERE question_type = '2' ORDER BY RAND() LIMIT 2)
             UNION ALL
-            (SELECT * FROM question WHERE question_type = '3' ORDER BY RAND() LIMIT 1)
+            (SELECT question_id, question_type, question FROM question WHERE question_type = '3' ORDER BY RAND() LIMIT 1)
     </select>
     <!-- 将生成试卷的题目id和用户id存入试卷表中 -->
     <insert id="insertExam" >

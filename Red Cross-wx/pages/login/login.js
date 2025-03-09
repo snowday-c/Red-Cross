@@ -46,7 +46,6 @@ Page({
       success(res) {
         if (res.data.code === '0') {
           wx.setStorageSync('userInfo', res.data.data);
-          wx.setStorageSync('token', res.data.data.token);
           wx.switchTab({
             url: '/pages/myself/myself' // 登录成功后跳转到个人中心
           });

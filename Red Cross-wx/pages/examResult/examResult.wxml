@@ -1,0 +1,18 @@
+<view class="container">
+  <!-- 考试成绩 -->
+  <view class="score-container">
+    <text class="score-text">您的考试成绩：{{score}} 分</text>
+  </view>
+
+  <!-- 成绩 ≥ 80 分时显示 -->
+  <view wx:if="{{score >= 80}}" class="certificate-section">
+    <button class="certificate-btn" bindtap="generateCertificate">生成荣誉证书</button>
+    <button class="back-btn" bindtap="goToStudyPage">返回学习页面</button>
+  </view>
+
+  <!-- 成绩 < 80 分时显示 -->
+  <view wx:else class="no-certificate-section">
+    <text class="no-certificate-text">未能获取荣誉证书，请下次再接再厉</text>
+    <button class="back-btn" bindtap="goToStudyPage">返回学习页面</button>
+  </view>
+</view>

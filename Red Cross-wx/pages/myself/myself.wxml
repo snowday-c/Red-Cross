@@ -2,12 +2,16 @@
   <view class="header">
     <!-- 用户头像 -->
     <view class="avatar-container" bindtap="showEditOptions">
-      <image class="avatar" src="{{userInfo.pictureUrl ? '/assets/avatar/' + userInfo.pictureUrl + '.jpg' : '/assets/avatar/avatar0.jpg'}}" />
+      <image class="avatar" src="{{userInfo.pictureUrl ? userInfo.pictureUrl : '/assets/avatar/avatar0.jpg'}}" />
     </view>
 
     <!-- 用户名 -->
     <text class="username">{{userInfo.userName || '未登录'}}</text>
+
+    <!-- 退出登录按钮（仅在登录后显示） -->
+    <button class="logout-button" wx:if="{{userInfo.userId}}" bindtap="logout">退出登录</button>
   </view>
+
   <view class="content">
     <view class="item" bindtap="navigateToHistoryScores">
       <text class="label">历史成绩</text>
@@ -30,5 +34,20 @@
     <view class="option" bindtap="changeAvatar">修改头像</view>
     <view class="option" bindtap="changeUsername">修改用户名</view>
     <view class="option cancel" bindtap="hideEditOptions">取消</view>
+  </view>
+</view>
+
+<!-- 自定义头像选择弹窗 -->
+<view class="avatar-picker-modal" wx:if="{{showAvatarPicker}}">
+  <view class="modal-content">
+    <!-- 使用 scroll-view 实现上下滑动 -->
+    <scroll-view class="avatar-scroll" scroll-y>
+      <view class="avatar-grid">
+        <view class="avatar-item" wx:for="{{avatarList}}" wx:key="index" bindtap="selectAvatar" data-index="{{index}}">
+          <image class="avatar-image" src="{{item}}"></image>
+        </view>
+      </view>
+    </scroll-view>
+    <view class="option cancel" bindtap="hideAvatarPicker">取消</view>
   </view>
 </view>
