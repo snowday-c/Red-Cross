@@ -70,4 +70,9 @@ public class QuestionServiceImpl implements QuestionService {
     public void updateExamScore(Integer examId, Integer score) {
         questionMapper.updateExamScore(examId, score);
     }
+
+    @Override
+    public List<Exam> findAllExamByUserId(Integer userId) {
+        return questionMapper.findAllExamByUserId(userId);
+    }
 }

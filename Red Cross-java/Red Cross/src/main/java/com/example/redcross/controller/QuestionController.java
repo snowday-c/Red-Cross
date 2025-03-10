@@ -137,4 +137,43 @@ public class QuestionController {
         return Result.success(score);
     }
 
+    @PostMapping("/getUserExam") // 查询用户的试卷
+    public Result getUserExam(@RequestBody Exam exam) {
+        Integer userId = exam.getUserId(); // 获取用户id
+        List<Exam> exams = questionService.findAllExamByUserId(userId);
+
+        // 遍历每个试卷
+        for (Exam examItem : exams) {
+            // 获取题目ID列表
+            String questionIdsJson = examItem.getQuestionIds();
+
+            // 将 JSON 字符串转换为题目ID列表（保留原始顺序）
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Integer> questionIds;
+            try {
+                questionIds = objectMapper.readValue(questionIdsJson, new TypeReference<List<Integer>>() {});
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("解析题目ID列表失败", e);
+            }
+
+            // 根据题目ID列表从题库中获取每道题的详细信息
+            List<Question> questions = questionService.getQuestionsByIds(questionIds);
+
+            // 提取问题列表（只包含 question 字段）
+            List<String> questionList = questions.stream()
+                    .map(Question::getQuestion)
+                    .collect(Collectors.toList());
+
+            // 将问题列表存入 examItem
+            examItem.setQuestions(questionList);
+
+            // 提取正确答案并存入 examItem
+            List<String> correctAnswers = questions.stream()
+                    .map(Question::getAnswer)
+                    .collect(Collectors.toList());
+            examItem.setCorrectAnswers(correctAnswers);
+        }
+
+        return Result.success(exams);
+    }
 }

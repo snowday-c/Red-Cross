@@ -46,6 +46,10 @@
     <select id="findLatestExamByUserId" resultType="com.example.redcross.entity.Exam">
             SELECT * FROM exam WHERE user_id = #{userId} ORDER BY exam_id DESC LIMIT 1
     </select>
+    <!-- 根据用户id查询全部试卷-->
+    <select id="findAllExamByUserId" resultType= "com.example.redcross.entity.Exam" >
+        SELECT * FROM exam WHERE user_id = #{userId} ORDER BY exam_id DESC
+    </select>
     <!-- 将用户答案存入答案表中 -->
     <update id="insertUserAnswer">
         UPDATE exam

@@ -1,2 +1,25 @@
-<!--pages/historyScores/historyScores.wxml-->
-<text>pages/historyScores/historyScores.wxml</text>
+<view class="container">
+  <!-- 历史成绩列表 -->
+  <view class="score-list">
+    <block wx:for="{{historyScores}}" wx:key="examId">
+      <view class="score-item">
+        <!-- 分数 -->
+        <view class="score-header" bindtap="toggleExamDetail" data-exam-id="{{item.examId}}">
+          <text class="score-text">分数：{{item.score || '未完成'}}</text>
+          <text class="arrow">{{expandedExamId === item.examId ? '▲' : '▼'}}</text>
+        </view>
+
+        <!-- 展开的考试详情 -->
+        <view wx:if="{{expandedExamId === item.examId}}" class="exam-detail">
+          <block wx:for="{{item.questions}}" wx:key="index">
+            <view class="question-item">
+              <text class="question-text">{{index + 1}}. {{item}}</text>
+              <text class="answer-text">正确答案：{{item.correctAnswers[index]}}</text>
+              <text class="answer-text">您的答案：{{item.answers ? item.answers[index] : '未作答'}}</text>
+            </view>
+          </block>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

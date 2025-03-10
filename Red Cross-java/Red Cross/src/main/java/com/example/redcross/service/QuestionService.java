@@ -28,4 +28,7 @@ public interface QuestionService {
     void updateExamScore(Integer examId, Integer score);
 
     void insertUserAnswer(String userAnswersJson, Integer examId);
+
+
+    List<Exam> findAllExamByUserId(Integer userId);
 }
