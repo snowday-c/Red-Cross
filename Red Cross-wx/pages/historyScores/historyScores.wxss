@@ -27,10 +27,21 @@
   align-items: center;
 }
 
+.score-info {
+  display: flex;
+  flex-direction: column; /* 分数和考试时间垂直排列 */
+}
+
 .score-text {
   font-size: 18px;
   font-weight: bold;
   color: #333;
+  margin-bottom: 5px; /* 分数和考试时间之间的间距 */
+}
+
+.exam-time {
+  font-size: 14px;
+  color: #666;
 }
 
 .arrow {
@@ -50,10 +61,22 @@
   font-size: 16px;
   color: #333;
   margin-bottom: 5px;
+  display: block; /* 确保问题单独一行 */
+  padding-right: 30px; /* 距离右边界的空白 */
+  box-sizing: border-box; /* 确保 padding 不会影响宽度 */
+}
+
+.answer-container {
+  display: flex; /* 正确答案和您的答案在同一行 */
+  align-items: center; /* 垂直居中 */
+  gap: 20px; /* 正确答案和您的答案之间的间距 */
 }
 
 .answer-text {
   font-size: 14px;
   color: #666;
-  margin-bottom: 5px;
+}
+
+.user-answer {
+  margin-left: 20px; /* 如果 gap 不支持，可以用 margin-left 代替 */
 }

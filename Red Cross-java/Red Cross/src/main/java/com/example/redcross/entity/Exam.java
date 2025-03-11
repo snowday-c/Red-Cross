@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 @TableName("exam")
@@ -22,8 +23,10 @@ public class Exam {
 
     private Integer score;  //得分
 
+    private String examTime;  //考试时间
+
     @TableField(exist = false)
-    private List<String> questions;
+    private List<Map<String, Object>> questions;
 
     @TableField(exist = false)
     private List<String> correctAnswers;

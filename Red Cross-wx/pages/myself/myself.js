@@ -52,6 +52,9 @@ Page({
             title: '已退出登录',
             icon: 'none'
           });
+          wx.switchTab({
+            url: '/pages/index/index',
+          });
         }
       }
     });

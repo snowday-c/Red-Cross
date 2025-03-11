@@ -10,7 +10,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @CrossOrigin
@@ -137,7 +140,7 @@ public class QuestionController {
         return Result.success(score);
     }
 
-    @PostMapping("/getUserExam") // 查询用户的试卷
+    @PostMapping("/getUserExam") // 查询用户的全部试卷
     public Result getUserExam(@RequestBody Exam exam) {
         Integer userId = exam.getUserId(); // 获取用户id
         List<Exam> exams = questionService.findAllExamByUserId(userId);
@@ -159,19 +162,28 @@ public class QuestionController {
             // 根据题目ID列表从题库中获取每道题的详细信息
             List<Question> questions = questionService.getQuestionsByIds(questionIds);
 
-            // 提取问题列表（只包含 question 字段）
-            List<String> questionList = questions.stream()
-                    .map(Question::getQuestion)
-                    .collect(Collectors.toList());
+            // 解析用户答案
+            List<String> userAnswers = null;
+            if (examItem.getAnswers() != null) {
+                try {
+                    userAnswers = objectMapper.readValue(examItem.getAnswers(), new TypeReference<List<String>>() {});
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException("解析用户答案失败", e);
+                }
+            }
 
-            // 将问题列表存入 examItem
-            examItem.setQuestions(questionList);
+            // 将 questions、correctAnswers 和 answers 组合成一个完整的题目对象列表
+            List<Map<String, Object>> questionDetails = new ArrayList<>();
+            for (int i = 0; i < questions.size(); i++) {
+                Map<String, Object> questionDetail = new HashMap<>();
+                questionDetail.put("question", questions.get(i).getQuestion()); // 题目内容
+                questionDetail.put("correctAnswer", questions.get(i).getAnswer()); // 正确答案
+                questionDetail.put("userAnswer", userAnswers != null ? userAnswers.get(i) : null); // 用户答案
+                questionDetails.add(questionDetail);
+            }
 
-            // 提取正确答案并存入 examItem
-            List<String> correctAnswers = questions.stream()
-                    .map(Question::getAnswer)
-                    .collect(Collectors.toList());
-            examItem.setCorrectAnswers(correctAnswers);
+            // 将组合后的题目对象列表存入 examItem
+            examItem.setQuestions(questionDetails);
         }
 
         return Result.success(exams);

@@ -39,8 +39,8 @@
     </select>
     <!-- 将生成试卷的题目id和用户id存入试卷表中 -->
     <insert id="insertExam" >
-        INSERT INTO exam ( question_ids , user_id)
-        VALUES ( #{questionIds, jdbcType=VARCHAR} , #{userId})
+        INSERT INTO exam ( question_ids , user_id ,exam_time)
+        VALUES ( #{questionIds, jdbcType=VARCHAR} , #{userId} , NOW() )
     </insert>
     <!-- 根据用户id查询最新试卷，并获取试卷的题目question_ids -->
     <select id="findLatestExamByUserId" resultType="com.example.redcross.entity.Exam">

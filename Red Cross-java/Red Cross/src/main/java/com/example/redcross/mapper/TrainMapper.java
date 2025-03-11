@@ -19,7 +19,7 @@ public interface TrainMapper {
 
     Integer CurrentTrainPeople(Integer trainId);
 
-    Integer IsJoinTrain(Integer trainId, Integer userId);
+    Integer IsJoinTrain(String trainTime, Integer userId);
 
     Integer JoinTrain(Integer trainId, Integer userId);
 

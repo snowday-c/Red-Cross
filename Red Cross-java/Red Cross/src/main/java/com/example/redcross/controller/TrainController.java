@@ -71,8 +71,8 @@ public class TrainController {
             return Result.error("该城市的培训人数已满，请选择其他城市！");
         }
         //查询用户是否已经报名
-        if((trainService.IsJoinTrain(trainId,userId)) == 1) {
-            return Result.error("您已经报名过该培训，请勿重复报名！");
+        if((trainService.IsJoinTrain(trainTime,userId)) == 1) {
+            return Result.error("您已经报名过该次培训，请勿重复报名！");
         }
         //进行报名
         if(trainService.JoinTrain(trainId,userId) == 1){

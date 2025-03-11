@@ -30,7 +30,7 @@
   font-size: 18px;
   font-weight: bold;
   color: #333;
-  flex: 1; /* 用户名占据剩余空间 */
+  flex: 1;
 }
 
 .logout-button {

@@ -45,8 +45,8 @@ public class TrainServiceImpl implements TrainService {
     }
 
     @Override
-    public Integer IsJoinTrain(Integer trainId, Integer userId) {
-        return trainMapper.IsJoinTrain(trainId,userId);
+    public Integer IsJoinTrain(String trainTime, Integer userId) {
+        return trainMapper.IsJoinTrain(trainTime,userId);
     }
 
     @Override

@@ -35,7 +35,7 @@
     <select id="IsJoinTrain" resultType="int">
         SELECT COUNT(*)
         FROM train
-        WHERE train_id = #{trainId}
+        WHERE train_time = #{trainTime}
           AND JSON_CONTAINS(user_ids, CAST(#{userId} AS JSON));
     </select>
     <!-- 进行报名 -->
