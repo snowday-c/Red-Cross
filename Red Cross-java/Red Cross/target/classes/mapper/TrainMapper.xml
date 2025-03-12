@@ -8,11 +8,19 @@
     <select id="getAllTrains" resultType="com.example.redcross.entity.Train">
         SELECT * FROM train
     </select>
+    <!-- 查询可报名培训 -->
+    <select id="getCanJoinTrains" resultType="com.example.redcross.entity.Train">
+        SELECT train_id, train_place, train_time, train_people, current_people FROM train WHERE train_type = 0
+    </select>
+    <!-- 查询用户培训记录 -->
+    <select id="getHistoryTrains" resultType="com.example.redcross.entity.Retrain">
+        SELECT * FROM retrain WHERE user_id = #{userId}
+    </select>
 
     <!-- 生成培训 -->
     <insert id="PublishTrain" >
-        INSERT INTO train (train_time,train_people, train_place,train_type)
-        VALUES (#{trainTime}, #{trainPeople}, #{trainPlace},0)
+        INSERT INTO train (train_time,train_people, train_place,train_type,current_people,user_ids)
+        VALUES (#{trainTime}, #{trainPeople}, #{trainPlace},0,0,'[]')
     </insert>
     <!--更新培训信息 -->
     <update id="UpdateTrain">

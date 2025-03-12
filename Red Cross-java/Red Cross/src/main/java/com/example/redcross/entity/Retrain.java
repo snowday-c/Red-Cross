@@ -13,7 +13,7 @@ public class Retrain {
 
     private String userId;
 
-    private Integer trainPlace;
+    private String trainPlace;
 
     private String trainTime;
 

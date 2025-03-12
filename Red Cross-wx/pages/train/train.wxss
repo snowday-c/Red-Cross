@@ -1,1 +1,47 @@
-/* pages/train/train.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #f8f8f8;
+  min-height: 100vh;
+}
+
+/* 返回按钮样式 */
+.back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 16px;
+  color: #d43b20;
+  z-index: 1000;
+}
+
+.train-item {
+  background-color: #fff;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.train-info {
+  margin-bottom: 10px;
+}
+
+.train-place,
+.train-time,
+.train-people,
+.current-people {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.signup-btn {
+  background-color: #07c160;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 4px;
+  padding: 8px 16px;
+}

@@ -22,6 +22,12 @@ public class TrainController {
         return Result.success(trains);
     }
 
+    @GetMapping("/canJoin")     //查询可报名的培训
+    public Result canJoinTrain(){
+        List<Train> trains = trainService.getCanJoinTrains();
+        return Result.success(trains);
+    }
+
     @PostMapping("/publish")        //发布培训
     public Result PublishTrain(@RequestBody Train train){
 
@@ -92,5 +98,12 @@ public class TrainController {
         }
         return Result.error("取消报名失败，请稍后再试！");
 
+    }
+
+    @PostMapping("/historyTrain")     //查询用户培训记录
+    public Result getHistoryTrain(@RequestBody Train train){
+        Integer userId = train.getUserId();
+        List<Train> trains = trainService.getHistoryTrains(userId);
+        return Result.success(trains);
     }
 }

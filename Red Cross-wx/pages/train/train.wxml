@@ -1,2 +1,17 @@
-<!--pages/train/train.wxml-->
-<text>pages/train/train.wxml</text>
+<view class="container">
+  <!-- 返回按钮 -->
+  <view class="back-btn" bindtap="handleBack">
+    <text>返回</text>
+  </view>
+
+  <!-- 培训列表 -->
+  <view wx:for="{{trainList}}" wx:key="trainId" class="train-item">
+    <view class="train-info">
+      <text class="train-place">培训地点：{{item.trainPlace}}</text>
+      <text class="train-time">开始时间：{{item.trainTime}}</text>
+      <text class="train-people">最大报名人数：{{item.trainPeople}}</text>
+      <text class="current-people">当前报名人数：{{item.currentPeople}}</text>
+    </view>
+    <button class="signup-btn" bindtap="handleSignup" data-train-id="{{item.trainId}}" data-train-place="{{item.trainPlace}}" data-train-time="{{item.trainTime}}">报名</button>
+  </view>
+</view>

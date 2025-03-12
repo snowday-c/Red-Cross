@@ -21,6 +21,16 @@ public class TrainServiceImpl implements TrainService {
         return trainMapper.getAllTrains();
     }
 
+    @Override
+    public List<Train> getCanJoinTrains() {
+        return trainMapper.getCanJoinTrains();
+    }
+
+    @Override
+    public List<Train> getHistoryTrains(Integer userId) {
+        return trainMapper.getHistoryTrains(userId);
+    }
+
     //生成培训
     @Override
     public Integer PublishTrain(String trainTime, Integer trainPeople, String trainPlace) {

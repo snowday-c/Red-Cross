@@ -29,4 +29,8 @@ public interface TrainService {
     Integer UpdateRetrain(Integer trainId, Integer userId, String trainPlace, String trainTime);
 
     List<Train> getAllTrains();
+
+    List<Train> getCanJoinTrains();
+
+    List<Train> getHistoryTrains(Integer userId);
 }

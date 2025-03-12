@@ -1,66 +1,95 @@
-// pages/train/train.js
+const app = getApp();
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    trainList: [], // 培训列表
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-
+  onLoad() {
+    this.fetchTrainList();
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
+  // 获取培训列表
+  fetchTrainList() {
+    app.request({
+      url: '/train/canJoin',
+      method: 'GET',
+      success: (res) => {
+        if (res.data.code === '0') {
+          this.setData({
+            trainList: res.data.data,
+          });
+        } else {
+          wx.showToast({
+            title: res.data.message || '获取培训列表失败',
+            icon: 'none',
+          });
+        }
+      },
+      fail: () => {
+        wx.showToast({
+          title: '网络请求失败',
+          icon: 'none',
+        });
+      },
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
+  // 处理报名
+  handleSignup(e) {
+    const { trainId, trainPlace, trainTime } = e.currentTarget.dataset;
+    const userId = wx.getStorageSync('userInfo').userId; // 获取用户 ID
 
+    // 弹出确认弹窗
+    wx.showModal({
+      title: '确认报名',
+      content: `您确定要报名 ${trainPlace} 的培训吗？`,
+      success: (res) => {
+        if (res.confirm) {
+          // 用户点击确认
+          app.request({
+            url: '/train/join',
+            method: 'POST',
+            data: {
+              userId,
+              trainId,
+              trainPlace,
+              trainTime,
+            },
+            success: (res) => {
+              if (res.data.code === '0') {
+                wx.showToast({
+                  title: '报名成功',
+                  icon: 'success',
+                });
+                // 更新当前报名人数
+                this.fetchTrainList();
+              } else {
+                wx.showToast({
+                  title: res.data.message || '报名失败',
+                  icon: 'none',
+                });
+              }
+            },
+            fail: () => {
+              wx.showToast({
+                title: '网络请求失败',
+                icon: 'none',
+              });
+            },
+          });
+        } else if (res.cancel) {
+          // 用户点击取消
+          console.log('用户取消报名');
+        }
+      },
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
+  // 返回学习页面
+  handleBack() {
+    wx.navigateBack({
+      delta: 1, // 返回上一页
+    });
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
-  }
-})
+});
