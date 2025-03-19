@@ -11,18 +11,29 @@
             <el-button type="primary" @click="handleAddMessage('public')">新增公共消息</el-button>
           </el-col>
         </el-row>
-        <el-table :data="publicMessages" style="width: 100%" border>
+        <el-table :data="paginatedPublicMessages" style="width: 100%" border>
           <el-table-column prop="title" label="标题" width="150"></el-table-column>
           <el-table-column prop="content" label="内容"></el-table-column>
           <el-table-column prop="sender" label="发送者" width="120"></el-table-column>
           <el-table-column prop="time" label="时间" width="180"></el-table-column>
           <el-table-column label="操作" width="200">
             <template slot-scope="scope">
-              <el-button type="text" @click="handleEditMessage(scope.row)">修改</el-button>
-              <el-button type="text" @click="handleDeleteMessage(scope.row)">删除</el-button>
+              <el-button type="primary" size="small" @click="handleEditMessage(scope.row)">修改</el-button>
+              <el-button type="danger" size="small" @click="handleDeleteMessage(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
+        <!-- 分页组件 -->
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="publicMessages.length"
+          :page-size="pageSize"
+          :current-page="publicCurrentPage"
+          @current-change="handlePublicPageChange"
+          style="margin-top: 20px;"
+        >
+        </el-pagination>
       </el-tab-pane>
 
       <!-- 个人消息 -->
@@ -35,7 +46,7 @@
             <el-button type="primary" @click="handleAddMessage('private')">新增个人消息</el-button>
           </el-col>
         </el-row>
-        <el-table :data="privateMessages" style="width: 100%" border>
+        <el-table :data="paginatedPrivateMessages" style="width: 100%" border>
           <el-table-column prop="title" label="标题" width="150"></el-table-column>
           <el-table-column prop="content" label="内容"></el-table-column>
           <el-table-column prop="sender" label="发送者" width="120"></el-table-column>
@@ -48,6 +59,17 @@
             </template>
           </el-table-column>
         </el-table>
+        <!-- 分页组件 -->
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="privateMessages.length"
+          :page-size="pageSize"
+          :current-page="privateCurrentPage"
+          @current-change="handlePrivatePageChange"
+          style="margin-top: 20px;"
+        >
+        </el-pagination>
       </el-tab-pane>
     </el-tabs>
 
@@ -86,7 +108,24 @@ export default {
       dialogVisible: false, // 对话框是否显示
       dialogTitle: '', // 对话框标题
       currentMessage: { messageId: null, title: '', content: '', receiver: '', messageType: null, sender: '', time: '' }, // 当前操作的消息
+      pageSize: 8, // 每页显示的数据条数
+      publicCurrentPage: 1, // 公共消息当前页码
+      privateCurrentPage: 1, // 个人消息当前页码
     };
+  },
+  computed: {
+    // 公共消息分页数据
+    paginatedPublicMessages() {
+      const start = (this.publicCurrentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return this.publicMessages.slice(start, end);
+    },
+    // 个人消息分页数据
+    paginatedPrivateMessages() {
+      const start = (this.privateCurrentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return this.privateMessages.slice(start, end);
+    },
   },
   created() {
     this.fetchPublicMessages();
@@ -194,6 +233,14 @@ export default {
         }
       }
     },
+    // 公共消息页码变化
+    handlePublicPageChange(page) {
+      this.publicCurrentPage = page;
+    },
+    // 个人消息页码变化
+    handlePrivatePageChange(page) {
+      this.privateCurrentPage = page;
+    },
   },
 };
 </script>
@@ -206,5 +253,9 @@ export default {
 .el-col {
   display: flex;
   align-items: center;
+}
+
+.el-pagination {
+  margin-top: 20px; /* 分页组件与表格之间的间距 */
 }
 </style>

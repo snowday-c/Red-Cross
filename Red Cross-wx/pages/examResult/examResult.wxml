@@ -1,7 +1,7 @@
 <view class="container">
   <!-- 考试成绩 -->
   <view class="score-container">
-    <text class="score-text">您的考试成绩：{{score}} 分</text>
+    <text class="score-text">您的本次培训成绩：{{score}} 分</text>
   </view>
 
   <!-- 成绩 ≥ 80 分时显示 -->

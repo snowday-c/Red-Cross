@@ -19,4 +19,8 @@ public class Certificate {
 
     private String certificateTime;
 
+    private Integer certificateType;
+
+    private String approver;
+
 }

@@ -34,4 +34,6 @@ public interface TrainMapper {
     List<Train> getCanJoinTrains();
 
     List<Train> getHistoryTrains(Integer userId);
+
+    Integer DeleteRetrain(Integer trainId, Integer userId);
 }

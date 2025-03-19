@@ -6,8 +6,8 @@ Page({
    */
   startExam() {
     wx.showModal({
-      title: '考试提醒',
-      content: '开始考试后不能中断，确认开始考试吗？',
+      title: '培训提醒',
+      content: '中断后无法继续，确认开始培训吗？',
       confirmText: '确认',
       cancelText: '取消',
       success: (res) => {

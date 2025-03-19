@@ -17,7 +17,6 @@ request.interceptors.request.use(config => {
             config.headers['token'] = JSON.parse(CurrentUser).token;
         }
 
-    // config.headers['token'] = user.token;  // 设置请求头
     return config
 }, error => {
     return Promise.reject(error)

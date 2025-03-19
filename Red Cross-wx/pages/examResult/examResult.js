@@ -1,3 +1,4 @@
+const app = getApp();
 Page({
   /**
    * 页面的初始数据
@@ -21,22 +22,58 @@ Page({
    * 生成荣誉证书
    */
   generateCertificate() {
-    wx.showToast({
-      title: '荣誉证书生成中...',
-      icon: 'none',
+    // 弹出确认弹窗
+    wx.showModal({
+      title: '确认申请证书',
+      content: '请确认您已完成线下技能培训，否则证书无法审核通过。',
+      confirmText: '确认申请',
+      cancelText: '取消申请',
+      success: (res) => {
+        if (res.confirm) {
+          // 用户点击确认生成
+          this.requestCertificate();
+        }
+      },
     });
+  },
 
-    // 模拟生成荣誉证书的逻辑
-    setTimeout(() => {
-      wx.showToast({
-        title: '荣誉证书生成成功',
-        icon: 'success',
-      });
-      // 跳转到荣誉证书页面
-      wx.redirectTo({
-        url: '/pages/certificate/certificate',
-      });
-    }, 2000);
+  /**
+   * 向后端发送生成证书请求
+   */
+  requestCertificate() {
+    const userId = wx.getStorageSync('userInfo').userId; // 获取用户 ID
+
+    // 发送请求
+    app.request({
+      url: '/certificate/apply',
+      method: 'POST',
+      data: {
+        userId
+      },
+      success: (res) => {
+        if (res.data.code === '0') {
+          wx.showToast({
+            title: '证书申请成功',
+            icon: 'success',
+          });
+          wx.removeStorageSync('score');
+          wx.switchTab({
+            url: '/pages/study/study',
+          });
+        } else {
+          wx.showToast({
+            title: res.data.message || '申请证书失败',
+            icon: 'none',
+          });
+        }
+      },
+      fail: () => {
+        wx.showToast({
+          title: '网络请求失败',
+          icon: 'none',
+        });
+      },
+    });
   },
 
   /**
@@ -46,5 +83,6 @@ Page({
     wx.switchTab({
       url: '/pages/study/study',
     });
+    wx.removeStorageSync('score');
   },
 });

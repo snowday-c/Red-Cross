@@ -1,2 +1,14 @@
-<!--pages/historyTrains/historyTrains.wxml-->
-<text>pages/historyTrains/historyTrains.wxml</text>
+<view class="container">
+  <view wx:for="{{trainRecords}}" wx:key="trainId" class="record-item">
+    <view class="record-info">
+      <text class="train-place">培训地点：{{item.trainPlace}}</text>
+      <text class="train-time">培训时间：{{item.trainTime}}</text>
+      <text class="train-next">复训截止时间：{{item.trainNext}}</text>
+      <text class="train-message">请在复训截止时间前进行再次培训</text>
+    </view>
+    <!-- 如果 canCancel 为 true，显示取消报名按钮 -->
+    <block wx:if="{{item.canCancel}}">
+      <button class="cancel-btn" bindtap="handleCancel" data-train-id="{{item.trainId}}">取消报名</button>
+    </block>
+  </view>
+</view>

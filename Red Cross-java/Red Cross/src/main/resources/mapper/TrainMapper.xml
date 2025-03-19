@@ -57,21 +57,20 @@
     <!-- 报名成功插入复训表 -->
     <insert id="UpdateRetrain">
         INSERT INTO retrain (train_id, user_id, train_place, train_time, train_next)
-        VALUES (
-                   #{trainId},
+        VALUES (   #{trainId},
                    #{userId},
                    #{trainPlace},
                    #{trainTime},
-                   DATE_ADD(#{trainTime}, INTERVAL 6 MONTH)
+                   DATE_ADD(#{trainTime}, INTERVAL 2 YEAR)
                );
     </insert>
     <!-- 取消报名 -->
     <update id="CancelTrain">
-        UPDATE train
-        SET current_people = current_people - 1,
-            user_ids = JSON_REMOVE(user_ids, JSON_UNQUOTE(JSON_SEARCH(user_ids, 'one', CAST(#{userId} AS JSON))))
-                WHERE train_id = #{trainId}
-                                                          AND JSON_CONTAINS(user_ids, CAST(#{userId} AS JSON));
+        CALL RemoveUserFromTrain(#{trainId}, #{userId});
     </update>
+    <!-- 删除复训记录 -->
+    <delete id="DeleteRetrain">
+        DELETE FROM retrain WHERE train_id = #{trainId} AND user_id = #{userId}
+    </delete>
 
 </mapper>

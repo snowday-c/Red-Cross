@@ -78,4 +78,9 @@ public class TrainServiceImpl implements TrainService {
     public Integer UpdateRetrain(Integer trainId, Integer userId, String trainPlace, String trainTime) {
         return trainMapper.UpdateRetrain(trainId,userId,trainPlace,trainTime);
     }
+
+    @Override
+    public Integer DeleteRetrain(Integer trainId, Integer userId) {
+        return trainMapper.DeleteRetrain(trainId,userId);
+    }
 }

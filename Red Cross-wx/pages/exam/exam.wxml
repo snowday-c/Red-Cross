@@ -1,10 +1,10 @@
 <view class="container">
   <view class="header">
-    <text class="title">竞赛页面</text>
+    <text class="title">安全知识培训页面</text>
   </view>
 
   <view class="button-container">
-    <button class="start-btn" bindtap="startExam">开始考试</button>
-    <button class="cancel-btn" bindtap="cancelExam">取消考试</button>
+    <button class="start-btn" bindtap="startExam">开始培训</button>
+    <button class="cancel-btn" bindtap="cancelExam">取消培训</button>
   </view>
 </view>

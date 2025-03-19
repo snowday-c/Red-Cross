@@ -1,8 +1,8 @@
 <!-- 线上考试 -->
 <view class="exam">
-  <text>红十字救生员安全知识竞赛</text>
-  <span class="subtext">(达到一定分数即可获得证书)</span>
-  <button bindtap="navigateToExam">前往参赛</button>
+  <text>红十字救生员安全知识培训</text>
+  <span class="subtext">(参与技能培训后且达到一定分数即可获得证书)</span>
+  <button bindtap="navigateToExam">前往培训</button>
 </view>
 
 <!-- 线下培训 -->

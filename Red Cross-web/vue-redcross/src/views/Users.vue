@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :data="userList" style="width: 100%" border>
+    <el-table :data="paginatedUserList" style="width: 100%" border>
       <el-table-column prop="userName" label="用户名" width="150"></el-table-column>
       <el-table-column prop="email" label="邮箱" width="230"></el-table-column>
       <el-table-column prop="account" label="账号" width="210"></el-table-column>
@@ -11,9 +11,7 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <!-- 如果是超级管理员，显示无法修改 -->
           <span v-if="scope.row.userType === 2" class="disabled-text">无法修改</span>
-          <!-- 否则显示两个按钮 -->
           <template v-else>
             <el-button type="primary" size="small" @click="handleEdit(scope.row)">修改用户信息</el-button>
             <el-button type="info" size="small" @click="handleEditUserType(scope.row)">修改用户类型</el-button>
@@ -21,6 +19,18 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 分页组件 -->
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="userList.length"
+      :page-size="pageSize"
+      :current-page="currentPage"
+      @current-change="handlePageChange"
+      style="margin-top: 20px;" 
+    >
+    </el-pagination>
 
     <!-- 修改用户对话框 -->
     <el-dialog :visible.sync="dialogVisible" title="修改用户" width="30%">
@@ -48,7 +58,6 @@
           <el-select v-model="currentUser.userType" placeholder="请选择用户类型">
             <el-option label="用户" :value="0"></el-option>
             <el-option label="管理员" :value="1"></el-option>
-            <!-- 移除超级管理员选项 -->
           </el-select>
         </el-form-item>
       </el-form>
@@ -69,8 +78,18 @@ export default {
       userList: [], // 用户列表数据
       dialogVisible: false, // 修改用户对话框是否显示
       userTypeDialogVisible: false, // 修改用户类型对话框是否显示
-      currentUser: {} // 当前修改的用户
+      currentUser: {}, // 当前修改的用户
+      currentPage: 1, // 当前页码
+      pageSize: 8 // 每页显示的数据条数
     };
+  },
+  computed: {
+    // 计算当前页显示的数据
+    paginatedUserList() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return this.userList.slice(start, end);
+    }
   },
   created() {
     this.fetchUsers(); // 页面加载时获取用户数据
@@ -136,6 +155,10 @@ export default {
       } catch (error) {
         console.error('保存用户类型失败:', error);
       }
+    },
+    // 处理页码变化
+    handlePageChange(page) {
+      this.currentPage = page;
     }
   }
 };

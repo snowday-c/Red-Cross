@@ -2,7 +2,9 @@
   <div>
     <h1>培训管理</h1>
     <el-button type="primary" @click="handlePublish">发布培训</el-button>
-    <el-table :data="trainList" style="width: 100%" border>
+
+    <!-- 培训列表表格 -->
+    <el-table :data="paginatedTrainList" style="width: 100%" border>
       <el-table-column prop="trainId" label="培训ID" width="100"></el-table-column>
       <el-table-column prop="trainTime" label="培训时间" width="150"></el-table-column>
       <el-table-column prop="trainPlace" label="培训地点" width="150"></el-table-column>
@@ -17,6 +19,18 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 分页组件 -->
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="trainList.length"
+      :page-size="pageSize"
+      :current-page="currentPage"
+      @current-change="handlePageChange"
+      style="margin-top: 20px;"
+    >
+    </el-pagination>
 
     <!-- 发布培训对话框 -->
     <el-dialog :visible.sync="publishDialogVisible" title="发布培训" width="30%">
@@ -84,8 +98,18 @@ export default {
         trainPlaces: '', // 用户输入的多个城市名称（字符串）
         trainPeople: 0
       },
-      currentTrain: {} // 当前修改的培训信息
+      currentTrain: {}, // 当前修改的培训信息
+      pageSize: 8, // 每页显示的数据条数
+      currentPage: 1, // 当前页码
     };
+  },
+  computed: {
+    // 分页后的培训列表数据
+    paginatedTrainList() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return this.trainList.slice(start, end);
+    },
   },
   created() {
     this.fetchTrainList(); // 页面加载时获取培训列表
@@ -194,7 +218,11 @@ export default {
           });
         }
       }
-    }
+    },
+    // 处理页码变化
+    handlePageChange(page) {
+      this.currentPage = page;
+    },
   }
 };
 </script>
@@ -203,5 +231,9 @@ export default {
 h1 {
   text-align: center;
   margin-bottom: 20px;
+}
+
+.el-pagination {
+  margin-top: 20px; /* 分页组件与表格之间的间距 */
 }
 </style>

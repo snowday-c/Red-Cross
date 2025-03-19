@@ -4,12 +4,40 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.redcross.mapper.CertificateMapper">
-    <!--  将生成证书插入数据库  -->
-    <insert id="gainCertificate"  >
-            insert into certificate ( user_id, certificate_title, certificate_content, certificate_time)
-            values ( #{userId}, #{certificateTitle}, #{certificateContent},NOW() )
+    <!--  判断用户是否可以申请证书  -->
+    <select id="canApplyCertificate" resultType="int">
+        select count(*) from certificate where user_id = #{userId} and certificate_type = 0
+    </select>
+    <!--  申请证书  -->
+    <insert id="applyCertificate">
+        insert into certificate ( user_id,certificate_type)
+        values ( #{userId}, 0)
     </insert>
-    <!--  查询用户的证书  -->
+    <!--  审核通过，将生成证书插入数据库  -->
+    <update id="gainCertificate"  >
+        UPDATE certificate SET certificate_title = #{certificateTitle},
+                               certificate_content = #{certificateContent},
+                               approver = #{approver},
+                               certificate_time = NOW(),
+                               certificate_type = 1  WHERE certificate_id = #{certificateId} AND certificate_type = 0
+    </update>
+    <!--  审核不通过，将证书状态改为-1  -->
+    <update id="rejectCertificate">
+        UPDATE certificate SET certificate_type = -1,
+                               approver = #{approver},
+                               certificate_time = NOW(),
+                               certificate_title = '',
+                               certificate_content = ''WHERE certificate_id = #{certificateId} AND certificate_type = 0
+    </update>
+    <!--  查询等待审批的证书  -->
+    <select id="getWaitCertificate" resultType="com.example.redcross.entity.Certificate">
+        select * from certificate where certificate_type = 0
+    </select>
+    <!--  查询已审批的证书  -->
+    <select id="getApprovedCertificate" resultType="com.example.redcross.entity.Certificate">
+        select * from certificate where certificate_type = 1
+    </select>
+    <!--  查询指定用户的证书  -->
     <select id="listCertificate" resultType="com.example.redcross.entity.Certificate">
         select * from certificate where user_id = #{userId}
     </select>

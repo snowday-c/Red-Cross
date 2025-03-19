@@ -7,9 +7,9 @@ Page({
   data: {
     questions: [], // 题目列表
     userAnswers: [], // 用户答案
-    countdown: 60 * 60, // 60分钟的倒计时，单位为秒
+    countdown: 30 * 60, // 60分钟的倒计时，单位为秒
     timer: null, // 定时器 ID
-    formattedTime: '60:00', // 格式化后的时间
+    formattedTime: '30:00', // 格式化后的时间
   },
 
   /**
@@ -21,7 +21,7 @@ Page({
     this.setData({
       questions,
       userAnswers: new Array(questions.length).fill(''), // 初始化用户答案数组
-      formattedTime: this.formatTime(60 * 60), // 初始化格式化后的时间
+      formattedTime: this.formatTime(30 * 60), // 初始化格式化后的时间
     });
 
     // 启动倒计时

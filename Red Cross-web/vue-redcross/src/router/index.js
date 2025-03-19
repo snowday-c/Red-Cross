@@ -9,7 +9,7 @@ import Users from '../views/Users.vue';
 import Messages from '@/views/Messages.vue';
 import Questions from '@/views/Questions.vue';
 import Trains from '@/views/Trains.vue';
-
+import Certificates from '@/views/Certificates.vue';
 Vue.use(Router);
 
 const routes = [
@@ -49,6 +49,10 @@ const routes = [
       {
         path: 'trains',
         component: Trains,
+      },
+      {
+        path: 'certificates',
+        component: Certificates,
       },
       {
         path: '',

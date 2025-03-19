@@ -45,6 +45,10 @@
             <i class="el-icon-s-opportunity"></i>
             <span>培训管理</span>
           </el-menu-item>
+          <el-menu-item index="/management/certificates">
+            <i class="el-icon-s-order"></i>
+            <span>证书管理</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
 

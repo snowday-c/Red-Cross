@@ -14,7 +14,7 @@
     </div>
 
     <!-- 题目表格 -->
-    <el-table :data="questions" style="width: 100%" border>
+    <el-table :data="paginatedQuestions" style="width: 100%" border>
       <el-table-column prop="questionId" label="题目ID" width="100"></el-table-column>
       <el-table-column prop="questionType" label="题型" width="120">
         <template slot-scope="scope">
@@ -25,11 +25,23 @@
       <el-table-column prop="answer" label="答案"></el-table-column>
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
-          <el-button type="text" @click="openEditDialog(scope.row)">编辑</el-button>
-          <el-button type="text" @click="deleteQuestion(scope.row.questionId)">删除</el-button>
+          <el-button type="primary" size="small" @click="openEditDialog(scope.row)">编辑</el-button>
+          <el-button type="danger" size="small" @click="deleteQuestion(scope.row.questionId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 分页组件 -->
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="questions.length"
+      :page-size="pageSize"
+      :current-page="currentPage"
+      @current-change="handlePageChange"
+      style="margin-top: 20px;"
+    >
+    </el-pagination>
 
     <!-- 添加题目对话框 -->
     <el-dialog title="添加题目" :visible.sync="addDialogVisible" width="30%">
@@ -95,8 +107,18 @@ export default {
       currentQuestion: {}, // 当前编辑的题目
       addDialogVisible: false, // 添加题目对话框显示状态
       editDialogVisible: false, // 编辑题目对话框显示状态
-      selectedQuestionType: null // 用户选择的题型
+      selectedQuestionType: null, // 用户选择的题型
+      pageSize: 8, // 每页显示的数据条数
+      currentPage: 1, // 当前页码
     };
+  },
+  computed: {
+    // 分页后的题目数据
+    paginatedQuestions() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return this.questions.slice(start, end);
+    },
   },
   created() {
     this.fetchQuestions();
@@ -209,7 +231,12 @@ export default {
         default:
           return '未知题型';
       }
-    }
+    },
+
+    // 处理页码变化
+    handlePageChange(page) {
+      this.currentPage = page;
+    },
   }
 };
 </script>
@@ -217,5 +244,9 @@ export default {
 <style scoped>
 h1 {
   margin-bottom: 20px;
+}
+
+.el-pagination {
+  margin-top: 20px; /* 分页组件与表格之间的间距 */
 }
 </style>

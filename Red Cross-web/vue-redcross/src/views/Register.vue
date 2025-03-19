@@ -13,13 +13,14 @@
         </el-form-item>
 
         <!-- 账号 -->
-         <el-form-item prop="account">
+        <el-form-item prop="account">
           <el-input
             v-model="registerForm.account"
             placeholder="请输入账号"
             prefix-icon="el-icon-user"
           ></el-input>
-         </el-form-item>
+        </el-form-item>
+
         <!-- 密码 -->
         <el-form-item prop="password">
           <el-input
@@ -133,16 +134,35 @@ export default {
     register() {
       this.$refs.registerForm.validate(async (valid) => {
         if (valid) {
-          // 注册逻辑
-          let res = await request.post('/user/register', {
-            userName: this.registerForm.username, 
-            account: this.registerForm.account, 
-            password: this.registerForm.password, 
-            email: this.registerForm.email, 
-            code: this.registerForm.code});
-          if (res.data.code == 0) {
-            this.$message.success('注册成功，即将跳转登录页面');
-            this.$router.push('/login');
+          try {
+            // 校验验证码
+            let res1 = await request.post('/user/email/verifyCode', {
+              email: this.registerForm.email,
+              code: this.registerForm.code,
+            });
+            if (res1.data.code != 0) {
+              this.$message.error('验证码错误，请重新输入');
+              return false;
+            }
+
+            // 注册请求
+            let res = await request.post('/user/register', {
+              userName: this.registerForm.username,
+              account: this.registerForm.account,
+              password: this.registerForm.password,
+              email: this.registerForm.email,
+              code: this.registerForm.code,
+            });
+
+            if (res.data.code == 0) {
+              this.$message.success('注册成功，即将跳转登录页面');
+              this.$router.push('/login');
+            } else {
+              this.$message.error(res.data.msg || '注册失败，请稍后再试');
+            }
+          } catch (error) {
+            console.error('注册失败:', error);
+            this.$message.error('注册失败，请检查网络或稍后再试');
           }
         } else {
           return false;
@@ -154,21 +174,34 @@ export default {
     sendCode() {
       this.$refs.registerForm.validateField('email', async (valid) => {
         if (!valid) {
-          let res = await request.post('/user/email/sendCode', { email: this.registerForm.email })
-          if (res.data.code == 0) {
-            this.$message.success('验证码已发送至邮箱，请注意查收');
-            this.isCodeSent = true;
-            this.startCountdown();
-          } else {
-            this.$message.error('验证码发送失败，请稍后再试');
-          }
+          try {
+            let res = await request.post('/user/email/sendCode', {
+              email: this.registerForm.email,
+            });
 
+            if (res.data.code == 0) {
+              this.$message.success('验证码已发送至邮箱，请注意查收');
+              this.isCodeSent = true;
+              this.startCountdown();
+            } else {
+              this.$message.error(res.data.msg || '验证码发送失败，请稍后再试');
+            }
+          } catch (error) {
+            console.error('验证码发送失败:', error);
+            this.$message.error('验证码发送失败，请检查网络或稍后再试');
+          }
         }
       });
     },
 
     // 开始倒计时
     startCountdown() {
+      if (this.countdown <= 0) {
+        this.isCodeSent = false;
+        this.countdown = 60;
+        return;
+      }
+
       const timer = setInterval(() => {
         if (this.countdown > 0) {
           this.countdown--;

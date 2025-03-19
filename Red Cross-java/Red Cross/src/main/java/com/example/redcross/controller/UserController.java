@@ -1,6 +1,6 @@
 package com.example.redcross.controller;
 
-
+import jakarta.servlet.http.HttpServletRequest;
 import com.example.redcross.common.JwtTokenUtils;
 import com.example.redcross.common.Result;
 import com.example.redcross.email.VerificationCodeUtil;
@@ -25,8 +25,29 @@ public class UserController {
     private StringRedisTemplate redisTemplate;
 
     @PostMapping("/email/sendCode")
-    public Result sendVerificationCode(@RequestBody User user) {
+    public Result sendVerificationCode(@RequestBody User user, HttpServletRequest request) {
         String email = user.getEmail();
+        String ip = request.getRemoteAddr(); // 获取客户端IP
+
+        // 限制同一IP每分钟最多发送3次验证码
+        String ipKey = "email:sendCode:ip:" + ip;
+        Long ipCount = redisTemplate.opsForValue().increment(ipKey, 1);
+        if (ipCount != null && ipCount == 1) {
+            redisTemplate.expire(ipKey, 1, TimeUnit.MINUTES); // 设置过期时间为1分钟
+        }
+        if (ipCount != null && ipCount > 3) {
+            return Result.error("请求过于频繁，请稍后再试！");
+        }
+
+        // 限制同一邮箱每天最多发送20次验证码
+        String emailKey = "email:sendCode:email:" + email;
+        Long emailCount = redisTemplate.opsForValue().increment(emailKey, 1);
+        if (emailCount != null && emailCount == 1) {
+            redisTemplate.expire(emailKey, 24, TimeUnit.HOURS); // 设置过期时间为24小时
+        }
+        if (emailCount != null && emailCount > 20) {
+            return Result.error("该邮箱今日请求次数过多，请明天再试！");
+        }
 
         // 生成验证码
         String code = VerificationCodeUtil.generateCode();
@@ -34,7 +55,7 @@ public class UserController {
         redisTemplate.opsForValue().set(email, code, 5, TimeUnit.MINUTES);
 
         // 发送邮件
-        String subject = "您的验证码";
+        String subject = "红十字救生员培训";
         String content = "您的验证码是：" + code + "，请勿泄露给他人，请在5分钟内使用。";
         userService.sendVerificationCode(email, subject, content);
 

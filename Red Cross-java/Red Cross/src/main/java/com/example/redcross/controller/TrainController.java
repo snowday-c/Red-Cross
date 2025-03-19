@@ -78,7 +78,7 @@ public class TrainController {
         }
         //查询用户是否已经报名
         if((trainService.IsJoinTrain(trainTime,userId)) == 1) {
-            return Result.error("您已经报名过该次培训，请勿重复报名！");
+            return Result.error("您已经报名过该次培训，请在培训记录中查看！");
         }
         //进行报名
         if(trainService.JoinTrain(trainId,userId) == 1){
@@ -93,7 +93,7 @@ public class TrainController {
         Integer trainId = train.getTrainId();
         Integer userId = train.getUserId();
         if(trainService.CancelTrain(trainId,userId) == 1){
-//            trainService.DeleteRetrain(trainId,userId);    //取消报名成功将培训记录从复训表中删除
+            trainService.DeleteRetrain(trainId,userId);    //取消报名成功将培训记录从复训表中删除
             return Result.success("取消报名成功！");
         }
         return Result.error("取消报名失败，请稍后再试！");
