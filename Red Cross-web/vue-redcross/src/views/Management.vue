@@ -1,9 +1,9 @@
 <template>
   <el-container style="height: 100vh;">
     <!-- 头部 -->
-    <el-header style="background-color: #304156; color: #fff; line-height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+    <el-header class="header" style="color: black; line-height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
       <!-- 项目名称 -->
-      <div style="font-size: 20px;">
+      <div style="font-size: 30px; font-weight: bold; font-family: 'Microsoft YaHei', sans-serif;">
         红十字救生员培训管理
       </div>
 
@@ -16,19 +16,16 @@
 
     <el-container>
       <!-- 侧边栏 -->
-      <el-aside width="190px" style="background-color: #476080;">
+      <el-aside class="aside" width="190px">
         <el-menu
           default-active="/management/dashboard"
           class="el-menu-vertical-demo"
-          background-color="#476080"
-          text-color="#fff"
-          active-text-color="#ffd04b"
+          background-color="transparent"
+          text-color="black"
+          active-text-color="blue"
           router
         >
-          <el-menu-item index="/management/dashboard">
-            <i class="el-icon-s-home"></i>
-            <span>系统首页</span>
-          </el-menu-item>
+
           <el-menu-item index="/management/users">
             <i class="el-icon-user"></i>
             <span>用户管理</span>
@@ -100,22 +97,31 @@ export default {
   padding: 0;
 }
 
-.el-header {
-  background-color: #304156;
-  color: #fff;
-  line-height: 60px;
-  font-size: 20px;
-  text-align: left;
-  padding-left: 20px;
+.header {
+  background-image: url('@/assets/picture/picture03.jpg'); /* 设置顶部背景图片 */
+  background-size: fill; /* 背景图覆盖整个容器 */
+  background-position: center; /* 背景图居中 */
+  background-color: #304156; /* 备用背景颜色 */
 }
 
-.el-aside {
-  background-color: #476080;
-  color: #fff;
+.aside {
+  background-image: url('@/assets/picture/picture04.jpg'); /* 设置侧边栏背景图片 */
+  background-size: cover; /* 背景图覆盖整个容器 */
+  background-position: center; /* 背景图居中 */
+  background-color: #476080; /* 备用背景颜色 */
 }
 
 .el-menu {
   border-right: none;
+  background-color: transparent !important; /* 设置菜单背景为透明 */
+}
+
+.el-menu-item {
+  background-color: transparent !important; /* 设置菜单项背景为透明 */
+}
+
+.el-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important; /* 鼠标悬停时的背景颜色 */
 }
 
 .el-main {

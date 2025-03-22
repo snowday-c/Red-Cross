@@ -1,11 +1,9 @@
 <template>
   <div>
-    <h1>培训管理</h1>
     <el-button type="primary" @click="handlePublish">发布培训</el-button>
-
     <!-- 培训列表表格 -->
     <el-table :data="paginatedTrainList" style="width: 100%" border>
-      <el-table-column prop="trainId" label="培训ID" width="100"></el-table-column>
+      <!-- 移除培训ID列 -->
       <el-table-column prop="trainTime" label="培训时间" width="150"></el-table-column>
       <el-table-column prop="trainPlace" label="培训地点" width="150"></el-table-column>
       <el-table-column prop="trainType" label="培训状态" width="100" :formatter="formatTrainType"></el-table-column>
@@ -99,7 +97,7 @@ export default {
         trainPeople: 0
       },
       currentTrain: {}, // 当前修改的培训信息
-      pageSize: 8, // 每页显示的数据条数
+      pageSize: 5, // 每页显示的数据条数
       currentPage: 1, // 当前页码
     };
   },
@@ -119,7 +117,8 @@ export default {
     async fetchTrainList() {
       try {
         const response = await request.get('/train/all');
-        this.trainList = response.data.data;
+        // 按照 trainId 从大到小排序
+        this.trainList = response.data.data.sort((a, b) => b.trainId - a.trainId);
       } catch (error) {
         console.error('获取培训列表失败:', error);
       }

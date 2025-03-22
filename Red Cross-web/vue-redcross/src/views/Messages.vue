@@ -108,7 +108,7 @@ export default {
       dialogVisible: false, // 对话框是否显示
       dialogTitle: '', // 对话框标题
       currentMessage: { messageId: null, title: '', content: '', receiver: '', messageType: null, sender: '', time: '' }, // 当前操作的消息
-      pageSize: 8, // 每页显示的数据条数
+      pageSize: 5, // 每页显示的数据条数
       publicCurrentPage: 1, // 公共消息当前页码
       privateCurrentPage: 1, // 个人消息当前页码
     };
@@ -136,7 +136,8 @@ export default {
     async fetchPublicMessages() {
       try {
         const response = await request.get('/message/public');
-        this.publicMessages = response.data.data;
+        // 按照 messageId 从大到小排序
+        this.publicMessages = response.data.data.sort((a, b) => b.messageId - a.messageId);
       } catch (error) {
         console.error('获取公共消息失败:', error);
       }
@@ -145,7 +146,8 @@ export default {
     async fetchPrivateMessages() {
       try {
         const response = await request.get('/message/private');
-        this.privateMessages = response.data.data;
+        // 按照 messageId 从大到小排序
+        this.privateMessages = response.data.data.sort((a, b) => b.messageId - a.messageId);
       } catch (error) {
         console.error('获取个人消息失败:', error);
       }

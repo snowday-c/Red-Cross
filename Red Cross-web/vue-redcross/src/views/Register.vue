@@ -1,6 +1,8 @@
 <template>
   <div class="register-container">
     <el-card class="register-card">
+      <!-- 添加红十字标志的图片 -->
+      <img src="@/assets/picture/picture02.jpg" alt="Red Cross Logo" class="logo">
       <h1 class="register-title">注册</h1>
       <el-form :model="registerForm" :rules="registerRules" ref="registerForm" @submit.native.prevent="register">
         <!-- 用户名 -->
@@ -100,9 +102,11 @@ export default {
         ],
         account: [
           { required: true, message: '请输入账号', trigger: 'blur' },
+          { min: 6, max: 20, message: '账号长度应为 6 到 20 位', trigger: 'blur' }, // 长度校验
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, max: 20, message: '密码长度应为 6 到 20 位', trigger: 'blur' }, // 长度校验
         ],
         confirmPassword: [
           { required: true, message: '请再次输入密码', trigger: 'blur' },
@@ -223,6 +227,9 @@ export default {
   align-items: center;
   height: 100vh;
   background-color: #f0f2f5;
+  background-image: url('@/assets/picture/picture01.jpg'); /* 设置背景图 */
+  background-size: cover; /* 背景图覆盖整个容器 */
+  background-position: center; /* 背景图居中 */
 }
 
 .register-card {
@@ -230,6 +237,7 @@ export default {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.9); /* 给卡片添加半透明背景 */
 }
 
 .register-title {
@@ -256,5 +264,12 @@ export default {
 
 .login-link a:hover {
   text-decoration: underline;
+}
+
+.logo {
+  display: block;
+  margin: 0 auto 10px auto; /* 居中显示，并设置下边距 */
+  width: 50px; /* 根据需要调整图片大小 */
+  height: auto;
 }
 </style>

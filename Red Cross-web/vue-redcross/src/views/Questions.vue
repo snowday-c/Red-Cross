@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h1>试题管理</h1>
-
     <!-- 添加题目按钮和题型筛选 -->
     <div style="margin-bottom: 20px;">
       <el-button type="primary" @click="openAddDialog">添加题目</el-button>
@@ -15,7 +13,7 @@
 
     <!-- 题目表格 -->
     <el-table :data="paginatedQuestions" style="width: 100%" border>
-      <el-table-column prop="questionId" label="题目ID" width="100"></el-table-column>
+      <!-- 移除题目ID列 -->
       <el-table-column prop="questionType" label="题型" width="120">
         <template slot-scope="scope">
           {{ getQuestionTypeName(scope.row.questionType) }}
@@ -108,7 +106,7 @@ export default {
       addDialogVisible: false, // 添加题目对话框显示状态
       editDialogVisible: false, // 编辑题目对话框显示状态
       selectedQuestionType: null, // 用户选择的题型
-      pageSize: 8, // 每页显示的数据条数
+      pageSize: 5, // 每页显示的数据条数
       currentPage: 1, // 当前页码
     };
   },

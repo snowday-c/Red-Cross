@@ -14,13 +14,13 @@
 
   <view class="content">
     <view class="item" bindtap="navigateToHistoryScores">
-      <text class="label">历史成绩</text>
+      <text class="label">知识培训</text>
+    </view>
+    <view class="item" bindtap="navigateToHistoryTrains">
+      <text class="label">技能培训</text>
     </view>
     <view class="item" bindtap="navigateToCertificates">
       <text class="label">荣誉证书</text>
-    </view>
-    <view class="item" bindtap="navigateToHistoryTrains">
-      <text class="label">培训记录</text>
     </view>
     <view class="item" bindtap="navigateToMessages">
       <text class="label">消息通知</text>

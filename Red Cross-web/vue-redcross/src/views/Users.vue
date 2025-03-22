@@ -80,7 +80,7 @@ export default {
       userTypeDialogVisible: false, // 修改用户类型对话框是否显示
       currentUser: {}, // 当前修改的用户
       currentPage: 1, // 当前页码
-      pageSize: 8 // 每页显示的数据条数
+      pageSize: 6 // 每页显示的数据条数
     };
   },
   computed: {

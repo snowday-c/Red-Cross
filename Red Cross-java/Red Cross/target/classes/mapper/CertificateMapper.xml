@@ -39,7 +39,7 @@
     </select>
     <!--  查询指定用户的证书  -->
     <select id="listCertificate" resultType="com.example.redcross.entity.Certificate">
-        select * from certificate where user_id = #{userId}
+        select * from certificate where user_id = #{userId} AND certificate_type = 1
     </select>
     <!--  删除用户的证书  -->
     <delete id="deleteCertificate">

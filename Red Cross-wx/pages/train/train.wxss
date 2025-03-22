@@ -3,7 +3,6 @@
   flex-direction: column;
   padding: 20px;
   background-color: #f8f8f8;
-  min-height: 100vh;
 }
 
 /* 返回按钮样式 */
@@ -19,7 +18,7 @@
 .train-item {
   background-color: #fff;
   padding: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 8px; /* 减小空白区域 */
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

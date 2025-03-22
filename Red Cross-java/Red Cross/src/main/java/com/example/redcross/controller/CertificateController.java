@@ -57,6 +57,11 @@ public class CertificateController {
         if (user == null) {
             return Result.error("用户不存在");
         }
+        //生成证书标题和内容
+//        String userName = user.getUserName();
+//        String certificateTitle =  certificateService.gainCertificateTitle();
+//        String certificateContent = certificateService.gainCertificateContent(userName);
+
         // 生成证书
         certificateService.gainCertificate(certificateId, certificateTitle, certificateContent, approver);
         // 发送消息通知用户
