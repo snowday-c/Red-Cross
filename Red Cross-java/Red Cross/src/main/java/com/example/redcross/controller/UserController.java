@@ -168,7 +168,7 @@ public class UserController {
     //修改用户信息
     @PostMapping("/update/userInfo")
     public Result updateUserInfo(@RequestBody User user) {
-        // 1. 根据账号查询当前用户信息
+        // 1. 根据id查询当前用户信息
         User existingUser = userService.getUserById(user.getUserId());
         if (existingUser == null) {
             return Result.error("用户不存在");
@@ -221,6 +221,6 @@ public class UserController {
         if (userService.forgetPassword(account,email, newPassword)) {
             return Result.success();
         }
-        throw new UserException("找回密码失败，请检查账号是否正确");
+        throw new UserException("找回密码失败，请检查账号和邮箱是否正确");
     }
 }

@@ -1,14 +1,17 @@
 <template>
   <div>
     <!-- 等待审核证书 -->
-    <h2>等待审核证书</h2>
+    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+      <h2>等待审核证书</h2>
+      <el-tag type="info" style="cursor: pointer;" @click="showRuleDialog">
+        <i class="el-icon-info"></i> 审核规则
+      </el-tag>
+    </div>
     <el-table :data="paginatedWaitCertificates" style="width: 100%" border>
-      <el-table-column prop="certificateId" label="证书ID" width="100"></el-table-column>
       <el-table-column prop="userId" label="用户ID" width="100"></el-table-column>
-
       <el-table-column label="操作" width="300">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="openReviewDialog(scope.row)">通过审核</el-button>
+          <el-button type="primary" size="small" @click="confirmApprove(scope.row)">通过审核</el-button>
           <el-button type="danger" size="small" @click="confirmReject(scope.row)">拒绝审核</el-button>
         </template>
       </el-table-column>
@@ -36,7 +39,6 @@
     <el-button type="primary" @click="fetchApprovedCertificates">筛选</el-button>
 
     <el-table :data="paginatedApprovedCertificates" style="width: 100%" border>
-      <el-table-column prop="certificateId" label="证书ID" width="100"></el-table-column>
       <el-table-column prop="userId" label="用户ID" width="100"></el-table-column>
       <el-table-column prop="certificateTitle" label="证书标题" width="150"></el-table-column>
       <el-table-column prop="certificateContent" label="证书内容"></el-table-column>
@@ -54,19 +56,19 @@
       @current-change="handleApprovedPageChange"
     ></el-pagination>
 
-    <!-- 审核对话框 -->
-    <el-dialog :visible.sync="reviewDialogVisible" :title="reviewDialogTitle" width="30%">
-      <el-form :model="currentCertificate" label-width="100px">
-        <el-form-item label="证书标题">
-          <el-input v-model="currentCertificate.certificateTitle"></el-input>
-        </el-form-item>
-        <el-form-item label="证书内容">
-          <el-input v-model="currentCertificate.certificateContent" type="textarea"></el-input>
-        </el-form-item>
-      </el-form>
+    <!-- 审核规则对话框 -->
+    <el-dialog
+      title="证书审核规则"
+      :visible.sync="ruleDialogVisible"
+      width="50%"
+    >
+      <div style="line-height: 1.8;">
+        <h3>红十字救生员证书审核标准</h3>
+        <p>1. 检查申请人是否已经具有未过期限(1年)的证书,若已有证书则拒绝审核</p>
+        <p>2. 核对申请人是否具有最近一年内的培训记录,若没有培训记录则拒绝审核</p>
+      </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="reviewDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="approveCertificate">确定</el-button>
+        <el-button type="primary" @click="ruleDialogVisible = false">确定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -83,18 +85,10 @@ export default {
       certificateList: [], // 等待审核证书列表
       approvedCertificates: [], // 已发放证书列表
       searchUserId: '', // 用户ID筛选
-      reviewDialogVisible: false, // 审核对话框显示状态
-      reviewDialogTitle: '审核证书', // 审核对话框标题
-      currentCertificate: {
-        certificateId: null,
-        userId: null,
-        certificateTitle: '',
-        certificateContent: '',
-        approver: ''
-      },
       pageSize: 5, // 每页显示的数据条数
       waitCurrentPage: 1, // 等待审核证书当前页码
       approvedCurrentPage: 1, // 已发放证书当前页码
+      ruleDialogVisible: false // 审核规则对话框显示状态
     };
   },
   created() {
@@ -130,6 +124,10 @@ export default {
     }
   },
   methods: {
+    // 显示审核规则对话框
+    showRuleDialog() {
+      this.ruleDialogVisible = true;
+    },
     // 获取等待审核证书列表
     async fetchWaitCertificates() {
       try {
@@ -150,26 +148,38 @@ export default {
         console.error('获取已发放的证书列表失败:', error);
       }
     },
-    // 打开审核对话框
-    openReviewDialog(certificate) {
-      this.currentCertificate = {
-        ...certificate,
-        certificateTitle: '',
-        certificateContent: '',
-        approver: this.user.userName
-      };
-      this.reviewDialogVisible = true;
+    // 确认通过审核
+    confirmApprove(certificate) {
+      MessageBox.confirm('确定要通过该证书申请吗？', '确认审批', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.approveCertificate(certificate);
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消审批操作'
+          });
+        });
     },
     // 通过审核
-    async approveCertificate() {
+    async approveCertificate(certificate) {
       try {
-        const response = await request.post('/certificate/approve', this.currentCertificate);
+        const requestData = {
+          certificateId: certificate.certificateId,
+          userId: certificate.userId,
+          approver: this.user.userName
+        };
+
+        const response = await request.post('/certificate/approve', requestData);
         if (response.data.code == 0) {
           this.$message({
             type: 'success',
             message: '审核通过！'
           });
-          this.reviewDialogVisible = false;
           this.fetchWaitCertificates();
           this.fetchApprovedCertificates();
         } else {
@@ -200,14 +210,13 @@ export default {
     // 拒绝审核
     async rejectCertificate(certificate) {
       try {
-        this.currentCertificate = {
-          ...certificate,
-          certificateTitle: '',
-          certificateContent: '',
+        const requestData = {
+          certificateId: certificate.certificateId,
+          userId: certificate.userId,
           approver: this.user.userName
         };
 
-        const response = await request.post('/certificate/reject', this.currentCertificate);
+        const response = await request.post('/certificate/reject', requestData);
 
         if (response.data.code == 0) {
           this.$message({

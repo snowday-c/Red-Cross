@@ -6,11 +6,11 @@ module.exports = defineConfig({
 module.exports = {
   pwa: {
     iconPaths: {
-        favicon32: 'favicon.ico',
-        favicon16: 'favicon.ico',
-        appleTouchIcon: 'favicon.ico',
-        maskIcon: 'favicon.ico',
-        msTileImage: 'favicon.ico'
+        favicon32: '/public/favicon.ico',
+        favicon16: '/public/favicon.ico',
+        appleTouchIcon: 'f/public/avicon.ico',
+        maskIcon: '/public/favicon.ico',
+        msTileImage: '/public/favicon.ico'
     }
   },
 

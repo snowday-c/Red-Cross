@@ -44,24 +44,16 @@ public class CertificateController {
     public Result approveCertificate(@RequestBody Certificate certificate) {
         Integer certificateId = certificate.getCertificateId();
         Integer userId = certificate.getUserId();
-        String certificateTitle = certificate.getCertificateTitle();
-        String certificateContent = certificate.getCertificateContent();
         String approver = certificate.getApprover();
-        // 检查证书标题和内容是否为空
-        if (certificateTitle == null || certificateContent == null
-                || certificateTitle.isEmpty() || certificateContent.isEmpty()) {
-            return Result.error("证书标题和内容不能为空");
-        }
         // 获取用户信息
         User user = userService.getUserById(userId);
         if (user == null) {
             return Result.error("用户不存在");
         }
         //生成证书标题和内容
-//        String userName = user.getUserName();
-//        String certificateTitle =  certificateService.gainCertificateTitle();
-//        String certificateContent = certificateService.gainCertificateContent(userName);
-
+        String userName = user.getUserName();
+        String certificateTitle =  certificateService.gainCertificateTitle();
+        String certificateContent = certificateService.gainCertificateContent(userName);
         // 生成证书
         certificateService.gainCertificate(certificateId, certificateTitle, certificateContent, approver);
         // 发送消息通知用户
@@ -85,7 +77,7 @@ public class CertificateController {
         if (user == null) {
             return Result.error("用户不存在");
         }
-        // 拒绝审核，清空证书标题和内容
+        // 拒绝审核
         certificateService.rejectCertificate(certificateId, approver);
         // 发送消息通知用户
         Message message = new Message();

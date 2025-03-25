@@ -14,7 +14,8 @@
     "pages/historyScores/historyScores",
     "pages/certificates/certificates",
     "pages/historyTrains/historyTrains",
-    "pages/messages/messages"
+    "pages/messages/messages",
+    "pages/notices/notices"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ff6666",
@@ -25,8 +26,9 @@
     "visualEffectInBackground": "hidden"
   },
   "tabBar": {
-    "selectedColor": "#ff6666",
-    "color": "#666",
+    "backgroundColor": "#ff6666",
+    "selectedColor": "#000000",
+    "color": "#eeeeee",
     "list": [
       {
         "text": "首页",

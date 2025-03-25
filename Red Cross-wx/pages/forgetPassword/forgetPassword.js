@@ -1,4 +1,4 @@
-/* pages/forgetPassword/forgetPassword.js */
+const app = getApp();
 
 Page({
   data: {
@@ -34,8 +34,8 @@ Page({
           return;
       }
 
-      wx.request({
-          url: 'http://localhost:8090/api/user/email/sendCode',
+      app.request({
+          url: '/user/email/sendCode',
           method: 'POST',
           data: { email },
           success: (res) => {
@@ -65,14 +65,14 @@ Page({
 
   submitNewPassword: function() {
     const { account, email, newPassword, verificationCode } = this.data;
-    wx.request({
-        url: 'http://localhost:8090/api/user/email/verifyCode',
+    app.request({
+        url: '/user/email/verifyCode',
         method: 'POST',
         data: { email, code: verificationCode },
         success: (res) => {
             if (res.data.code === '0') {
-                wx.request({
-                    url: 'http://localhost:8090/api/user/forget/password',
+                app.request({
+                    url: '/user/forget/password',
                     method: 'POST',
                     data: { account, email, newPassword },
                     success: (res) => {

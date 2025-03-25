@@ -22,7 +22,7 @@
           class="el-menu-vertical-demo"
           background-color="transparent"
           text-color="black"
-          active-text-color="blue"
+          active-text-color="green"
           router
         >
 
@@ -98,17 +98,14 @@ export default {
 }
 
 .header {
-  background-image: url('@/assets/picture/picture03.jpg'); /* 设置顶部背景图片 */
-  background-size: fill; /* 背景图覆盖整个容器 */
-  background-position: center; /* 背景图居中 */
-  background-color: #304156; /* 备用背景颜色 */
+  background-image: url('@/assets/picture/picture03.jpg'); 
+  background-size: fill;
+  background-position: center;
+  background-color: #304156;
 }
 
 .aside {
-  background-image: url('@/assets/picture/picture04.jpg'); /* 设置侧边栏背景图片 */
-  background-size: cover; /* 背景图覆盖整个容器 */
-  background-position: center; /* 背景图居中 */
-  background-color: #476080; /* 备用背景颜色 */
+  background-color: #b2d6df;
 }
 
 .el-menu {

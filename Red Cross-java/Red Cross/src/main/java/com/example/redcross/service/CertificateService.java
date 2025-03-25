@@ -20,4 +20,8 @@ public interface CertificateService {
     void rejectCertificate(Integer certificateId, String approver);
 
     List<Certificate> getApprovedCertificate();
+
+    String gainCertificateTitle();
+
+    String gainCertificateContent(String userName);
 }

@@ -1,0 +1,18 @@
+<view class="container">
+  <view class="notice-list">
+    <block wx:for="{{notices}}" wx:key="messageId">
+      <view class="notice-item">
+        <text class="notice-item-title">{{item.title}}</text>
+        <text class="notice-item-content">{{item.content}}</text>
+        <view class="notice-item-footer">
+          <text class="notice-item-sender">发布人: {{item.sender}}</text>
+          <text class="notice-item-time">{{item.displayTime || item.time}}</text>
+        </view>
+      </view>
+    </block>
+    
+    <view wx:if="{{notices.length === 0}}" class="empty-tip">
+      暂无公告
+    </view>
+  </view>
+</view>

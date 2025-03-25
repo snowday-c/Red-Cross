@@ -63,7 +63,7 @@ export default {
         if (valid) {
           // 管理员登录
           try {
-            let res = await request.post('/user/login', {
+            let res = await request.post('/user/admin', {
               account: this.loginForm.account,
               password: this.loginForm.password
             });

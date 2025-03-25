@@ -1,14 +1,12 @@
 import axios from 'axios'
 
-// 创建一个axios对象出来
+// 创建axios对象
 const request = axios.create({
     baseURL: 'http://localhost:8090/api',
     timeout: 5000
 })
 
 // request 拦截器
-// 可以自请求发送前对请求做一些处理
-// 比如统一加token，对请求参数统一加密
 request.interceptors.request.use(config => {
     config.headers['Content-Type'] = 'application/json;charset=utf-8';
 

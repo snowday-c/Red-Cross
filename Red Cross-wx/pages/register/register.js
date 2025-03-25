@@ -1,3 +1,5 @@
+const app = getApp();
+
 Page({
   data: {
     username: '',
@@ -65,8 +67,8 @@ Page({
       return;
     }
 
-    wx.request({
-      url: 'http://localhost:8090/api/user/email/sendCode', // 发送验证码
+    app.request({
+      url: '/user/email/sendCode', // 发送验证码
       method: 'POST',
       data: { email },
       success: (res) => {
@@ -129,15 +131,15 @@ Page({
     }
 
     // 先验证验证码
-    wx.request({
-      url: 'http://localhost:8090/api/user/email/verifyCode', // 验证验证码
+    app.request({
+      url: '/user/email/verifyCode', // 验证验证码
       method: 'POST',
       data: { email, code },
       success: (res) => {
         if (res.data.code === '0') {
           // 验证码正确，发送注册请求
-          wx.request({
-            url: 'http://localhost:8090/api/user/register',
+          app.request({
+            url: '/user/register',
             method: 'POST',
             header: {
               'Content-Type': 'application/json'

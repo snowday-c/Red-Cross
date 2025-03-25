@@ -62,7 +62,7 @@
     </update>
     <!-- 更新用户信息 -->
     <update id="updateUserInfo" parameterType="com.example.redcross.entity.User">
-        UPDATE user SET user_name = #{userName}, picture_url = #{pictureUrl}, email = #{email} WHERE account = #{account}
+        UPDATE user SET user_name = #{userName}, picture_url = #{pictureUrl}, email = #{email}, account = #{account} WHERE user_id = #{userId}
     </update>
     <!-- 更新用户密码 -->
     <update id="updatePassword" parameterType="String">

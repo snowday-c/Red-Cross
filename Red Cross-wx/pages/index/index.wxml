@@ -1,27 +1,70 @@
-<!-- 轮播图 -->
-<view class="swiper">
-  <swiper 
-  autoplay="true" 
-  interval="3000" 
-  circular="true"
-  indicator-dots="true" 
-  indicator-color="#fff"
-  indicator-active-color="#ff6666"
-  >
-    <swiper-item>
-      <image src="/assets/swiper/swiper1.png" mode=""/>
-    </swiper-item>
-    <swiper-item>
-      <image src="/assets/swiper/swiper2.png" mode=""/>
-    </swiper-item>
-    <swiper-item>
-      <image src="/assets/swiper/swiper3.png" mode=""/>
-    </swiper-item>
-  </swiper>
-</view>
-<!-- 区域 -->
-<view>
-  <navigator url="/pages/login/login">
-    <button>点击登录</button>
+<!--index.wxml-->
+<view class="page-container">
+  <!-- 轮播图区域 -->
+  <view class="swiper">
+    <swiper 
+      autoplay="true" 
+      interval="3000" 
+      circular="true"
+      indicator-dots="true" 
+      indicator-color="#fff"
+      indicator-active-color="#ff6666"
+    >
+      <swiper-item>
+        <image src="/assets/swiper/swiper1.png" mode="aspectFill"/>
+      </swiper-item>
+      <swiper-item>
+        <image src="/assets/swiper/swiper2.png" mode="aspectFill"/>
+      </swiper-item>
+      <swiper-item>
+        <image src="/assets/swiper/swiper3.png" mode="aspectFill"/>
+      </swiper-item>
+    </swiper>
+  </view>
+
+<!-- 登录区域 - 根据登录状态显示/隐藏 -->
+<view class="login-container" wx:if="{{!isLoggedIn}}">
+  <navigator url="/pages/login/login" hover-class="none">
+    <button class="login-btn">立即登录/注册</button>
   </navigator>
+</view>
+
+<!-- 已登录用户欢迎语 -->
+<view class="welcome-container" wx:else>
+  <view class="welcome-text">欢迎回来，{{userInfo.userName || '用户'}}</view>
+  <navigator url="/pages/myself/myself" class="profile-link">
+    查看个人中心 >
+  </navigator>
+</view>
+
+  <!-- 通知区域 -->
+  <view class="notice-container">
+    <view class="notice-header">
+      <view class="notice-title-wrapper">
+        <image src="/assets/icons/000.png" class="notice-icon"></image>
+        <text class="notice-title">公告</text>
+      </view>
+      <navigator url="/pages/notices/notices" class="more-notice">更多 ></navigator>
+    </view>
+    <view class="notice-content" bindtap="navigateToNotices">
+      <view class="notice-title-text">{{currentNotice.title || '加载中...'}}</view>
+      <view class="notice-time">{{currentNotice.displayTime || currentNotice.time || ''}}</view>
+    </view>
+  </view>
+
+  <!-- 宣传标语区域 -->
+  <view class="slogan-container">
+    <view class="slogan-item">
+      <image src="/assets/icons/001.png" class="slogan-icon"></image>
+      <text class="slogan-text">专业培训铸就生命防线，红十字守护每一刻安全</text>
+    </view>
+    <view class="slogan-item">
+      <image src="/assets/icons/001.png" class="slogan-icon"></image>
+      <text class="slogan-text">从理论到实战，我们培养的不只是救生员——更是生命的守护者</text>
+    </view>
+    <view class="slogan-item">
+      <image src="/assets/icons/001.png" class="slogan-icon"></image>
+      <text class="slogan-text">一键管理，全程护航——让每一次救援都高效精准</text>
+    </view>
+  </view>
 </view>

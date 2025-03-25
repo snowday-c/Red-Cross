@@ -61,7 +61,7 @@
                    #{userId},
                    #{trainPlace},
                    #{trainTime},
-                   DATE_ADD(#{trainTime}, INTERVAL 2 YEAR)
+                   DATE_ADD(#{trainTime}, INTERVAL 1 YEAR)
                );
     </insert>
     <!-- 取消报名 -->
