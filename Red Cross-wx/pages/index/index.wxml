@@ -1,43 +1,51 @@
 <!--index.wxml-->
 <view class="page-container">
   <!-- 轮播图区域 -->
-  <view class="swiper">
-    <swiper 
-      autoplay="true" 
-      interval="3000" 
-      circular="true"
-      indicator-dots="true" 
-      indicator-color="#fff"
-      indicator-active-color="#ff6666"
+  <view class="swiper-container">
+    <swiper
+      class="custom-swiper"
+      autoplay="{{true}}"
+      interval="{{3000}}"
+      circular="{{true}}"
+      current="{{currentSwiperIndex}}"
+      bindchange="handleSwiperChange"
     >
       <swiper-item>
-        <image src="/assets/swiper/swiper1.png" mode="aspectFill"/>
+        <image src="/assets/swiper/swiper1.jpg" mode="aspectFill" />
       </swiper-item>
       <swiper-item>
-        <image src="/assets/swiper/swiper2.png" mode="aspectFill"/>
+        <image src="/assets/swiper/swiper2.jpg" mode="aspectFill" />
       </swiper-item>
       <swiper-item>
-        <image src="/assets/swiper/swiper3.png" mode="aspectFill"/>
+        <image src="/assets/swiper/swiper3.jpg" mode="aspectFill" />
       </swiper-item>
     </swiper>
+    <!-- 自定义指示点 -->
+    <view class="indicator-container">
+      <view 
+        wx:for="{{3}}" 
+        wx:key="index" 
+        class="indicator-dot {{currentSwiperIndex === index ? 'active' : ''}}"
+      ></view>
+    </view>
   </view>
 
-<!-- 登录区域 - 根据登录状态显示/隐藏 -->
-<view class="login-container" wx:if="{{!isLoggedIn}}">
-  <navigator url="/pages/login/login" hover-class="none">
-    <button class="login-btn">立即登录/注册</button>
-  </navigator>
-</view>
+  <!-- 登录区域（保持原样） -->
+  <view class="login-container" wx:if="{{!isLoggedIn}}">
+    <navigator url="/pages/login/login" hover-class="none">
+      <button class="login-btn">立即登录/注册</button>
+    </navigator>
+  </view>
 
-<!-- 已登录用户欢迎语 -->
-<view class="welcome-container" wx:else>
-  <view class="welcome-text">欢迎回来，{{userInfo.userName || '用户'}}</view>
-  <navigator url="/pages/myself/myself" class="profile-link">
-    查看个人中心 >
-  </navigator>
-</view>
+  <!-- 已登录用户欢迎语（保持原样） -->
+  <view class="welcome-container" wx:else>
+    <view class="welcome-text">欢迎回来，{{userInfo.userName || '用户'}}</view>
+    <navigator url="/pages/myself/myself" class="profile-link">
+      查看个人中心 >
+    </navigator>
+  </view>
 
-  <!-- 通知区域 -->
+  <!-- 通知区域（保持原样） -->
   <view class="notice-container">
     <view class="notice-header">
       <view class="notice-title-wrapper">
@@ -52,7 +60,7 @@
     </view>
   </view>
 
-  <!-- 宣传标语区域 -->
+  <!-- 宣传标语区域（保持原样） -->
   <view class="slogan-container">
     <view class="slogan-item">
       <image src="/assets/icons/001.png" class="slogan-icon"></image>

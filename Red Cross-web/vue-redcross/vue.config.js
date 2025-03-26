@@ -14,7 +14,9 @@ module.exports = {
     }
   },
 
+
   devServer: {
+    port: 3200,     //项目端口
     proxy: {
       '/api': {
         target: 'http://localhost:8090', // 后端地址

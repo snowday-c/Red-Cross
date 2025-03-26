@@ -1,10 +1,12 @@
 const app = getApp();
+
 Page({
   data: {
-    currentNotice: {},
-    allNotices: [],
-    isLoggedIn: false, // 登录状态标识
-    userInfo: null    // 用户信息存储
+    currentSwiperIndex: 0,    // 当前轮播图索引
+    currentNotice: {},        // 当前显示的通知
+    allNotices: [],           // 所有通知列表
+    isLoggedIn: false,        // 登录状态标识
+    userInfo: null            // 用户信息存储
   },
 
   onLoad: function() {
@@ -12,12 +14,10 @@ Page({
     this.fetchNotices();
   },
 
-  // 检查登录状态（仅从本地存储获取）
+  // 检查登录状态（从本地存储获取）
   checkLoginStatus: function() {
-    // 直接从本地存储获取用户信息
     const userInfo = wx.getStorageSync('userInfo');
     
-    // 如果有用户信息且包含必要字段（如token），则认为已登录
     if (userInfo && userInfo.token) {
       this.setData({
         isLoggedIn: true,
@@ -31,7 +31,14 @@ Page({
     }
   },
 
-  // 获取通知数据（保持不变）
+  // 轮播图切换事件
+  handleSwiperChange: function(e) {
+    this.setData({
+      currentSwiperIndex: e.detail.current
+    });
+  },
+
+  // 获取通知数据
   fetchNotices: function() {
     app.request({
       url: '/message/public',
@@ -68,7 +75,7 @@ Page({
     });
   },
 
-  // 跳转到通知页面（保持不变）
+  // 跳转到通知页面
   navigateToNotices: function() {
     if (this.data.allNotices.length > 0) {
       wx.navigateTo({

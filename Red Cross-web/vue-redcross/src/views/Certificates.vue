@@ -44,6 +44,15 @@
       <el-table-column prop="certificateContent" label="证书内容"></el-table-column>
       <el-table-column prop="certificateTime" label="发放时间" width="180"></el-table-column>
       <el-table-column prop="approver" label="审核人" width="120"></el-table-column>
+      <el-table-column label="操作" width="120" v-if="isSuperAdmin">
+        <template slot-scope="scope">
+          <el-button 
+            type="danger" 
+            size="small" 
+            @click="confirmDelete(scope.row)"
+          >删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- 已发放证书分页 -->
     <el-pagination
@@ -91,16 +100,11 @@ export default {
       ruleDialogVisible: false // 审核规则对话框显示状态
     };
   },
-  created() {
-    this.fetchWaitCertificates();
-    this.fetchApprovedCertificates();
-
-    const userString = localStorage.getItem('CurrentUser');
-    if (userString) {
-      this.user = JSON.parse(userString);
-    }
-  },
   computed: {
+    // 判断当前用户是否是超级管理员
+    isSuperAdmin() {
+      return this.user && this.user.userType === 2;
+    },
     // 筛选后的已发放证书列表
     filteredApprovedCertificates() {
       if (!this.searchUserId) {
@@ -121,6 +125,15 @@ export default {
       const start = (this.approvedCurrentPage - 1) * this.pageSize;
       const end = start + this.pageSize;
       return this.filteredApprovedCertificates.slice(start, end);
+    }
+  },
+  created() {
+    this.fetchWaitCertificates();
+    this.fetchApprovedCertificates();
+
+    const userString = localStorage.getItem('CurrentUser');
+    if (userString) {
+      this.user = JSON.parse(userString);
     }
   },
   methods: {
@@ -230,6 +243,44 @@ export default {
       } catch (error) {
         console.error('拒绝审核失败:', error);
         this.$message.error('拒绝审核失败: ' + error.message);
+      }
+    },
+    // 确认删除证书
+    confirmDelete(certificate) {
+      MessageBox.confirm('确定要删除该证书吗？此操作不可恢复！', '警告', {
+        confirmButtonText: '确定删除',
+        cancelButtonText: '取消',
+        type: 'warning',
+        confirmButtonClass: 'el-button--danger'
+      })
+        .then(() => {
+          this.deleteCertificate(certificate);
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除操作'
+          });
+        });
+    },
+    // 删除证书
+    async deleteCertificate(certificate) {
+      try {
+        const response = await request.post('/certificate/delete', {
+          certificateId: certificate.certificateId
+        });
+        if (response.data.code == 0) {
+          this.$message({
+            type: 'success',
+            message: '证书删除成功！'
+          });
+          this.fetchApprovedCertificates();
+        } else {
+          this.$message.error('删除失败: ' + response.data.message);
+        }
+      } catch (error) {
+        console.error('删除证书失败:', error);
+        this.$message.error('删除证书失败: ' + error.message);
       }
     },
     // 处理等待审核证书分页变化
