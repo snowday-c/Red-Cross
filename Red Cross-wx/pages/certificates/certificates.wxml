@@ -1,14 +1,15 @@
 <view class="container">
+  <view wx:if="{{certificates.length === 0}}" class="empty-tip">暂未获得证书</view>
   <view wx:for="{{certificates}}" wx:key="certificateId" class="certificate-item">
     <!-- 使用 <image/> 标签作为背景 -->
-    <image src="/assets/swiper/swiper1.png" mode="aspectFit" class="certificate-bg"></image>
-    <!-- 证书标题居中 -->
+    <image src="/assets/other/certificate.png" mode="scaleToFill" class="certificate-bg"></image>
+    <!-- 证书标题 -->
     <view class="certificate-title">{{item.certificateTitle}}</view>
     <!-- 证书内容 -->
     <view class="certificate-content">{{item.certificateContent}}</view>
     <!-- 证书发放时间和审批人 -->
     <view class="certificate-footer">
-      <text class="certificate-time">获得时间：{{item.certificateTime}}</text>
+      <text class="certificate-time">{{item.certificateTime}}</text>
       <text class="approver">审批人：{{item.approver}}</text>
     </view>
   </view>

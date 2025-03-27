@@ -54,7 +54,7 @@
     </select>
     <!-- 注销用户-->
     <delete id="logout" parameterType="com.example.redcross.entity.User" >
-            DELETE FROM user WHERE account = #{account} AND password = #{password} AND user_type = 0
+            DELETE FROM user WHERE account = #{account} AND password = #{password} AND email = #{email} AND user_type = 0
     </delete>
     <!-- 更新用户权限 -->
     <update id="updateUserType" parameterType="com.example.redcross.entity.User">
@@ -63,6 +63,15 @@
     <!-- 更新用户信息 -->
     <update id="updateUserInfo" parameterType="com.example.redcross.entity.User">
         UPDATE user SET user_name = #{userName}, picture_url = #{pictureUrl}, email = #{email}, account = #{account} WHERE user_id = #{userId}
+    </update>
+    <!-- 更新消息表中用户名 -->
+    <update id="updateMessageUserName">
+        UPDATE message
+        SET
+            receiver = CASE WHEN receiver = #{oldName} THEN #{userName} ELSE receiver END,
+            sender = CASE WHEN sender = #{oldName} THEN #{userName} ELSE sender END
+        WHERE
+            receiver = #{oldName} OR sender = #{oldName}
     </update>
     <!-- 更新用户密码 -->
     <update id="updatePassword" parameterType="String">

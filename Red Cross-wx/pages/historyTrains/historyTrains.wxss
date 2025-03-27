@@ -37,3 +37,12 @@
   padding: 8px 16px;
   margin-top: 10px;
 }
+
+.empty-tip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 16px;
+  color: #999;
+}

@@ -15,13 +15,15 @@ public interface UserMapper {
 
     Boolean isAccountExist(String account);    // 账号是否存在
 
+    Boolean isUserNameExist(String userName);    // 用户名是否存在
+
     Boolean isSuperAdmin(Integer userId);    // 是否超级管理员
 
     Boolean login(String account, String password);    // 登录
 
     Boolean admin(String account, String password);    // 管理员登录
 
-    Boolean logout(String account, String password);    // 用户注销
+    Boolean logout(String email, String account, String password);    // 用户注销
 
     //修改用户权限
     Boolean updateUserType(Integer userId,Integer changedUserId, Integer userType);
@@ -40,5 +42,7 @@ public interface UserMapper {
 
     Integer getUserId(String account);
 
-    boolean isUserNameExist(String userName);
+
+
+    Integer updateMessageUserName(String oldName, String userName);
 }

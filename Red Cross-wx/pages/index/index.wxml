@@ -20,7 +20,7 @@
         <image src="/assets/swiper/swiper3.jpg" mode="aspectFill" />
       </swiper-item>
     </swiper>
-    <!-- 自定义指示点 -->
+    <!-- 指示点 -->
     <view class="indicator-container">
       <view 
         wx:for="{{3}}" 
@@ -30,22 +30,23 @@
     </view>
   </view>
 
-  <!-- 登录区域（保持原样） -->
+  <!-- 登录区域 -->
   <view class="login-container" wx:if="{{!isLoggedIn}}">
     <navigator url="/pages/login/login" hover-class="none">
       <button class="login-btn">立即登录/注册</button>
     </navigator>
   </view>
 
-  <!-- 已登录用户欢迎语（保持原样） -->
+  <!-- 已登录用户欢迎语 -->
   <view class="welcome-container" wx:else>
     <view class="welcome-text">欢迎回来，{{userInfo.userName || '用户'}}</view>
-    <navigator url="/pages/myself/myself" class="profile-link">
+    <navigator url="/pages/myself/myself" 
+    open-type="switchTab" class="profile-link">
       查看个人中心 >
     </navigator>
   </view>
 
-  <!-- 通知区域（保持原样） -->
+  <!-- 通知区域 -->
   <view class="notice-container">
     <view class="notice-header">
       <view class="notice-title-wrapper">
@@ -60,7 +61,7 @@
     </view>
   </view>
 
-  <!-- 宣传标语区域（保持原样） -->
+  <!-- 宣传标语区域 -->
   <view class="slogan-container">
     <view class="slogan-item">
       <image src="/assets/icons/001.png" class="slogan-icon"></image>

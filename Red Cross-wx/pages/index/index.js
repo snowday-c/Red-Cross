@@ -14,6 +14,11 @@ Page({
     this.fetchNotices();
   },
 
+  onShow: function() {
+    // 每次页面显示时检查登录状态
+    this.checkLoginStatus();
+  },
+
   // 检查登录状态（从本地存储获取）
   checkLoginStatus: function() {
     const userInfo = wx.getStorageSync('userInfo');

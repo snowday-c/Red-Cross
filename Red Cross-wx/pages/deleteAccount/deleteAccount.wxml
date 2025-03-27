@@ -1,0 +1,56 @@
+<view class="container">
+  <view class="form-container">
+    <view class="form-item">
+      <text class="label">账号</text>
+      <input 
+        class="input" 
+        type="text" 
+        placeholder="请输入您的账号" 
+        value="{{account}}" 
+        bindinput="onAccountInput"
+      />
+    </view>
+    
+    <view class="form-item">
+      <text class="label">密码</text>
+      <input 
+        class="input" 
+        type="password" 
+        placeholder="请输入密码" 
+        value="{{password}}" 
+        bindinput="onPasswordInput"
+      />
+    </view>
+    
+    <view class="form-item">
+      <text class="label">邮箱</text>
+      <input 
+        class="input" 
+        type="text" 
+        placeholder="请输入绑定的邮箱" 
+        value="{{email}}" 
+        bindinput="onEmailInput"
+      />
+    </view>
+    
+    <view class="form-item ">
+      <text class="label">验证码</text>
+      <input 
+        class="input code-input" 
+        type="text" 
+        placeholder="请输入邮箱验证码" 
+        value="{{verificationCode}}" 
+        bindinput="onVerificationCodeInput"
+      />
+
+    </view>
+    <button 
+        class="send-code-btn" 
+        bindtap="sendVerificationCode"
+        disabled="{{isCountingDown}}"
+      >
+        {{countdownText}}
+      </button>
+    <button class="submit-btn" bindtap="submitDeleteAccount">确认注销</button>
+  </view>
+</view>

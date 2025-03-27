@@ -32,6 +32,14 @@ Page({
       return;
     }
 
+    if (account.length < 6) {
+      wx.showToast({ title: '账号至少需要6位', icon: 'none' });
+      return;
+    }
+    if (password.length < 6) {
+      wx.showToast({ title: '密码至少需要6位', icon: 'none' });
+      return;
+    }
     // 登录验证
     app.request({
       url: '/user/login',

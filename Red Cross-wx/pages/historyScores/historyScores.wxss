@@ -3,7 +3,7 @@
   flex-direction: column;
   padding: 20px;
   background-color: #f8f8f8;
-  min-height: 100vh;
+  min-height: 80vh;
 }
 
 .score-list {
@@ -79,4 +79,13 @@
 
 .user-answer {
   margin-left: 20px; /* 如果 gap 不支持，可以用 margin-left 代替 */
+}
+
+.empty-tip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 16px;
+  color: #999;
 }

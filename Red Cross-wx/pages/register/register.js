@@ -12,6 +12,12 @@ Page({
     codeButtonText: '发送验证码', // 验证码按钮文本
     countdown: 60 // 倒计时
   },
+  
+  // 验证邮箱格式
+  validateEmail(email) {
+    const reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+    return reg.test(email);
+  },
 
   // 获取用户名输入
   onUsernameInput(e) {
@@ -66,6 +72,14 @@ Page({
       });
       return;
     }
+    // 添加邮箱格式验证
+    if (!this.validateEmail(email)) {
+      wx.showToast({
+        title: '邮箱格式不正确',
+        icon: 'none'
+      });
+      return;
+    }    
 
     app.request({
       url: '/user/email/sendCode', // 发送验证码
@@ -122,6 +136,15 @@ Page({
       return;
     }
 
+    if (account.length < 6) {
+      wx.showToast({ title: '账号至少需要6位', icon: 'none' });
+      return;
+    }
+    if (password.length < 6 || confirmPassword.length < 6) {
+      wx.showToast({ title: '密码至少需要6位', icon: 'none' });
+      return;
+    }
+
     if (password !== confirmPassword) {
       wx.showToast({
         title: '两次输入的密码不一致',
@@ -130,6 +153,14 @@ Page({
       return;
     }
 
+    // 添加邮箱格式验证
+    if (!this.validateEmail(email)) {
+      wx.showToast({
+        title: '邮箱格式不正确',
+        icon: 'none'
+      });
+      return;
+    }
     // 先验证验证码
     app.request({
       url: '/user/email/verifyCode', // 验证验证码

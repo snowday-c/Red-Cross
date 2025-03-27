@@ -15,7 +15,9 @@
     "pages/certificates/certificates",
     "pages/historyTrains/historyTrains",
     "pages/messages/messages",
-    "pages/notices/notices"
+    "pages/notices/notices",
+    "pages/deleteAccount/deleteAccount",
+    "pages/changePassword/changePassword"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ff6666",

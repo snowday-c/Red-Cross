@@ -88,15 +88,15 @@ public class UserController {
     public Result registerUser(@RequestBody User user) {
         // 若账户已注册，则返回错误信息
         if (userService.isAccountExist(user.getAccount())) {
-            throw new UserException("此账号已注册");
+            throw new UserException("此账号已存在");
         }
         //若邮箱已注册，则返回错误信息
         if (userService.isEmailExist(user.getEmail())) {
-            throw new UserException("此邮箱已注册");
+            throw new UserException("此邮箱已存在");
         }
         //若用户名已注册，则返回错误信息
         if (userService.isUserNameExist(user.getUserName())) {
-            throw new UserException("此用户名已注册");
+            throw new UserException("此用户名已存在");
         }
 
         userService.register(user);
@@ -108,7 +108,7 @@ public class UserController {
         String account = user.getAccount();
         String password = user.getPassword();
         // 登录成功返回用户，失败返回错误信息
-        if (userService.login(account, password)) {
+        if (userService.login(account, password) != null) {
             User CurrentUser = userService.getUserByAccount(account);
             Integer userId = CurrentUser.getUserId();
             String token = JwtTokenUtils.genToken(userId.toString(), password);
@@ -140,9 +140,10 @@ public class UserController {
     //TODO:注销需要发送邮箱验证码
     @PostMapping("/logout")
     public Result logout(@RequestBody User user) {
+        String email = user.getEmail();
         String account = user.getAccount();
         String password = user.getPassword();
-        if (userService.logout(account, password)) {
+        if (userService.logout(email, account, password)) {
             return Result.success();
         }
         throw new UserException("注销失败，请检查账号和密码是否正确");
@@ -187,12 +188,20 @@ public class UserController {
                 return Result.error("此账号已注册");
             }
         }
-        // 4. 更新用户信息
-        if (userService.updateUserInfo(user)) {
-            return Result.success();
-        } else {
-            return Result.error("修改失败");
+        // 4. 检查用户名是否修改
+        if (!existingUser.getUserName().equals(user.getOldName())) {
+            // 如果用户名已修改，检查新用户名是否已被其他用户占用
+            if (userService.isUserNameExist(user.getUserName())) {
+                return Result.error("此用户名已注册");
+            }
         }
+        // 5. 更新用户信息
+        if (userService.updateUserInfo(user)) {
+            if (userService.updateMessageUserName(user.getOldName(), user.getUserName()) >=0){
+            return Result.success();
+            }
+        }
+        return Result.error("修改失败");
     }
 
     //修改密码

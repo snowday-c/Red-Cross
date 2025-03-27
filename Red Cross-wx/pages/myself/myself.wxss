@@ -6,18 +6,19 @@
 }
 
 .header {
+  background-color: rgb(238, 227, 227);
   display: flex;
-  align-items: center; /* 垂直居中 */
-  width: 100%;
+  align-items: center;
+  width: 110%;
   margin-bottom: 20px;
 }
 
 .avatar-container {
-  width: 80px; /* 调整头像容器大小 */
-  height: 80px;
+  margin-left: 20rpx;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   overflow: hidden;
-  margin-right: 10px; /* 头像和用户名之间的间距 */
 }
 
 .avatar {
@@ -26,29 +27,34 @@
 }
 
 .username {
-  margin-left: 30px;
+  margin-left: 3%;
   font-size: 18px;
   font-weight: bold;
   color: #333;
-  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
 }
 
 .logout-button {
-  background-color: transparent;
+  max-width: 180rpx;
+  min-height: 50rpx;
+  background-color: rgb(240, 97, 97);
   border: none;
-  color: #f00;
-  font-size: 14px;
-  padding: 5px 10px;
-  margin-left: auto; /* 将按钮推到最右边 */
+  color: rgb(0, 0, 0);
+  font-size: 16px;
+  padding: 0px 0px;
 }
 
 .content {
+  margin-top: 5%;
   width: 100%;
 }
 
 .item {
   padding: 15px;
-  border-bottom: 1px solid #eee;
+  border-top: 1px solid rgb(177, 89, 89);
 }
 
 .label {
@@ -104,15 +110,15 @@
 }
 
 .modal-content {
-  width: 90%; /* 弹窗宽度 */
+  width: 90%;
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
-  max-height: 80vh; /* 弹窗最大高度 */
+  max-height: 80vh;
 }
 
 .avatar-scroll {
-  height: 60vh; /* 设置 scroll-view 的高度 */
+  height: 60vh;
 }
 
 .avatar-grid {
@@ -123,13 +129,13 @@
 }
 
 .avatar-item {
-  width: 45%; /* 每个头像项的宽度 */
+  width: 45%;
   margin-bottom: 10px;
 }
 
 .avatar-image {
   width: 100%;
-  height: 100px; /* 头像图片高度 */
+  height: 100px;
   border-radius: 50%;
 }
 
@@ -139,4 +145,105 @@
   font-size: 16px;
   color: #f00;
   border-top: 1px solid #eee;
+}
+
+/* 设置按钮容器样式 */
+.settings-container {
+  position: absolute;
+  right: 5rpx;       
+  top: 2rpx;
+  z-index: 10;
+}
+
+/* 设置图标样式 */
+.settings-icon {
+  width: 40rpx;
+  height: 40rpx;
+  display: block;     /* 消除图片间隙 */
+}
+
+/* 设置菜单样式 */
+.settings-menu {
+  position: absolute;
+  right: 0;           /* 与容器右对齐 */
+  top: 60rpx;         /* 在图标下方 */
+  width: 300rpx;
+  background: rgb(158, 147, 147);
+  border-radius: 8rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.menu-item {
+  padding: 12px 15px;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item:active {
+  background-color: #f5f5f5;
+}
+
+/* 注销账号弹窗样式 */
+.delete-account-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.delete-account-modal .modal-content {
+  width: 80%;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.delete-account-modal .modal-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.delete-account-modal .modal-text {
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.delete-account-modal .modal-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.delete-account-modal .modal-button {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  border-radius: 5px;
+}
+
+.delete-account-modal .cancel {
+  background-color: #f5f5f5;
+  color: #333;
+  margin-right: 10px;
+}
+
+.delete-account-modal .confirm {
+  background-color: #ff4d4f;
+  color: #fff;
 }

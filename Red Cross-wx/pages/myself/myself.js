@@ -5,6 +5,8 @@ Page({
     userInfo: {}, // 用户信息
     showEditModal: false, // 是否显示修改弹窗
     showAvatarPicker: false, // 是否显示头像选择弹窗
+    showSettingsMenu: false, // 是否显示设置菜单
+    showDeleteAccountModal: false, // 是否显示注销账号弹窗
     avatarList: [
       '/assets/avatar/avatar1.jpg',
       '/assets/avatar/avatar2.jpg',
@@ -31,34 +33,46 @@ Page({
     // 每次页面显示时，从本地缓存中获取用户信息并更新页面数据
     const userInfo = wx.getStorageSync('userInfo');
     this.setData({
-      userInfo
+      userInfo,
+      showSettingsMenu: false // 隐藏设置菜单
     });
   },
   
-  // 退出登录
-  logout() {
-    wx.showModal({
-      title: '提示',
-      content: '确定要退出登录吗？',
-      success: (res) => {
-        if (res.confirm) {
-          // 清除本地缓存中的用户信息
-          wx.removeStorageSync('userInfo');
-          // 更新页面数据
-          this.setData({
-            userInfo: {}
-          });
-          wx.showToast({
-            title: '已退出登录',
-            icon: 'none'
-          });
-          wx.switchTab({
-            url: '/pages/index/index',
+// 退出登录
+logout() {
+  wx.showModal({
+    title: '提示',
+    content: '确定要退出登录吗？',
+    success: (res) => {
+      if (res.confirm) {
+        // 清除本地缓存中的用户信息
+        wx.removeStorageSync('userInfo');
+        // 更新页面数据
+        this.setData({
+          userInfo: {}
+        });
+        wx.showToast({
+          title: '已退出登录',
+          icon: 'none'
+        });
+        
+        // 获取首页页面实例并更新登录状态
+        const pages = getCurrentPages();
+        const indexPage = pages.find(page => page.route === 'pages/index/index');
+        if (indexPage) {
+          indexPage.setData({
+            isLoggedIn: false,
+            userInfo: null
           });
         }
+        
+        wx.switchTab({
+          url: '/pages/index/index',
+        });
       }
-    });
-  },
+    }
+  });
+},
 
   // 显示修改选项弹窗
   showEditOptions() {
@@ -151,7 +165,7 @@ Page({
       data: {
         userId: wx.getStorageSync('userInfo').userId,
         userName: wx.getStorageSync('userInfo').userName,
-        pictureUrl: selectedAvatar, // 发送选择的头像路径
+        pictureUrl: selectedAvatar,
         account: wx.getStorageSync('userInfo').account,
         email: wx.getStorageSync('userInfo').email
       },
@@ -164,7 +178,7 @@ Page({
           });
           // 更新本地缓存中的用户信息
           const userInfo = wx.getStorageSync('userInfo');
-          userInfo.pictureUrl = selectedAvatar; // 更新头像路径
+          userInfo.pictureUrl = selectedAvatar;
           wx.setStorageSync('userInfo', userInfo);
 
           // 更新页面数据，触发重新渲染
@@ -192,7 +206,7 @@ Page({
   // 修改用户名
   changeUsername() {
     if (!this.checkLogin()) return;
-    const that = this; // 保存当前页面的 this 上下文
+    const that = this;
     wx.showModal({
       title: '修改用户名',
       content: '请输入新的用户名',
@@ -209,6 +223,7 @@ Page({
             data: {
               userId: wx.getStorageSync('userInfo').userId,
               pictureUrl: wx.getStorageSync('userInfo').pictureUrl,
+              oldName: wx.getStorageSync('userInfo').userName,
               userName: newUsername,
               account: wx.getStorageSync('userInfo').account,
               email: wx.getStorageSync('userInfo').email
@@ -246,5 +261,46 @@ Page({
       }
     });
     this.hideEditOptions();
+  },
+
+  // 切换设置菜单显示状态
+  toggleSettingsMenu() {
+    this.setData({
+      showSettingsMenu: !this.data.showSettingsMenu
+    });
+  },
+
+  // 跳转到修改密码页面
+  navigateToChangePassword() {
+    if (!this.checkLogin()) return;
+    this.setData({ showSettingsMenu: false });
+    wx.navigateTo({
+      url: '/pages/changePassword/changePassword'
+    });
+  },
+
+  // 显示注销账号确认弹窗
+  showDeleteAccountModal() {
+    this.setData({
+      showSettingsMenu: false,
+      showDeleteAccountModal: true
+    });
+  },
+
+  // 隐藏注销账号确认弹窗
+  hideDeleteAccountModal() {
+    this.setData({
+      showDeleteAccountModal: false
+    });
+  },
+
+  // 注销账号
+  deleteAccount() {
+    this.setData({
+      showDeleteAccountModal: false
+    });
+    wx.navigateTo({
+      url: '/pages/deleteAccount/deleteAccount'
+    });
   }
 });

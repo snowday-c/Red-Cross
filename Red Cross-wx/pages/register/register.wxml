@@ -25,7 +25,7 @@
     </view>
     <view class="input-group">
       <text class="label">验证码：</text>
-      <input class="input" placeholder="请输入验证码" bindinput="onCodeInput" />
+      <input class="input" placeholder="请输入邮箱验证码" bindinput="onCodeInput" />
 
     </view>
     <button class="code-btn" bindtap="sendCode" disabled="{{isCodeSent}}">{{codeButtonText}}</button>

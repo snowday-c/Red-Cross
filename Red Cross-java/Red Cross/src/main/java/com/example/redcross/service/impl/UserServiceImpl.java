@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isUserNameExist(String userName) {
+    public Boolean isUserNameExist(String userName) {
         return userMapper.isUserNameExist(userName);
     }
 
@@ -66,8 +66,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean logout(String account, String password) {
-        return userMapper.logout(account, password);
+    public Boolean logout(String email, String account, String password) {
+        return userMapper.logout(email, account, password);
     }
 
     @Override
@@ -108,5 +108,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer getUserId(String account) {
         return userMapper.getUserId(account);
+    }
+
+    @Override
+    public Integer updateMessageUserName(String oldName, String userName) {
+        return userMapper.updateMessageUserName(oldName, userName);
     }
 }

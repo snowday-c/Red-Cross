@@ -1,5 +1,8 @@
 <view class="container">
   <!-- 消息列表 -->
+  <view wx:if="{{messageList.length === 0}}" class="empty-tip">
+    <text>暂无消息</text>
+  </view>
   <view class="message-list">
     <block wx:for="{{messageList}}" wx:key="messageId">
       <view class="message-item" bindtap="toggleMessage" data-index="{{index}}">
@@ -15,8 +18,4 @@
     </block>
   </view>
 
-  <!-- 无消息时的提示 -->
-  <view wx:if="{{messageList.length === 0}}" class="empty-tip">
-    <text>暂无消息</text>
-  </view>
 </view>

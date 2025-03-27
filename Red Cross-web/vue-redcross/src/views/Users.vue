@@ -80,7 +80,8 @@ export default {
       userTypeDialogVisible: false, // 修改用户类型对话框是否显示
       currentUser: {}, // 当前修改的用户
       currentPage: 1, // 当前页码
-      pageSize: 6 // 每页显示的数据条数
+      pageSize: 6, // 每页显示的数据条数
+      originalUserName: '' // 新增：用于保存原始用户名
     };
   },
   computed: {
@@ -118,17 +119,20 @@ export default {
     },
     handleEdit(user) {
       this.currentUser = { ...user }; // 复制用户数据
+      this.originalUserName = user.userName; // 保存原始用户名
       this.dialogVisible = true; // 显示修改用户对话框
-      console.log('当前用户:', this.currentUser); // 打印当前用户
     },
     handleEditUserType(user) {
       this.currentUser = { ...user }; // 复制用户数据
       this.userTypeDialogVisible = true; // 显示修改用户类型对话框
-      console.log('当前用户:', this.currentUser); // 打印当前用户
     },
     async saveUser() {
       try {
-        let res = await request.post('/user/update/userInfo', this.currentUser);
+        const requestData = {
+      ...this.currentUser,
+      oldName: this.originalUserName // 使用保存的原始用户名
+    };
+        let res = await request.post('/user/update/userInfo', requestData);
         if (res.data.code == 0) {
           this.dialogVisible = false; // 关闭对话框
           this.fetchUsers(); // 重新获取用户数据

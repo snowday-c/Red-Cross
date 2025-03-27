@@ -1,4 +1,7 @@
 <view class="container">
+  <view wx:if="{{trainRecords.length === 0}}" class="empty-tip">
+    <text>暂无技能培训记录</text>
+  </view>
   <view wx:for="{{trainRecords}}" wx:key="trainId" class="record-item">
     <view class="record-info">
       <text class="train-place">培训地点：{{item.trainPlace}}</text>

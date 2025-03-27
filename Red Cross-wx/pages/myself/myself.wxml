@@ -2,11 +2,20 @@
   <view class="header">
     <!-- 用户头像 -->
     <view class="avatar-container" bindtap="showEditOptions">
-      <image class="avatar" src="{{userInfo.pictureUrl ? userInfo.pictureUrl : '/assets/avatar/avatar0.jpg'}}" />
+      <image class="avatar" src="{{userInfo.pictureUrl ? userInfo.pictureUrl : '/assets/avatar/avatar0.jpg'}}" mode="aspectFill"/>
     </view>
 
     <!-- 用户名 -->
     <text class="username">{{userInfo.userName || '未登录'}}</text>
+
+    <!-- 设置按钮 -->
+    <view class="settings-container" wx:if="{{userInfo.userId}}">
+      <image class="settings-icon" src="/assets/icons/settings.png" bindtap="toggleSettingsMenu" />
+      <view class="settings-menu" wx:if="{{showSettingsMenu}}">
+        <view class="menu-item" bindtap="navigateToChangePassword">修改密码</view>
+        <view class="menu-item" bindtap="showDeleteAccountModal">注销账号</view>
+      </view>
+    </view>
 
     <!-- 退出登录按钮（仅在登录后显示） -->
     <button class="logout-button" wx:if="{{userInfo.userId}}" bindtap="logout">退出登录</button>
@@ -44,10 +53,22 @@
     <scroll-view class="avatar-scroll" scroll-y>
       <view class="avatar-grid">
         <view class="avatar-item" wx:for="{{avatarList}}" wx:key="index" bindtap="selectAvatar" data-index="{{index}}">
-          <image class="avatar-image" src="{{item}}"></image>
+          <image class="avatar-image" src="{{item}}" mode="aspectFill"></image>
         </view>
       </view>
     </scroll-view>
     <view class="option cancel" bindtap="hideAvatarPicker">取消</view>
+  </view>
+</view>
+
+<!-- 注销账号确认弹窗 -->
+<view class="delete-account-modal" wx:if="{{showDeleteAccountModal}}">
+  <view class="modal-content">
+    <view class="modal-title">确认注销账号</view>
+    <view class="modal-text">注销账号将永久删除您的所有数据，且无法恢复。确定要继续吗？</view>
+    <view class="modal-buttons">
+      <view class="modal-button cancel" bindtap="hideDeleteAccountModal">取消</view>
+      <view class="modal-button confirm" bindtap="deleteAccount">确认注销</view>
+    </view>
   </view>
 </view>

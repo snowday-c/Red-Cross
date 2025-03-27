@@ -20,8 +20,12 @@ Page({
       },
       success: (res) => {
         if (res.data.code === '0') {
+          // 对证书按 certificateId 降序排列
+          const sortedCertificates = res.data.data.sort((a, b) => {
+            return b.certificateId - a.certificateId; // 从大到小排序
+          });
           this.setData({
-            certificates: res.data.data,
+            certificates: sortedCertificates,
           });
         } else {
           wx.showToast({

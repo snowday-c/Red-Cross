@@ -1,3 +1,6 @@
+<view wx:if="{{historyScores.length === 0}}" class="empty-tip">
+    <text>暂无知识培训记录</text>
+  </view>
 <view wx:for="{{historyScores}}" wx:key="examId">
   <view class="score-item">
     <view class="score-header" bindtap="toggleExamDetail" data-exam-id="{{item.examId}}">

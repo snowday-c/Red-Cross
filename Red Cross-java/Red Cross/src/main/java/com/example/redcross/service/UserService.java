@@ -14,13 +14,13 @@ public interface UserService {
 
     Boolean isAccountExist(String account);
 
-    boolean isUserNameExist(String userName);
+    Boolean isUserNameExist(String userName);
 
     Boolean login(String account, String password);
 
     Boolean admin(String account, String password);
 
-    Boolean logout(String account, String password);
+    Boolean logout(String email, String account, String password);
 
     Boolean updateUserType(Integer userId ,Integer changedUserId,Integer userType);
 
@@ -39,4 +39,5 @@ public interface UserService {
     Integer getUserId(String account);
 
 
+    Integer updateMessageUserName(String oldName, String userName);
 }

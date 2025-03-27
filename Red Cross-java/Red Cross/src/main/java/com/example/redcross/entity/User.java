@@ -27,6 +27,8 @@ public class User {
 
     private Integer userType;
 
+    private String salt;
+
     //非数据库字段
     @TableField(exist = false)
     private Integer changedUserId;//修改用户权限时，被修改用户的id
@@ -42,4 +44,7 @@ public class User {
 
     @TableField(exist = false)
     private String code;//验证码
+
+    @TableField(exist = false)
+    private String oldName;//修改用户信息时，旧用户名
 }
