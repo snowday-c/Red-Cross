@@ -51,8 +51,10 @@ public class TrainController {
         String trainPlace = train.getTrainPlace();
         Integer trainType = train.getTrainType();
 
-        trainService.UpdateTrain(trainTime,trainPeople,trainPlace,trainType,trainId);
-        return Result.success();
+        if (trainService.UpdateTrain(trainTime,trainPeople,trainPlace,trainType,trainId) == 1) {
+            return Result.success();
+        }
+        return Result.error("修改失败，请稍后再试！");
     }
 
     @PostMapping("/delete")     //删除培训
@@ -60,8 +62,10 @@ public class TrainController {
 
         Integer trainId = train.getTrainId();
 
-        trainService.DeleteTrain(trainId);
-        return Result.success();
+        if(trainService.DeleteTrain(trainId) == 1){
+            return Result.success();
+        }
+        return Result.error("删除失败，请稍后再试！");
     }
 
     @PostMapping("/join")     //报名培训
@@ -98,6 +102,15 @@ public class TrainController {
         }
         return Result.error("取消报名失败，请稍后再试！");
 
+    }
+    @PostMapping("/participate")     //培训签到
+    public Result ParticipateTrain(@RequestBody Train train){
+        Integer trainId = train.getTrainId();
+        Integer userId = train.getUserId();
+        if(trainService.ParticipateTrain(trainId,userId) == 2){
+            return Result.success("签到成功！");
+        }
+        return Result.error("签到失败，请稍后再试！");
     }
 
     @PostMapping("/historyTrain")     //查询用户培训记录

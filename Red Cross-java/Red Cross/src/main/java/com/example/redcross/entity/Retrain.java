@@ -8,7 +8,9 @@ import lombok.Data;
 @TableName(value = "retrain")
 public class Retrain {
 
-    @TableId(value = "train_id")
+    @TableId(value = "retrain_id")
+    private Integer retrainId;
+
     private Integer trainId;
 
     private String userId;
@@ -18,6 +20,8 @@ public class Retrain {
     private String trainTime;
 
     private String trainNext;
+
+    private String participateType;
 
 
 }

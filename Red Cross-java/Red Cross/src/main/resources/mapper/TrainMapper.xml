@@ -19,8 +19,8 @@
 
     <!-- 生成培训 -->
     <insert id="PublishTrain" >
-        INSERT INTO train (train_time,train_people, train_place,train_type,current_people,user_ids)
-        VALUES (#{trainTime}, #{trainPeople}, #{trainPlace},0,0,'[]')
+        INSERT INTO train (train_time,train_people, train_place,train_type,current_people,user_ids,participate_ids)
+        VALUES (#{trainTime}, #{trainPeople}, #{trainPlace},0,0,'[]','[]')
     </insert>
     <!--更新培训信息 -->
     <update id="UpdateTrain">
@@ -56,14 +56,27 @@
 
     <!-- 报名成功插入复训表 -->
     <insert id="UpdateRetrain">
-        INSERT INTO retrain (train_id, user_id, train_place, train_time, train_next)
+        INSERT INTO retrain (train_id, user_id, train_place, train_time, train_next,participate_type)
         VALUES (   #{trainId},
                    #{userId},
                    #{trainPlace},
                    #{trainTime},
-                   DATE_ADD(#{trainTime}, INTERVAL 1 YEAR)
+                   DATE_ADD(#{trainTime}, INTERVAL 1 YEAR),
+                   0
                );
     </insert>
+    <!--  活动签到-->
+    <update id="ParticipateTrain">
+        UPDATE retrain r, train t
+        SET
+            r.participate_type = 1,
+            t.participate_ids = JSON_ARRAY_APPEND(t.participate_ids, '$', #{userId})
+        WHERE
+            r.train_id = #{trainId}
+          AND r.user_id = #{userId}
+          AND t.train_id = #{trainId}
+    </update>
+
     <!-- 取消报名 -->
     <update id="CancelTrain">
         CALL RemoveUserFromTrain(#{trainId}, #{userId});

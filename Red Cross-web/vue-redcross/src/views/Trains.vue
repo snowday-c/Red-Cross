@@ -48,7 +48,52 @@
       style="margin-top: 20px;"
     ></el-pagination>
 
-    <!-- 对话框保持不变 -->
+<!-- 发布培训对话框 -->
+<el-dialog :visible.sync="publishDialogVisible" title="发布培训" width="30%">
+      <el-form :model="newTrain" label-width="100px">
+        <el-form-item label="培训时间">
+          <el-date-picker v-model="newTrain.trainTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="培训地点">
+          <el-input
+            v-model="newTrain.trainPlaces"
+            placeholder="请输入多个城市名称，用逗号分隔"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="培训人数">
+          <el-input v-model="newTrain.trainPeople" type="number"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="publishDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmPublish">发布</el-button>
+      </span>
+    </el-dialog>
+     <!-- 修改培训对话框 -->
+    <el-dialog :visible.sync="editDialogVisible" title="修改培训" width="30%">
+      <el-form :model="currentTrain" label-width="100px">
+        <el-form-item label="培训时间">
+          <el-date-picker v-model="currentTrain.trainTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="培训地点">
+          <el-input v-model="currentTrain.trainPlace"></el-input>
+        </el-form-item>
+        <el-form-item label="培训状态">
+          <el-select v-model="currentTrain.trainType" placeholder="请选择培训状态">
+            <el-option label="已结束" :value="-1"></el-option>
+            <el-option label="报名中" :value="0"></el-option>
+            <el-option label="进行中" :value="1"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="培训人数">
+          <el-input v-model="currentTrain.trainPeople" type="number"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmEdit">保存</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -167,6 +212,7 @@ export default {
     
     async confirmEdit() {
       try {
+        this.currentTrain.trainTime = dayjs(this.currentTrain.trainTime).format('YYYY-MM-DD HH:mm:ss');
         await request.post('/train/update', this.currentTrain);
         this.editDialogVisible = false;
         this.fetchTrainList();

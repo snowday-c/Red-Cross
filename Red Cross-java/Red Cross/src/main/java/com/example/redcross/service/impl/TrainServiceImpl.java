@@ -83,4 +83,9 @@ public class TrainServiceImpl implements TrainService {
     public Integer DeleteRetrain(Integer trainId, Integer userId) {
         return trainMapper.DeleteRetrain(trainId,userId);
     }
+
+    @Override
+    public Integer ParticipateTrain(Integer trainId, Integer userId) {
+        return trainMapper.ParticipateTrain(trainId,userId);
+    }
 }

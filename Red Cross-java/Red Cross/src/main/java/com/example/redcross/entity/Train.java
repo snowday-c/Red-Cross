@@ -29,6 +29,8 @@ public class Train {
 
     private String userIds;
 
+    private String participateIds;
+
     //非数据库字段
     @TableField(exist = false)
     private Integer userId;
