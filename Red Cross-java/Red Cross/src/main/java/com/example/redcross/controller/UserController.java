@@ -28,7 +28,6 @@ public class UserController {
     public Result sendVerificationCode(@RequestBody User user, HttpServletRequest request) {
         String email = user.getEmail();
         String ip = request.getRemoteAddr(); // 获取客户端IP
-
         // 限制同一IP每分钟最多发送3次验证码
         String ipKey = "email:sendCode:ip:" + ip;
         Long ipCount = redisTemplate.opsForValue().increment(ipKey, 1);
@@ -38,7 +37,6 @@ public class UserController {
         if (ipCount != null && ipCount > 3) {
             return Result.error("请求过于频繁，请稍后再试！");
         }
-
         // 限制同一邮箱每天最多发送20次验证码
         String emailKey = "email:sendCode:email:" + email;
         Long emailCount = redisTemplate.opsForValue().increment(emailKey, 1);
@@ -48,12 +46,10 @@ public class UserController {
         if (emailCount != null && emailCount > 20) {
             return Result.error("该邮箱今日请求次数过多，请明天再试！");
         }
-
         // 生成验证码
         String code = VerificationCodeUtil.generateCode();
         // 存储验证码到 Redis，设置过期时间为 5 分钟
         redisTemplate.opsForValue().set(email, code, 5, TimeUnit.MINUTES);
-
         // 发送邮件
         String subject = "红十字救生员培训";
         String content = "您的验证码是：" + code + "，请勿泄露给他人，请在5分钟内使用。";
@@ -98,24 +94,42 @@ public class UserController {
         if (userService.isUserNameExist(user.getUserName())) {
             throw new UserException("此用户名已存在");
         }
-
         userService.register(user);
         return Result.success();
     }
 
-    @PostMapping("/login") // 用户登录
+    // 检测用户是否已登录
+    @PostMapping("/checkLogin")
+    public Result checkLogin(@RequestBody User user) {
+        try {
+            String account = user.getAccount();
+            User dbUser = userService.getUserByAccount(account);
+            if (dbUser == null) {
+                return Result.error("用户不存在");
+            }
+            // 从Redis中获取用户id
+            String redisKey = "USER_TOKEN:" + dbUser.getUserId();
+            if (redisTemplate.hasKey(redisKey)) {
+                return Result.error( "用户已登录");
+            }
+            return Result.success();
+        } catch (Exception e) {
+            return Result.error("系统异常，请稍后再试");
+        }
+    }
+
+    @PostMapping("/login")
     public Result login(@RequestBody User user) {
         String account = user.getAccount();
         String password = user.getPassword();
-        // 登录成功返回用户，失败返回错误信息
+        // 登录验证
         if (userService.login(account, password) != null) {
-            User CurrentUser = userService.getUserByAccount(account);
-            Integer userId = CurrentUser.getUserId();
+            User currentUser = userService.getUserByAccount(account);
+            Integer userId = currentUser.getUserId();
+            // 生成新token（会自动使旧token失效）
             String token = JwtTokenUtils.genToken(userId.toString(), password);
-            CurrentUser.setToken(token);
-            // 手动剔除不需要的字段
-//            CurrentUser.setAccount(null);  // 剔除账号
-            return Result.success(CurrentUser);
+            currentUser.setToken(token);
+            return Result.success(currentUser);
         }
         throw new UserException("用户名或密码错误");
     }
@@ -124,21 +138,26 @@ public class UserController {
     public Result admin(@RequestBody User user) {
         String account = user.getAccount();
         String password = user.getPassword();
-        // 登录成功返回用户，失败返回错误信息
-        if (userService.admin(account, password)) {
-            User CurrentUser = userService.getUserByAccount(account);
-            Integer userId = CurrentUser.getUserId();
+        // 登录验证
+        if (userService.admin(account, password) != null) {
+            User currentUser = userService.getUserByAccount(account);
+            Integer userId = currentUser.getUserId();
+            // 生成新token（会自动使旧token失效）
             String token = JwtTokenUtils.genToken(userId.toString(), password);
-            CurrentUser.setToken(token);
-            // 手动剔除不需要的字段
-//            CurrentUser.setAccount(null);  // 剔除账号
-            return Result.success(CurrentUser);
+            currentUser.setToken(token);
+            return Result.success(currentUser);
         }
         throw new UserException("用户名或密码错误");
     }
-    // 注销用户
-    //TODO:注销需要发送邮箱验证码
-    @PostMapping("/logout")
+
+    @PostMapping("/forceLogout")     // 管理员强制用户下线
+    public Result forceLogout(@RequestBody User user) {
+        Integer userId = user.getUserId();
+        JwtTokenUtils.invalidateToken(userId);
+        return Result.success("强制下线成功");
+    }
+
+    @PostMapping("/logout")     //注销用户
     public Result logout(@RequestBody User user) {
         String email = user.getEmail();
         String account = user.getAccount();
@@ -148,8 +167,8 @@ public class UserController {
         }
         throw new UserException("注销失败，请检查账号和密码是否正确");
     }
-    // 修改用户权限
-    @PostMapping("/update/userType")
+
+    @PostMapping("/update/userType")    // 修改用户权限
     public Result update(@RequestBody User user) {
         Integer userId = user.getUserId();
         Integer changedUserId = user.getChangedUserId();
@@ -166,8 +185,8 @@ public class UserController {
         }
         throw new UserException("将要修改的权限不合法");
     }
-    //修改用户信息
-    @PostMapping("/update/userInfo")
+
+    @PostMapping("/update/userInfo")    //修改用户信息
     public Result updateUserInfo(@RequestBody User user) {
         // 1. 根据id查询当前用户信息
         User existingUser = userService.getUserById(user.getUserId());
@@ -204,8 +223,7 @@ public class UserController {
         return Result.error("修改失败");
     }
 
-    //修改密码
-    @PostMapping("/update/password")
+    @PostMapping("/update/password")    //修改密码
     public Result updatePassword(@RequestBody User user) {
 
         String account = user.getAccount();
@@ -218,9 +236,7 @@ public class UserController {
         return Result.error("修改失败，请检查账号和密码是否正确");
     }
 
-    //忘记密码
-    //TODO:忘记密码需要发送邮箱验证码
-    @PostMapping("/forget/password")
+    @PostMapping("/forget/password")    //忘记密码
     public Result forgetPassword(@RequestBody User User) {
 
         String account = User.getAccount();

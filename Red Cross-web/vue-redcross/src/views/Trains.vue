@@ -7,7 +7,7 @@
       <div style="display: flex;">
         <el-input
           v-model="searchUserId"
-          placeholder="输入用户ID筛选"
+          placeholder="输入报名用户ID筛选"
           style="width: 200px; margin-right: 10px;"
           clearable
           @clear="clearUserFilter"
@@ -18,18 +18,28 @@
 
     <!-- 培训列表表格 -->
     <el-table :data="paginatedTrainList" style="width: 100%" border>
-      <el-table-column prop="trainTime" label="培训时间" width="150"></el-table-column>
-      <el-table-column prop="trainPlace" label="培训地点" width="150"></el-table-column>
+      <el-table-column prop="trainTime" label="培训时间" width="160"></el-table-column>
+      <el-table-column prop="trainPlace" label="培训地点" width="100"></el-table-column>
       <el-table-column prop="trainType" label="培训状态" width="100" :formatter="formatTrainType"></el-table-column>
-      <el-table-column prop="trainPeople" label="培训人数" width="100"></el-table-column>
-      <el-table-column prop="currentPeople" label="当前人数" width="100"></el-table-column>
-      <el-table-column label="参与用户" width="200">
+      <el-table-column prop="trainPeople" label="培训人数" width="80"></el-table-column>
+      <el-table-column prop="currentPeople" label="当前人数" width="80"></el-table-column>
+      <el-table-column label="报名用户" width="200">
         <template slot-scope="scope">
-          <span v-if="scope.row.userIds">{{ JSON.parse(scope.row.userIds).join(', ') }}</span>
-          <span v-else>无</span>
+          <span v-if="!scope.row.userIds || JSON.parse(scope.row.userIds).length === 0">无</span>
+          <span v-else>
+            {{ formatUserIds(scope.row.userIds) }}
+          </span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="200">
+      <el-table-column label="签到用户" width="200">
+        <template slot-scope="scope">
+          <span v-if="!scope.row.participateIds || JSON.parse(scope.row.participateIds).length === 0">无</span>
+          <span v-else>
+            {{ formatUserIds(scope.row.participateIds) }}
+          </span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="170">
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="handleEdit(scope.row)">修改</el-button>
           <el-button type="danger" size="small" @click="handleDelete(scope.row)">删除</el-button>
@@ -48,8 +58,8 @@
       style="margin-top: 20px;"
     ></el-pagination>
 
-<!-- 发布培训对话框 -->
-<el-dialog :visible.sync="publishDialogVisible" title="发布培训" width="30%">
+    <!-- 发布培训对话框 -->
+    <el-dialog :visible.sync="publishDialogVisible" title="发布培训" width="30%">
       <el-form :model="newTrain" label-width="100px">
         <el-form-item label="培训时间">
           <el-date-picker v-model="newTrain.trainTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
@@ -69,7 +79,8 @@
         <el-button type="primary" @click="confirmPublish">发布</el-button>
       </span>
     </el-dialog>
-     <!-- 修改培训对话框 -->
+    
+    <!-- 修改培训对话框 -->
     <el-dialog :visible.sync="editDialogVisible" title="修改培训" width="30%">
       <el-form :model="currentTrain" label-width="100px">
         <el-form-item label="培训时间">
@@ -131,6 +142,18 @@ export default {
     },
   },
   methods: {
+
+    formatUserIds(idsString) {
+      try {
+        const idsArray = JSON.parse(idsString);
+        if (idsArray.length === 0) return '';
+        const sortedIds = idsArray.map(id => Number(id)).sort((a, b) => a - b);
+        return sortedIds.join(', ');
+      } catch (e) {
+        return idsString;
+      }
+    },
+
     async fetchTrainList() {
       try {
         const response = await request.get('/train/all');

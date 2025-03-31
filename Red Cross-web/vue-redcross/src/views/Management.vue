@@ -172,12 +172,35 @@ export default {
     },
     
     // 退出登录
-    handleLogout() {
-      localStorage.removeItem('CurrentUser');
-      localStorage.removeItem('token');
-      localStorage.removeItem('userId');
-      this.$router.push('/login');
-      this.$message.success('退出登录成功');
+    async handleLogout() {
+      try {
+        //获取当前用户ID
+        const userId = localStorage.getItem('userId');
+        //发送请求到后端清除token
+        if (userId) {
+          await request.post('/user/forceLogout', {
+            userId: userId
+          });
+        }
+        //清除本地存储
+        localStorage.removeItem('CurrentUser');
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        //跳转到登录页
+        this.$router.push('/login');
+        this.$message.success('退出登录成功');
+        
+      } catch (error) {
+        console.error('退出登录失败:', error);
+        
+        //即使后端请求失败，也要清除本地存储
+        localStorage.removeItem('CurrentUser');
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        
+        this.$router.push('/login');
+        this.$message.success('已退出本地登录');
+      }
     },
     
     // 显示修改密码对话框

@@ -1,4 +1,14 @@
 <view class="container">
+  <!-- 提示图标 -->
+  <view class="tip-icon" bindtap="toggleTip">
+    <image src="/assets/icons/warning.png" mode="aspectFit"></image>
+  </view>
+  
+  <!-- 提示内容 -->
+  <view wx:if="{{showTip}}" class="tip-modal">
+    <view class="tip-content">{{tipContent}}</view>
+  </view>
+  
   <view wx:if="{{trainRecords.length === 0}}" class="empty-tip">
     <text>暂无技能培训记录</text>
   </view>
@@ -7,9 +17,9 @@
       <text class="train-place">培训地点：{{item.trainPlace}}</text>
       <text class="train-time">培训时间：{{item.trainTime}}</text>
       <text class="train-next">复训截止时间：{{item.trainNext}}</text>
-      <text class="train-message">请在复训截止时间前进行再次培训</text>
+      <text class="train-participateType">签到状态：{{item.participateTypeText}}</text>
     </view>
-    <!-- 如果 canCancel 为 true，显示取消报名按钮 -->
+    <!-- 取消报名按钮 -->
     <block wx:if="{{item.canCancel}}">
       <button class="cancel-btn" bindtap="handleCancel" data-train-id="{{item.trainId}}">取消报名</button>
     </block>

@@ -56,7 +56,11 @@
 }
 
 .login-btn:active {
-  background-color: #05a050; /* 按钮点击效果 */
+  background-color: #05a050;
+}
+
+.login-btn[disabled] {
+  background-color: #cccccc;
 }
 
 .footer {

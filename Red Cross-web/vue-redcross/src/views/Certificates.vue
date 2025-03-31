@@ -3,9 +3,18 @@
     <!-- 等待审核证书 -->
     <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
       <h2>等待审核证书</h2>
-      <el-tag type="info" style="cursor: pointer;" @click="showRuleDialog">
-        <i class="el-icon-info"></i> 审核规则
-      </el-tag>
+      <!-- <el-tooltip content="红十字救生员证书审核标准：<br/>1.检查申请人是否已经具有未过期限(1年)的证书<br/> 2.核对申请人是否具有最近一年内的培训签到记录" placement="top">
+        <span style="color: #909399; cursor: help;">
+          <i class="el-icon-info"></i> 审核标准
+        </span>
+      </el-tooltip> -->
+      <el-tooltip placement="bottom">
+        <div slot="content">红十字救生员证书审核标准：<br/>1.检查申请人是否已经具有未过期限(1年)的证书
+          <br/>2.核对申请人是否具有最近一年内的培训签到记录</div>
+          <span style="color: #909399; cursor: help;">
+          <i class="el-icon-info"></i> 审核标准
+        </span>
+        </el-tooltip>
     </div>
     <el-table :data="paginatedWaitCertificates" style="width: 100%" border>
       <el-table-column prop="userId" label="用户ID" width="100"></el-table-column>
@@ -65,7 +74,7 @@
       @current-change="handleApprovedPageChange"
     ></el-pagination>
 
-    <!-- 审核规则对话框 -->
+    <!-- 审核规则对话框
     <el-dialog
       title="证书审核规则"
       :visible.sync="ruleDialogVisible"
@@ -74,12 +83,12 @@
       <div style="line-height: 1.8;">
         <h3>红十字救生员证书审核标准</h3>
         <p>1. 检查申请人是否已经具有未过期限(1年)的证书,若已有证书则拒绝审核</p>
-        <p>2. 核对申请人是否具有最近一年内的培训记录,若没有培训记录则拒绝审核</p>
+        <p>2. 核对申请人是否具有最近一年内的培训签到记录,若没有签到记录则拒绝审核</p>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="ruleDialogVisible = false">确定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 

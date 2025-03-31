@@ -144,29 +144,71 @@ export default {
     };
   },
   methods: {
-    login() {
-      this.$refs.loginForm.validate(async (valid) => {
-        if (valid) {
-          try {
-            let res = await request.post('/user/admin', {
-              account: this.loginForm.account,
-              password: this.loginForm.password
+    async login() {
+  this.$refs.loginForm.validate(async (valid) => {
+    if (valid) {
+      try {
+        // 1. 先检查用户状态
+        const checkRes = await request.post('/user/checkLogin', {
+          account: this.loginForm.account
+        });
+        
+        // 根据不同的返回码处理不同情况
+        if (checkRes.data.code === '-1') {
+          // 用户已登录或用户不存在
+          if (checkRes.data.message === "用户已登录") {
+            // 用户已登录，询问是否继续登录
+            this.$confirm('该账号已在其他地方登录，是否继续登录？继续登录将使之前的登录无效', '提示', {
+              confirmButtonText: '继续登录',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(async () => {
+              // 用户确认继续登录
+              await this.performLogin();
+            }).catch(() => {
+              // 用户取消登录
+              this.errorMessage = '登录已取消';
             });
-            if (res.data.code == 0) {
-              localStorage.setItem('CurrentUser',JSON.stringify(res.data.data));
-              localStorage.setItem('userId', res.data.data.userId);
-              localStorage.setItem('token', res.data.data.token);
-              this.$router.push('/management');
-            } else {
-              this.errorMessage = '账号或密码错误';
-            }
-          } catch (error) {
-            this.errorMessage = '登录请求失败，请稍后再试';
+          } else {
+            // 其他错误情况（用户不存在或系统异常）
+            this.errorMessage = checkRes.data.message || '账号验证失败';
           }
+        } else if (checkRes.data.code === '0') {
+          // 用户未登录，直接登录
+          await this.performLogin();
         } else {
-          return false;
+          // 其他未知状态码
+          this.errorMessage = checkRes.data.message || '登录检查失败';
         }
-      });
+      } catch (error) {
+        this.errorMessage = '登录请求失败，请稍后再试';
+        console.error('登录错误:', error);
+      }
+    } else {
+      return false;
+    }
+  });
+},
+    
+    // 执行实际的登录操作
+    async performLogin() {
+      try {
+        let res = await request.post('/user/admin', {
+          account: this.loginForm.account,
+          password: this.loginForm.password
+        });
+        
+        if (res.data.code == 0) {
+          localStorage.setItem('CurrentUser', JSON.stringify(res.data.data));
+          localStorage.setItem('userId', res.data.data.userId);
+          localStorage.setItem('token', res.data.data.token);
+          this.$router.push('/management');
+        } else {
+          this.errorMessage = '账号或密码错误';
+        }
+      } catch (error) {
+        this.errorMessage = '登录请求失败，请稍后再试';
+      }
     },
     
     // 显示找回密码对话框

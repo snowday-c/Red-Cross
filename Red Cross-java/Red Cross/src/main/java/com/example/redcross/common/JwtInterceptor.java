@@ -34,36 +34,38 @@ public class JwtInterceptor implements HandlerInterceptor {
         // 1. 从http请求的header中获取token
         String token = request.getHeader("token");
         if (StrUtil.isBlank(token)) {
-            // 如果没拿到，我再去参数里面拿一波试试  /api/admin?token=xxxxx
             token = request.getParameter("token");
         }
+
         // 2. 开始执行认证
         if (StrUtil.isBlank(token)) {
-
             throw new UserException("无token，请重新登录");
         }
-        // 获取 token 中的userId
+
+        // 3. 获取token中的userId
         String userId;
         User user;
         try {
             userId = JWT.decode(token).getAudience().get(0);
-            // 根据token中的userid查询数据库
             user = userService.getUserById(Integer.parseInt(userId));
         } catch (Exception e) {
-            String errMsg = "token验证失败，请重新登录";
-            log.error(errMsg + ", token=" + token, e);
-            throw new UserException(errMsg);
+            throw new UserException("token验证失败，请重新登录");
         }
-        if (user == null) {
-            throw new UserException("用户不存在，请重新登录");
+
+        // 4. 检查Redis中的token是否匹配（实现单点登录控制）
+        String currentToken = JwtTokenUtils.getCurrentToken(user.getUserId());
+        if (!token.equals(currentToken)) {
+            throw new UserException("您的账号已在其他地方登录，当前会话已失效");
         }
+
+        // 5. 验证token签名
         try {
-            // 用户密码加签验证 token
             JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
-            jwtVerifier.verify(token); // 验证token
+            jwtVerifier.verify(token);
         } catch (JWTVerificationException e) {
             throw new UserException("token验证失败，请重新登录");
         }
+
         return true;
     }
 }

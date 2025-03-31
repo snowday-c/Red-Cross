@@ -12,7 +12,9 @@
       <input class="input" placeholder="请输入密码" password bindinput="onPasswordInput" />
     </view>
     <text class="forgetPassword-text" bindtap="navigateToForgetPassword">忘记密码</text>
-    <button class="login-btn" bindtap="onLogin">登录</button>
+    <button class="login-btn" bindtap="onLogin" loading="{{isChecking}}" disabled="{{isChecking}}">
+      {{isChecking ? '检查中...' : '登录'}}
+    </button>
   </view>
   <view class="footer">
     <text class="register-text" bindtap="navigateToRegister">没有账号？立即注册</text>

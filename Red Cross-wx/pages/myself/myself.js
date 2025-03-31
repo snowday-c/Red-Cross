@@ -39,36 +39,83 @@ Page({
   },
   
 // 退出登录
+// 退出登录
 logout() {
   wx.showModal({
     title: '提示',
     content: '确定要退出登录吗？',
-    success: (res) => {
+    success: async (res) => {
       if (res.confirm) {
-        // 清除本地缓存中的用户信息
-        wx.removeStorageSync('userInfo');
-        // 更新页面数据
-        this.setData({
-          userInfo: {}
-        });
-        wx.showToast({
-          title: '已退出登录',
-          icon: 'none'
-        });
-        
-        // 获取首页页面实例并更新登录状态
-        const pages = getCurrentPages();
-        const indexPage = pages.find(page => page.route === 'pages/index/index');
-        if (indexPage) {
-          indexPage.setData({
-            isLoggedIn: false,
-            userInfo: null
+        try {
+          //  先获取用户信息
+          const userInfo = wx.getStorageSync('userInfo');
+          if (!userInfo || !userInfo.userId) {
+            throw new Error('用户信息不存在');
+          }
+          //  调用后端接口清除token
+          const result = await new Promise((resolve, reject) => {
+            app.request({
+              url: '/user/forceLogout',
+              method: 'POST',
+              header: {
+                'Content-Type': 'application/json'
+              },
+              data: {
+                userId: userInfo.userId,
+              },
+              success: (res) => {
+                resolve(res.data);
+              },
+              fail: (err) => {
+                reject(err);
+              }
+            });
+          });
+          //  无论后端是否成功，都执行前端退出逻辑
+          wx.removeStorageSync('userInfo');
+          this.setData({
+            userInfo: {}
+          });
+          //  根据后端响应显示不同提示
+          if (result && result.code === '0') {
+            wx.showToast({
+              title: '已退出登录',
+              icon: 'success'
+            });
+          } else {
+            wx.showToast({
+              title: '已退出本地登录' + (result ? `(${result.message})` : ''),
+              icon: 'none'
+            });
+          }
+          //  更新首页登录状态
+          const pages = getCurrentPages();
+          const indexPage = pages.find(page => page.route === 'pages/index/index');
+          if (indexPage) {
+            indexPage.setData({
+              isLoggedIn: false,
+              userInfo: null
+            });
+          }
+          // 跳转到首页
+          wx.switchTab({
+            url: '/pages/index/index',
+          });
+        } catch (error) {
+          // 网络请求失败时的处理
+          console.error('退出登录失败:', error);
+          wx.removeStorageSync('userInfo');
+          this.setData({
+            userInfo: {}
+          });
+          wx.showToast({
+            title: '已退出本地登录(网络异常)',
+            icon: 'none'
+          });
+          wx.switchTab({
+            url: '/pages/index/index',
           });
         }
-        
-        wx.switchTab({
-          url: '/pages/index/index',
-        });
       }
     }
   });

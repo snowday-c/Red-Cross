@@ -3,6 +3,8 @@ const app = getApp();
 Page({
   data: {
     trainRecords: [], // 用户培训记录
+    showTip: false, // 是否显示提示
+    tipContent: '' // 提示内容
   },
 
   onLoad() {
@@ -20,11 +22,12 @@ Page({
       },
       success: (res) => {
         if (res.data.code === '0') {
-          // 处理数据，添加一个字段表示是否可以取消报名
+          // 是否可以取消报名
           const trainRecords = res.data.data.map(item => {
             return {
               ...item,
               canCancel: this.isBeforeTrainTime(item.trainTime), // 判断是否可以取消报名
+              participateTypeText: item.participateType === '0' ? '未签到' : '已签到' // 转换状态为文字
             };
           });
           this.setData({
@@ -94,11 +97,16 @@ Page({
               });
             },
           });
-        } else if (res.cancel) {
-          // 用户点击取消
-          console.log('用户取消操作');
         }
       },
     });
   },
+  
+  // 显示/隐藏提示
+  toggleTip() {
+    this.setData({
+      showTip: !this.data.showTip,
+      tipContent: '请在复训截止时间前进行再次培训'
+    });
+  }
 });
