@@ -13,9 +13,8 @@
   right: 0px;
   font-size: 12px;
   font-weight: bold;
-  color: #333; /* 文字颜色 */
-  background-color: rgba(255, 255, 255, 0.8); /* 背景色 */
-  border-radius: 5px;
+  color: #fff;
+  background-color: #07c160;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 999; /* 确保在最上层 */
 }
@@ -23,6 +22,7 @@
 /* 题目列表样式 */
 .question-list {
   margin-bottom: 20px;
+  margin-top: 10px;
 }
 
 /* 单个题目样式 */
@@ -39,7 +39,8 @@
   font-size: 16px;
   font-weight: bold;
   color: #333;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  display: block;
 }
 
 /* 选择题选项样式 */
@@ -48,18 +49,47 @@
   flex-direction: column;
 }
 
-.options label {
-  margin-bottom: 10px;
+.option-item {
+  margin-bottom: 12px;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.option-label:active {
+  background-color: #e0e0e0;
+}
+
+.option-radio {
+  margin-right: 8px;
+  transform: scale(0.8);
+}
+
+.option-text {
+  font-size: 14px;
+  color: #333;
 }
 
 /* 填空题输入框样式 */
 .fill-blank input {
   width: 100%;
-  height: 40px;
-  padding: 10px;
-  border: 1px solid #ccc;
+  height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 14px;
+  background-color: #f9f9f9;
+}
+
+.fill-blank input:focus {
+  border-color: #07c160;
+  outline: none;
 }
 
 /* 提交按钮样式 */
@@ -71,8 +101,11 @@
   font-size: 18px;
   border-radius: 25px;
   margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(7, 193, 96, 0.2);
 }
 
 .submit-btn:active {
   background-color: #05a050;
+  transform: translateY(2px);
+  box-shadow: 0 2px 4px rgba(7, 193, 96, 0.2);
 }

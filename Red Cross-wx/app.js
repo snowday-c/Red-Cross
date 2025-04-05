@@ -1,7 +1,8 @@
 // app.js
 App({
   globalData: {
-    baseUrl: 'http://localhost:8090/api' // 全局请求地址
+    baseUrl: 'https://120.27.161.155:8090/api'
+    // baseUrl: 'http://localhost:8090/api'
   },
 
   /**

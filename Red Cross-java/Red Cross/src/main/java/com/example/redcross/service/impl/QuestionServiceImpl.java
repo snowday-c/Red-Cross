@@ -1,6 +1,7 @@
 package com.example.redcross.service.impl;
 
 import com.example.redcross.entity.Exam;
+import com.example.redcross.entity.ExamType;
 import com.example.redcross.entity.Question;
 import com.example.redcross.mapper.QuestionMapper;
 import com.example.redcross.service.QuestionService;
@@ -13,6 +14,11 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Override
+    public ExamType getExamType() {
+        return questionMapper.getExamType();
+    }
 
     @Override
     public List<Question> getAllQuestions() {
@@ -42,8 +48,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<Question> getExam() {
-        return questionMapper.getExam();
+    public List<Question> getExam(Integer choice, Integer truefalse, Integer blank) {
+        return questionMapper.getExam(choice, truefalse, blank);
     }
 
     @Override
@@ -74,5 +80,25 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<Exam> findAllExamByUserId(Integer userId) {
         return questionMapper.findAllExamByUserId(userId);
+    }
+
+    @Override
+    public Integer selectExam(Integer examTypeId) {
+        return questionMapper.selectExam(examTypeId);
+    }
+
+    @Override
+    public Integer insertExamType(Integer choice, Integer truefalse, Integer blank, Integer score,Integer time) {
+        return questionMapper.insertExamType(choice, truefalse, blank, score,time);
+    }
+
+    @Override
+    public List<ExamType> selectAllExam() {
+        return questionMapper.selectAllExam();
+    }
+
+    @Override
+    public ExamType selectCurrentExam() {
+        return questionMapper.getExamType();
     }
 }

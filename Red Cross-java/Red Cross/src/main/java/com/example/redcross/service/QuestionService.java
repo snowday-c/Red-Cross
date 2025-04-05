@@ -1,11 +1,14 @@
 package com.example.redcross.service;
 
 import com.example.redcross.entity.Exam;
+import com.example.redcross.entity.ExamType;
 import com.example.redcross.entity.Question;
 
 import java.util.List;
 
 public interface QuestionService {
+
+    ExamType getExamType() ;
 
     List<Question> getAllQuestions();
 
@@ -17,7 +20,7 @@ public interface QuestionService {
 
     Question updateQuestion(Question question);
 
-    List<Question> getExam();
+    List<Question> getExam(Integer choice, Integer truefalse, Integer blank);
 
     void insertExam(String questionIds,Integer userId);
 
@@ -31,4 +34,12 @@ public interface QuestionService {
 
 
     List<Exam> findAllExamByUserId(Integer userId);
+
+    Integer selectExam(Integer examTypeId);
+
+    Integer insertExamType(Integer choice, Integer truefalse, Integer blank, Integer score,Integer time);
+
+    List<ExamType> selectAllExam();
+
+    ExamType selectCurrentExam();
 }

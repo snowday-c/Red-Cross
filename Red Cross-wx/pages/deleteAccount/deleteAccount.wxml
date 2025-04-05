@@ -1,7 +1,7 @@
 <view class="container">
   <view class="form-container">
     <view class="form-item">
-      <text class="label">账号</text>
+      <text class="label">账号：</text>
       <input 
         class="input" 
         type="text" 
@@ -12,7 +12,7 @@
     </view>
     
     <view class="form-item">
-      <text class="label">密码</text>
+      <text class="label">密码：</text>
       <input 
         class="input" 
         type="password" 
@@ -23,7 +23,7 @@
     </view>
     
     <view class="form-item">
-      <text class="label">邮箱</text>
+      <text class="label">邮箱：</text>
       <input 
         class="input" 
         type="text" 
@@ -33,8 +33,8 @@
       />
     </view>
     
-    <view class="form-item ">
-      <text class="label">验证码</text>
+    <view class="form-item verification-code">
+      <text class="label">验证码：</text>
       <input 
         class="input code-input" 
         type="text" 
@@ -42,15 +42,15 @@
         value="{{verificationCode}}" 
         bindinput="onVerificationCodeInput"
       />
-
-    </view>
-    <button 
+      <button 
         class="send-code-btn" 
         bindtap="sendVerificationCode"
         disabled="{{isCountingDown}}"
       >
         {{countdownText}}
       </button>
+    </view>
+    
     <button class="submit-btn" bindtap="submitDeleteAccount">确认注销</button>
   </view>
 </view>

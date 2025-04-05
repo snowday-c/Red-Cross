@@ -1,7 +1,6 @@
 <view class="container">
-  <view class="header">
-    <text class="title">安全知识培训页面</text>
-  </view>
+  <!-- 添加背景图片 -->
+  <image class="bg-image" src="{{'https://120.27.161.155/files/other/examStar.png'}}" mode="aspectFill"></image>
 
   <view class="button-container">
     <button class="start-btn" bindtap="startExam">开始培训</button>

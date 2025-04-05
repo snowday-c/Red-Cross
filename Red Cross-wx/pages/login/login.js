@@ -68,7 +68,7 @@ Page({
         });
         } else{
           wx.showToast({
-            title: '账号验证失败',
+            title: '用户不存在',
             icon: 'none'
           });
         }

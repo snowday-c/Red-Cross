@@ -17,26 +17,38 @@
     </div>
 
     <!-- 培训列表表格 -->
-    <el-table :data="paginatedTrainList" style="width: 100%" border>
-      <el-table-column prop="trainTime" label="培训时间" width="160"></el-table-column>
-      <el-table-column prop="trainPlace" label="培训地点" width="100"></el-table-column>
+    <el-table :data="paginatedTrainList" style="width: 100%" border :row-style="{height: '80px'}" :cell-style="{padding: '5px'}">
+      <el-table-column prop="trainTime" label="培训时间" width="160">
+        <template slot-scope="scope">
+          <div class="cell-content">{{ scope.row.trainTime }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="trainPlace" label="培训地点" width="100">
+        <template slot-scope="scope">
+          <div class="cell-content">{{ scope.row.trainPlace }}</div>
+        </template>
+      </el-table-column>
       <el-table-column prop="trainType" label="培训状态" width="100" :formatter="formatTrainType"></el-table-column>
       <el-table-column prop="trainPeople" label="培训人数" width="80"></el-table-column>
       <el-table-column prop="currentPeople" label="当前人数" width="80"></el-table-column>
       <el-table-column label="报名用户" width="200">
         <template slot-scope="scope">
-          <span v-if="!scope.row.userIds || JSON.parse(scope.row.userIds).length === 0">无</span>
-          <span v-else>
-            {{ formatUserIds(scope.row.userIds) }}
-          </span>
+          <div class="cell-content">
+            <span v-if="!scope.row.userIds || JSON.parse(scope.row.userIds).length === 0">无</span>
+            <span v-else>
+              {{ formatUserIds(scope.row.userIds) }}
+            </span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="签到用户" width="200">
         <template slot-scope="scope">
-          <span v-if="!scope.row.participateIds || JSON.parse(scope.row.participateIds).length === 0">无</span>
-          <span v-else>
-            {{ formatUserIds(scope.row.participateIds) }}
-          </span>
+          <div class="cell-content">
+            <span v-if="!scope.row.participateIds || JSON.parse(scope.row.participateIds).length === 0">无</span>
+            <span v-else>
+              {{ formatUserIds(scope.row.participateIds) }}
+            </span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="170">
@@ -269,3 +281,30 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.cell-content {
+  max-height: 70px;
+  overflow-y: auto;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+/* 自定义滚动条样式 */
+.cell-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cell-content::-webkit-scrollbar-thumb {
+  background-color: #dcdfe6;
+  border-radius: 3px;
+}
+
+.cell-content::-webkit-scrollbar-track {
+  background-color: #f5f7fa;
+}
+
+.el-pagination {
+  margin-top: 20px; /* 分页组件与表格之间的间距 */
+}
+</style>

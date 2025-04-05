@@ -60,8 +60,17 @@ Page({
   toggleMessage(e) {
     const index = e.currentTarget.dataset.index; // 获取点击的消息索引
     const messageList = this.data.messageList;
-    // 切换当前消息的 expanded 状态
+    
+    // 遍历消息列表，将所有消息的 expanded 设为 false
+    messageList.forEach((item, i) => {
+      if (i !== index) {
+        item.expanded = false;
+      }
+    });
+    
+    // 切换当前点击消息的 expanded 状态
     messageList[index].expanded = !messageList[index].expanded;
+    
     this.setData({
       messageList,
     });

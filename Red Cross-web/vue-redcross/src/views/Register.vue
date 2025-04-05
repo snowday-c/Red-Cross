@@ -4,6 +4,17 @@
       <!-- 添加红十字标志的图片 -->
       <img src="@/assets/picture/picture02.jpg" alt="Red Cross Logo" class="logo">
       <h1 class="register-title">注册</h1>
+      
+      <!-- 须知 -->
+      <div class="notice-container">
+        <el-tooltip placement="bottom">
+          <div slot="content">新注册用户仅为普通用户，此网站仅供管理员登录</div>
+          <span style="color: #909399; cursor: help;">
+            <i class="el-icon-info"></i> 须知
+          </span>
+        </el-tooltip>
+      </div>
+      
       <el-form :model="registerForm" :rules="registerRules" ref="registerForm" @submit.native.prevent="register">
         <!-- 用户名 -->
         <el-form-item prop="username">
@@ -227,9 +238,9 @@ export default {
   align-items: center;
   height: 100vh;
   background-color: #f0f2f5;
-  background-image: url('@/assets/picture/picture01.jpg'); /* 设置背景图 */
-  background-size: cover; /* 背景图覆盖整个容器 */
-  background-position: center; /* 背景图居中 */
+  background-image: url('@/assets/picture/picture01.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
 .register-card {
@@ -237,7 +248,8 @@ export default {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  background-color: rgba(255, 255, 255, 0.9); /* 给卡片添加半透明背景 */
+  background-color: rgba(255, 255, 255, 0.9);
+  position: relative;
 }
 
 .register-title {
@@ -271,5 +283,13 @@ export default {
   margin: 0 auto 10px auto; /* 居中显示，并设置下边距 */
   width: 50px; /* 根据需要调整图片大小 */
   height: auto;
+}
+
+/* 新增的须知提示样式 */
+.notice-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1;
 }
 </style>

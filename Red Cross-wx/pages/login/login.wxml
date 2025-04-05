@@ -1,6 +1,6 @@
 <view class="container">
   <view class="header">
-    <text class="title">登录</text>
+    <image class="logo" src="/assets/icons/logo.png" mode="aspectFit"></image>
   </view>
   <view class="form">
     <view class="form-item">

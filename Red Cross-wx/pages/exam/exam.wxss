@@ -4,35 +4,42 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #f8f8f8;
   padding: 20px;
+  position: relative; /* 添加相对定位 */
+  overflow: hidden; /* 防止背景图片溢出 */
 }
 
-.header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
+/* 背景图片样式 */
+.bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* 确保背景在内容后面 */
+  opacity: 0.6; /* 调整透明度，使内容更易读 */
 }
 
 .button-container {
   width: 100%;
   max-width: 300px;
+  z-index: 1; /* 确保按钮在背景上方 */
+  margin-top: 110px; /* 增加顶部间距，使按钮整体下移 */
 }
 
 .start-btn, .cancel-btn {
-  width: 100%;
-  height: 50px;
+  max-width: 160px;
+  height: 30px;
   border: none;
-  border-radius: 25px;
+  border-radius: 15px;
   font-size: 18px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   transition: background-color 0.3s ease;
+  line-height: 30px; /* 添加行高，使文字垂直居中 */
+  padding: 0; /* 移除内边距 */
+  display: flex;
+  align-items: center; /* 垂直居中 */
+  justify-content: center; /* 水平居中 */
 }
 
 .start-btn {

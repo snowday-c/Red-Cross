@@ -29,13 +29,34 @@
             answer = #{answer}
         WHERE question_id = #{questionId}
     </update>
+    <!-- 显示全部试卷类型 -->
+    <select id="selectAllExam" resultType="com.example.redcross.entity.ExamType">
+        SELECT * FROM examtype
+    </select>
+    <!-- 添加试卷类型 -->
+    <insert id="insertExamType">
+            INSERT INTO examtype (choice, truefalse, blank, score,time, current)
+            VALUES (#{choice}, #{truefalse}, #{blank}, #{score}, #{time}, 0)
+    </insert>
+    <!-- 选择当前考试每种题型的题目数量 -->
+    <update id="selectExam">
+        UPDATE examtype
+        SET current = CASE
+                          WHEN examtype_id = #{examtypeId} THEN 1
+                          ELSE 0
+            END
+    </update>
+    <!-- 查询当前考试每种题型的题目数量 -->
+    <select id="getExamType" resultType="com.example.redcross.entity.ExamType">
+        SELECT * FROM examtype WHERE current = 1
+    </select>
     <!--生成试卷，随机从题库中抽取题目，固定为选择题3道，判断题2道，填空题1道-->
     <select id="getExam" resultType="com.example.redcross.entity.Question">
-            (SELECT question_id, question_type, question FROM question WHERE question_type = '1' ORDER BY RAND() LIMIT 3)
+            (SELECT question_id, question_type, question FROM question WHERE question_type = '1' ORDER BY RAND() LIMIT #{choice})
             UNION ALL
-            (SELECT question_id, question_type, question FROM question WHERE question_type = '2' ORDER BY RAND() LIMIT 2)
+            (SELECT question_id, question_type, question FROM question WHERE question_type = '2' ORDER BY RAND() LIMIT #{truefalse})
             UNION ALL
-            (SELECT question_id, question_type, question FROM question WHERE question_type = '3' ORDER BY RAND() LIMIT 1)
+            (SELECT question_id, question_type, question FROM question WHERE question_type = '3' ORDER BY RAND() LIMIT #{blank})
     </select>
     <!-- 将生成试卷的题目id和用户id存入试卷表中 -->
     <insert id="insertExam" >

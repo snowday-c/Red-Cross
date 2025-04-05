@@ -2,34 +2,41 @@
   padding: 20px;
   background-color: #f5f5f5;
   min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
 }
 
 .form-container {
-  width: 80%;
+  width: 90%;
   background-color: #fff;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-top: 10px;
 }
 
 .form-item {
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
 }
 
 .label {
-  display: block;
-  margin-bottom: 8px;
+  width: 57px;
   font-size: 14px;
   color: #333;
+  flex-shrink: 0;
+  padding-right: 5px;
 }
 
 .input {
-  width: 100%;
+  flex: 1;
   height: 40px;
   border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 0 10px;
+  border-radius: 10px;
+  padding: 0 12px;
   box-sizing: border-box;
+  font-size: 14px;
 }
 
 .verification-code {
@@ -39,17 +46,21 @@
 
 .code-input {
   flex: 1;
-  margin-right: 10px;
+  margin-right: 10px
 }
 
 .send-code-btn {
-  width: 120px;
+  max-width: 90px;
   height: 40px;
-  line-height: 25px;
-  font-size: 16px;
+  line-height: 40px;
+  font-size: 14px;
   background-color: #07c160;
   color: #fff;
-  border-radius: 5px;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .send-code-btn[disabled] {
@@ -58,13 +69,16 @@
 }
 
 .submit-btn {
+  width: 90%;
   margin-top: 30px;
   background-color: #ff4d4f;
   color: #fff;
-  border-radius: 5px;
-  height: 40px;
-  line-height: 25px;
+  border: none;
+  border-radius: 10px;
+  height: 44px;
+  line-height: 28px;
   font-size: 16px;
+  font-weight: 500;
 }
 
 .submit-btn:active {

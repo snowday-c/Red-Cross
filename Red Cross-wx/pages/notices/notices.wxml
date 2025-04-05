@@ -1,12 +1,16 @@
 <view class="container">
   <view class="notice-list">
     <block wx:for="{{notices}}" wx:key="messageId">
-      <view class="notice-item">
+      <view class="notice-item" bindtap="toggleNotice" data-id="{{item.messageId}}">
         <text class="notice-item-title">{{item.title}}</text>
-        <text class="notice-item-content">{{item.content}}</text>
         <view class="notice-item-footer">
           <text class="notice-item-sender">发布人: {{item.sender}}</text>
           <text class="notice-item-time">{{item.displayTime || item.time}}</text>
+        </view>
+        <!-- 内容区域，仅在展开时显示 -->
+        <view class="notice-item-content {{expandedId === item.messageId ? 'expanded' : ''}}" 
+              wx:if="{{expandedId === item.messageId}}">
+          {{item.content}}
         </view>
       </view>
     </block>

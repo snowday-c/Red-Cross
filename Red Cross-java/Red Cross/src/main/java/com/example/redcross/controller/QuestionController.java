@@ -2,6 +2,7 @@ package com.example.redcross.controller;
 
 import com.example.redcross.common.Result;
 import com.example.redcross.entity.Exam;
+import com.example.redcross.entity.ExamType;
 import com.example.redcross.entity.Question;
 import com.example.redcross.service.QuestionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -56,11 +57,59 @@ public class QuestionController {
         return Result.success(updatedQuestion);
     }
 
+    @PostMapping("/insertExamType")  //新增试卷类型
+    public Result insertExamType(@RequestBody ExamType examtype) {
+        Integer choice= examtype.getChoice();
+        Integer truefalse= examtype.getTruefalse();
+        Integer blank= examtype.getBlank();
+        Integer score= examtype.getScore();
+        Integer time= examtype.getTime();
+        if (questionService.insertExamType(choice,truefalse,blank,score,time) == 1) {
+            return Result.success();
+        }
+        return Result.error("新增试卷类型失败");
+    }
+
+    @GetMapping("/selectAllExam")  //显示全部试卷类型
+    public Result selectAllExam() {
+        List<ExamType> examTypes= questionService.selectAllExam();
+        if (examTypes != null) {
+            return Result.success(examTypes);
+        }
+        return Result.error("查询全部试卷类型失败");
+    }
+
+    @GetMapping("/selectCurrentExam")  //查询当前试卷类型
+    public Result selectCurrentExam() {
+        ExamType examType= questionService.selectCurrentExam();
+        if (examType != null) {
+            return Result.success(examType);
+        }
+        return Result.error("获取当前试卷类型失败");
+    }
+
+    @PostMapping("/selectExam")  //修改当前试卷类型
+    public Result selectExam(@RequestBody ExamType exam) {
+        Integer examTypeId = exam.getExamtypeId();
+        if (questionService.selectExam(examTypeId) >= 1) {
+            return Result.success();
+        }
+        return Result.error("修改试卷类型失败");
+    }
+
     @PostMapping("/exam")  //生成试卷
     public Result getExam(@RequestBody Exam exam) {
         Integer userId = exam.getUserId();
+        //获取当前考试每种题型的题目数量
+        ExamType examtype = questionService.getExamType();
+
+        Integer choice= examtype.getChoice();
+        Integer truefalse= examtype.getTruefalse();
+        Integer blank= examtype.getBlank();
+
+
         // 从题库中获取试题
-        List<Question> questions = questionService.getExam();
+        List<Question> questions = questionService.getExam(choice,truefalse,blank);
 
         // 提取试题的ID列表
         List<Integer> questionIds = questions.stream()
@@ -120,6 +169,9 @@ public class QuestionController {
             throw new RuntimeException("解析用户答案失败", e);
         }
 
+        ExamType examtype = questionService.getExamType();
+
+        Integer score1= examtype.getScore();
         // 对比答案并计算得分
         int score = 0;
         for (int i = 0; i < userAnswers.size(); i++) {
@@ -127,7 +179,7 @@ public class QuestionController {
             String correctAnswer = correctAnswers.get(i);
 
             if (userAnswer != null && userAnswer.equals(correctAnswer)) {
-                score += 20; // 每道题20分
+                score += score1;
             }
         }
 

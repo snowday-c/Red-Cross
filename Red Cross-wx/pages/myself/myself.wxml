@@ -49,6 +49,10 @@
 <!-- 自定义头像选择弹窗 -->
 <view class="avatar-picker-modal" wx:if="{{showAvatarPicker}}">
   <view class="modal-content">
+    <!-- 添加自定义上传按钮 -->
+    <view class="upload-button" bindtap="chooseAndUploadImage">
+      <text>上传自定义头像</text>
+    </view>
     <!-- 使用 scroll-view 实现上下滑动 -->
     <scroll-view class="avatar-scroll" scroll-y>
       <view class="avatar-grid">

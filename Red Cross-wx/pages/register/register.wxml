@@ -1,34 +1,37 @@
 <view class="container">
   <view class="header">
-    <text class="title">注册</text>
+    <image class="logo" src="/assets/icons/logo.png" mode="aspectFit"></image>
   </view>
   <view class="form">
-    <view class="input-group">
+    <view class="input-row">
       <text class="label">用户名：</text>
       <input class="input" placeholder="请输入用户名" bindinput="onUsernameInput" />
     </view>
-    <view class="input-group">
+    <view class="input-row">
       <text class="label">账号：</text>
       <input class="input" placeholder="请输入账号" bindinput="onAccountInput" />
     </view>
-    <view class="input-group">
+    <view class="input-row">
       <text class="label">密码：</text>
       <input class="input" placeholder="请输入密码" password bindinput="onPasswordInput" />
     </view>
-    <view class="input-group">
+    <view class="input-row">
       <text class="label">确认密码：</text>
       <input class="input" placeholder="请再次输入密码" password bindinput="onConfirmPasswordInput" />
     </view>
-    <view class="input-group">
+    <view class="input-row">
       <text class="label">邮箱：</text>
       <input class="input" placeholder="请输入邮箱" bindinput="onEmailInput" />
     </view>
-    <view class="input-group">
+    <view class="input-row">
       <text class="label">验证码：</text>
-      <input class="input" placeholder="请输入邮箱验证码" bindinput="onCodeInput" />
-
+      <view class="code-input-container">
+        <input class="input-code" placeholder="请输入验证码" bindinput="onCodeInput" />
+        <button class="code-btn" bindtap="sendCode" disabled="{{isCodeSent}}">
+          {{isCodeSent ? countdown + 's后重发' : '获取验证码'}}
+        </button>
+      </view>
     </view>
-    <button class="code-btn" bindtap="sendCode" disabled="{{isCodeSent}}">{{codeButtonText}}</button>
     <button class="submit-btn" bindtap="onRegister">注册</button>
   </view>
   <view class="footer">

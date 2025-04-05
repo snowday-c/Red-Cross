@@ -1,8 +1,8 @@
 <view class="container">
   <view wx:if="{{certificates.length === 0}}" class="empty-tip">暂未获得证书</view>
   <view wx:for="{{certificates}}" wx:key="certificateId" class="certificate-item">
-    <!-- 使用 <image/> 标签作为背景 -->
-    <image src="/assets/other/certificate.png" mode="scaleToFill" class="certificate-bg"></image>
+    <!-- 使用服务器上的图片作为背景 -->
+    <image src="{{'https://120.27.161.155/files/other/certificate.png'}}" mode="scaleToFill" class="certificate-bg"></image>
     <!-- 证书标题 -->
     <view class="certificate-title">{{item.certificateTitle}}</view>
     <!-- 证书内容 -->

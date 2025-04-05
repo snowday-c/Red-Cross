@@ -7,9 +7,11 @@ Page({
   data: {
     questions: [], // 题目列表
     userAnswers: [], // 用户答案
-    countdown: 30 * 60, // 60分钟的倒计时，单位为秒
+    countdown: 0, // 倒计时，单位为秒
     timer: null, // 定时器 ID
-    formattedTime: '30:00', // 格式化后的时间
+    formattedTime: '00:00', // 格式化后的时间
+    examType: '', // 考试类型
+    isSubmitted: false, // 是否已提交答案
   },
 
   /**
@@ -18,14 +20,69 @@ Page({
   onLoad() {
     // 从本地缓存中获取题目
     const questions = wx.getStorageSync('questions');
+    
+    // 初始化用户答案数组
     this.setData({
       questions,
-      userAnswers: new Array(questions.length).fill(''), // 初始化用户答案数组
-      formattedTime: this.formatTime(30 * 60), // 初始化格式化后的时间
+      userAnswers: new Array(questions.length).fill(''),
     });
 
-    // 启动倒计时
-    this.startCountdown();
+    // 获取考试类型和时间
+    this.getExamInfo();
+  },
+
+  /**
+   * 获取考试信息
+   */
+  getExamInfo() {
+    wx.showLoading({
+      title: '加载中...',
+    });
+
+    app.request({
+      url: '/question/selectCurrentExam',
+      method: 'GET',
+      success: (res) => {
+        wx.hideLoading();
+        if (res.data.code === '0') {
+          const examInfo = res.data.data;
+          const examTime = examInfo.time || 30; // 默认30分钟
+          
+          this.setData({
+            examType: examInfo.examType || '',
+            countdown: examTime * 60, // 转换为秒
+            formattedTime: this.formatTime(examTime * 60),
+          });
+          
+          // 启动倒计时
+          this.startCountdown();
+        } else {
+          wx.showToast({
+            title: res.data.message || '获取考试信息失败',
+            icon: 'none',
+          });
+          // 使用默认时间
+          this.setData({
+            countdown: 30 * 60,
+            formattedTime: this.formatTime(30 * 60),
+          });
+          this.startCountdown();
+        }
+      },
+      fail: () => {
+        wx.hideLoading();
+        wx.showToast({
+          title: '网络请求失败，使用默认时间',
+          icon: 'none',
+        });
+        // 使用默认时间
+        this.setData({
+          countdown: 30 * 60,
+          formattedTime: this.formatTime(30 * 60),
+        });
+        this.startCountdown();
+      },
+    });
   },
 
   /**
@@ -70,6 +127,11 @@ Page({
     if (this.data.timer) {
       clearInterval(this.data.timer); // 清除定时器
     }
+    
+    // 如果还未提交答案，则自动提交
+    if (!this.data.isSubmitted) {
+      this.submitAnswers();
+    }
   },
 
   /**
@@ -103,6 +165,11 @@ Page({
    */
   submitAnswers() {
     const { userAnswers } = this.data;
+    
+    // 标记为已提交，避免重复提交
+    this.setData({
+      isSubmitted: true
+    });
 
     // 将答案数组转换为 JSON 字符串
     const answersJson = JSON.stringify(userAnswers);

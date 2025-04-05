@@ -1,11 +1,15 @@
 server:
   port: 8090
+  ssl:
+    key-store: classpath:redcrosstest.asia.jks
+    key-store-password: oxfp8627
+    key-store-type: JKS
 spring:
   application:
     name: RedCross
   datasource:
     url: jdbc:mysql://localhost:3306/demo?useSSL=false&serverTimezone=UTC
-    username: root
+    username: demo
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
 

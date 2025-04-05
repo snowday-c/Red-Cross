@@ -4,6 +4,17 @@
       <!-- 添加红十字标志的图片 -->
       <img src="@/assets/picture/picture02.jpg" alt="Red Cross Logo" class="logo">
       <h1 class="login-title">登录</h1>
+      
+      <!-- 须知 -->
+      <div class="notice-container">
+        <el-tooltip placement="bottom">
+          <div slot="content">此网站仅管理员使用，请使用管理员账号登录</div>
+          <span style="color: #909399; cursor: help;">
+            <i class="el-icon-info"></i> 须知
+          </span>
+        </el-tooltip>
+      </div>
+      
       <el-form :model="loginForm" :rules="loginRules" ref="loginForm" @submit.native.prevent="login">
         <el-form-item prop="account">
           <el-input
@@ -145,50 +156,50 @@ export default {
   },
   methods: {
     async login() {
-  this.$refs.loginForm.validate(async (valid) => {
-    if (valid) {
-      try {
-        // 1. 先检查用户状态
-        const checkRes = await request.post('/user/checkLogin', {
-          account: this.loginForm.account
-        });
-        
-        // 根据不同的返回码处理不同情况
-        if (checkRes.data.code === '-1') {
-          // 用户已登录或用户不存在
-          if (checkRes.data.message === "用户已登录") {
-            // 用户已登录，询问是否继续登录
-            this.$confirm('该账号已在其他地方登录，是否继续登录？继续登录将使之前的登录无效', '提示', {
-              confirmButtonText: '继续登录',
-              cancelButtonText: '取消',
-              type: 'warning'
-            }).then(async () => {
-              // 用户确认继续登录
-              await this.performLogin();
-            }).catch(() => {
-              // 用户取消登录
-              this.errorMessage = '登录已取消';
+      this.$refs.loginForm.validate(async (valid) => {
+        if (valid) {
+          try {
+            // 1. 先检查用户状态
+            const checkRes = await request.post('/user/checkLogin', {
+              account: this.loginForm.account
             });
-          } else {
-            // 其他错误情况（用户不存在或系统异常）
-            this.errorMessage = checkRes.data.message || '账号验证失败';
+            
+            // 根据不同的返回码处理不同情况
+            if (checkRes.data.code === '-1') {
+              // 用户已登录或用户不存在
+              if (checkRes.data.message === "用户已登录") {
+                // 用户已登录，询问是否继续登录
+                this.$confirm('该账号已在其他地方登录，是否继续登录？继续登录将使之前的登录无效', '提示', {
+                  confirmButtonText: '继续登录',
+                  cancelButtonText: '取消',
+                  type: 'warning'
+                }).then(async () => {
+                  // 用户确认继续登录
+                  await this.performLogin();
+                }).catch(() => {
+                  // 用户取消登录
+                  this.errorMessage = '登录已取消';
+                });
+              } else {
+                // 其他错误情况（用户不存在或系统异常）
+                this.errorMessage = checkRes.data.message || '账号验证失败';
+              }
+            } else if (checkRes.data.code === '0') {
+              // 用户未登录，直接登录
+              await this.performLogin();
+            } else {
+              // 其他未知状态码
+              this.errorMessage = checkRes.data.message || '登录检查失败';
+            }
+          } catch (error) {
+            this.errorMessage = '登录请求失败，请稍后再试';
+            console.error('登录错误:', error);
           }
-        } else if (checkRes.data.code === '0') {
-          // 用户未登录，直接登录
-          await this.performLogin();
         } else {
-          // 其他未知状态码
-          this.errorMessage = checkRes.data.message || '登录检查失败';
+          return false;
         }
-      } catch (error) {
-        this.errorMessage = '登录请求失败，请稍后再试';
-        console.error('登录错误:', error);
-      }
-    } else {
-      return false;
-    }
-  });
-},
+      });
+    },
     
     // 执行实际的登录操作
     async performLogin() {
@@ -351,6 +362,7 @@ export default {
   border-radius: 8px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   background-color: rgba(255, 255, 255, 0.9);
+  position: relative;
 }
 
 .login-title {
@@ -402,5 +414,12 @@ export default {
 .send-code-btn {
   margin-left: 10px;
   width: 120px;
+}
+
+.notice-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1;
 }
 </style>

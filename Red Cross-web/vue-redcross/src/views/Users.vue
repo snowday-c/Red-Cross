@@ -1,12 +1,24 @@
 <template>
   <div>
-    <el-table :data="paginatedUserList" style="width: 100%" border>
-      <el-table-column prop="userName" label="用户名" width="150"></el-table-column>
-      <el-table-column prop="email" label="邮箱" width="230"></el-table-column>
-      <el-table-column prop="account" label="账号" width="210"></el-table-column>
+    <el-table :data="paginatedUserList" style="width: 100%" border :row-style="{height: '80px'}" :cell-style="{padding: '5px'}">
+      <el-table-column prop="userName" label="用户名" width="150">
+        <template slot-scope="scope">
+          <div class="cell-content">{{ scope.row.userName }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="email" label="邮箱" width="230">
+        <template slot-scope="scope">
+          <div class="cell-content">{{ scope.row.email }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="account" label="账号" width="210">
+        <template slot-scope="scope">
+          <div class="cell-content">{{ scope.row.account }}</div>
+        </template>
+      </el-table-column>
       <el-table-column label="用户类型" width="160">
         <template slot-scope="scope">
-          {{ getUserTypeText(scope.row.userType) }}
+          <div class="cell-content">{{ getUserTypeText(scope.row.userType) }}</div>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -173,5 +185,30 @@ export default {
   color: #999; /* 灰色文字 */
   font-style: italic; /* 斜体 */
   cursor: not-allowed; /* 禁用鼠标指针 */
+}
+
+.cell-content {
+  max-height: 70px;
+  overflow-y: auto;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+/* 自定义滚动条样式 */
+.cell-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cell-content::-webkit-scrollbar-thumb {
+  background-color: #dcdfe6;
+  border-radius: 3px;
+}
+
+.cell-content::-webkit-scrollbar-track {
+  background-color: #f5f7fa;
+}
+
+.el-pagination {
+  margin-top: 20px;
 }
 </style>

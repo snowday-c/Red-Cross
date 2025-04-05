@@ -256,7 +256,7 @@ logout() {
     const that = this;
     wx.showModal({
       title: '修改用户名',
-      content: '请输入新的用户名',
+      content: '',
       editable: true,
       success(res) {
         if (res.confirm && res.content) {
@@ -348,6 +348,104 @@ logout() {
     });
     wx.navigateTo({
       url: '/pages/deleteAccount/deleteAccount'
+    });
+  },
+
+  // 选择并上传自定义头像
+  chooseAndUploadImage() {
+    if (!this.checkLogin()) return;
+    const that = this;
+    const userId = wx.getStorageSync('userInfo').userId;
+    
+    wx.chooseMedia({
+      count: 1,
+      mediaType: ['image'],
+      sourceType: ['album', 'camera'],
+      success(res) {
+        const tempFilePath = res.tempFiles[0].tempFilePath;
+        
+        // 显示上传中提示
+        wx.showLoading({
+          title: '上传中...',
+        });
+        
+        // 上传图片到服务器
+        wx.uploadFile({
+          url: "https://120.27.161.155/files/userAvatar",
+          filePath: tempFilePath,
+          name: 'file',
+          formData: {
+            'userId': userId
+          },
+          success(res) {
+            wx.hideLoading();
+            try {
+              const data = JSON.parse(res.data);
+              if (data.code === '0') {
+                // 更新用户信息
+                app.request({
+                  url: '/user/update/userInfo',
+                  method: 'POST',
+                  header: {
+                    'Content-Type': 'application/json'
+                  },
+                  data: {
+                    userId: userId,
+                    userName: wx.getStorageSync('userInfo').userName,
+                    pictureUrl: data.data, // 服务器返回的图片URL
+                    account: wx.getStorageSync('userInfo').account,
+                    email: wx.getStorageSync('userInfo').email
+                  },
+                  success: (updateRes) => {
+                    if (updateRes.data.code === '0') {
+                      // 更新本地存储和页面显示
+                      const userInfo = wx.getStorageSync('userInfo');
+                      userInfo.pictureUrl = data.data;
+                      wx.setStorageSync('userInfo', userInfo);
+                      that.setData({
+                        userInfo: userInfo,
+                        showAvatarPicker: false
+                      });
+                      wx.showToast({
+                        title: '头像更新成功',
+                        icon: 'success'
+                      });
+                    } else {
+                      wx.showToast({
+                        title: updateRes.data.message || '更新失败',
+                        icon: 'none'
+                      });
+                    }
+                  },
+                  fail() {
+                    wx.showToast({
+                      title: '网络请求失败',
+                      icon: 'none'
+                    });
+                  }
+                });
+              } else {
+                wx.showToast({
+                  title: data.message || '上传失败',
+                  icon: 'none'
+                });
+              }
+            } catch (e) {
+              wx.showToast({
+                title: '服务器响应异常',
+                icon: 'none'
+              });
+            }
+          },
+          fail() {
+            wx.hideLoading();
+            wx.showToast({
+              title: '上传失败',
+              icon: 'none'
+            });
+          }
+        });
+      }
     });
   }
 });

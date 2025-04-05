@@ -11,6 +11,8 @@ D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\controller\Use
 D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\email\VerificationCodeUtil.java
 D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\entity\Certificate.java
 D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\entity\Exam.java
+D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\entity\ExamType.java
+D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\entity\Grade.java
 D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\entity\Message.java
 D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\entity\Question.java
 D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\entity\Retrain.java

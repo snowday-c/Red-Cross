@@ -251,3 +251,17 @@
   background-color: #ff4d4f;
   color: #fff;
 }
+
+.upload-button {
+  width: 100%;
+  padding: 15px;
+  text-align: center;
+  font-size: 16px;
+  color: #07c160;
+  border-bottom: 1px solid #eee;
+  background-color: #f8f8f8;
+}
+
+.upload-button:active {
+  background-color: #e8e8e8;
+}

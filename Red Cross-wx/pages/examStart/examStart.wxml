@@ -14,21 +14,30 @@
         <!-- 选择题 -->
         <view wx:if="{{item.questionType === 1}}" class="options">
           <radio-group bindchange="handleRadioChange" data-index="{{index}}">
-            <label wx:for="{{['A', 'B', 'C', 'D']}}" wx:key="*this">
-              <radio value="{{item}}" /> {{item}}
-            </label>
+            <view class="option-item" wx:for="{{[{key:'A', value:item.optionA}, {key:'B', value:item.optionB}, {key:'C', value:item.optionC}, {key:'D', value:item.optionD}]}}" wx:key="key" wx:for-item="option">
+              <label class="option-label">
+                <radio value="{{option.key}}" class="option-radio" />
+                <text class="option-text">{{option.key}}. {{option.value}}</text>
+              </label>
+            </view>
           </radio-group>
         </view>
 
         <!-- 判断题 -->
         <view wx:if="{{item.questionType === 2}}" class="options">
           <radio-group bindchange="handleRadioChange" data-index="{{index}}">
-            <label>
-              <radio value="T" /> 正确
-            </label>
-            <label>
-              <radio value="F" /> 错误
-            </label>
+            <view class="option-item">
+              <label class="option-label">
+                <radio value="T" class="option-radio" />
+                <text class="option-text">正确</text>
+              </label>
+            </view>
+            <view class="option-item">
+              <label class="option-label">
+                <radio value="F" class="option-radio" />
+                <text class="option-text">错误</text>
+              </label>
+            </view>
           </radio-group>
         </view>
 

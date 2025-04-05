@@ -3,11 +3,6 @@
     <!-- 等待审核证书 -->
     <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
       <h2>等待审核证书</h2>
-      <!-- <el-tooltip content="红十字救生员证书审核标准：<br/>1.检查申请人是否已经具有未过期限(1年)的证书<br/> 2.核对申请人是否具有最近一年内的培训签到记录" placement="top">
-        <span style="color: #909399; cursor: help;">
-          <i class="el-icon-info"></i> 审核标准
-        </span>
-      </el-tooltip> -->
       <el-tooltip placement="bottom">
         <div slot="content">红十字救生员证书审核标准：<br/>1.检查申请人是否已经具有未过期限(1年)的证书
           <br/>2.核对申请人是否具有最近一年内的培训签到记录</div>
@@ -16,8 +11,12 @@
         </span>
         </el-tooltip>
     </div>
-    <el-table :data="paginatedWaitCertificates" style="width: 100%" border>
-      <el-table-column prop="userId" label="用户ID" width="100"></el-table-column>
+    <el-table :data="paginatedWaitCertificates" style="width: 100%" border :row-style="{height: '80px'}" :cell-style="{padding: '5px'}">
+      <el-table-column prop="userId" label="用户ID" width="100">
+        <template slot-scope="scope">
+          <div class="cell-content">{{ scope.row.userId }}</div>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="300">
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="confirmApprove(scope.row)">通过审核</el-button>
@@ -25,6 +24,7 @@
         </template>
       </el-table-column>
     </el-table>
+    
     <!-- 等待审核证书分页 -->
     <el-pagination
       style="margin-top: 20px;"
@@ -47,12 +47,32 @@
     ></el-input>
     <el-button type="primary" @click="fetchApprovedCertificates">筛选</el-button>
 
-    <el-table :data="paginatedApprovedCertificates" style="width: 100%" border>
-      <el-table-column prop="userId" label="用户ID" width="100"></el-table-column>
-      <el-table-column prop="certificateTitle" label="证书标题" width="150"></el-table-column>
-      <el-table-column prop="certificateContent" label="证书内容"></el-table-column>
-      <el-table-column prop="certificateTime" label="发放时间" width="180"></el-table-column>
-      <el-table-column prop="approver" label="审核人" width="120"></el-table-column>
+    <el-table :data="paginatedApprovedCertificates" style="width: 100%" border :row-style="{height: '80px'}" :cell-style="{padding: '5px'}">
+      <el-table-column prop="userId" label="用户ID" width="100">
+        <template slot-scope="scope">
+          <div class="cell-content">{{ scope.row.userId }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="certificateTitle" label="证书标题" width="150">
+        <template slot-scope="scope">
+          <div class="cell-content">{{ scope.row.certificateTitle }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="certificateContent" label="证书内容">
+        <template slot-scope="scope">
+          <div class="cell-content">{{ scope.row.certificateContent }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="certificateTime" label="发放时间" width="180">
+        <template slot-scope="scope">
+          <div class="cell-content">{{ scope.row.certificateTime }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="approver" label="审核人" width="120">
+        <template slot-scope="scope">
+          <div class="cell-content">{{ scope.row.approver }}</div>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="120" v-if="isSuperAdmin">
         <template slot-scope="scope">
           <el-button 
@@ -73,22 +93,7 @@
       :current-page="approvedCurrentPage"
       @current-change="handleApprovedPageChange"
     ></el-pagination>
-
-    <!-- 审核规则对话框
-    <el-dialog
-      title="证书审核规则"
-      :visible.sync="ruleDialogVisible"
-      width="50%"
-    >
-      <div style="line-height: 1.8;">
-        <h3>红十字救生员证书审核标准</h3>
-        <p>1. 检查申请人是否已经具有未过期限(1年)的证书,若已有证书则拒绝审核</p>
-        <p>2. 核对申请人是否具有最近一年内的培训签到记录,若没有签到记录则拒绝审核</p>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="ruleDialogVisible = false">确定</el-button>
-      </span>
-    </el-dialog> -->
+    
   </div>
 </template>
 
@@ -311,5 +316,26 @@ h1 {
 h2 {
   margin-top: 30px;
   margin-bottom: 20px;
+}
+
+.cell-content {
+  max-height: 70px;
+  overflow-y: auto;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+/* 自定义滚动条样式 */
+.cell-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cell-content::-webkit-scrollbar-thumb {
+  background-color: #dcdfe6;
+  border-radius: 3px;
+}
+
+.cell-content::-webkit-scrollbar-track {
+  background-color: #f5f7fa;
 }
 </style>

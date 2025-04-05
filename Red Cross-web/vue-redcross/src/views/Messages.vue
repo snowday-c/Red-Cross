@@ -11,11 +11,28 @@
             <el-button type="primary" @click="handleAddMessage('public')">新增公共消息</el-button>
           </el-col>
         </el-row>
-        <el-table :data="paginatedPublicMessages" style="width: 100%" border>
-          <el-table-column prop="title" label="标题" width="150"></el-table-column>
-          <el-table-column prop="content" label="内容"></el-table-column>
-          <el-table-column prop="sender" label="发送者" width="120"></el-table-column>
-          <el-table-column prop="time" label="时间" width="180"></el-table-column>
+        <!-- 公共消息表格 -->
+        <el-table :data="paginatedPublicMessages" style="width: 100%" border :row-style="{height: '80px'}" :cell-style="{padding: '5px'}">
+          <el-table-column prop="title" label="标题" width="150">
+            <template slot-scope="scope">
+              <div class="cell-content">{{ scope.row.title }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="content" label="内容">
+            <template slot-scope="scope">
+              <div class="cell-content">{{ scope.row.content }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="sender" label="发送者" width="120">
+            <template slot-scope="scope">
+              <div class="cell-content">{{ scope.row.sender }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="time" label="时间" width="180">
+            <template slot-scope="scope">
+              <div class="cell-content">{{ scope.row.time }}</div>
+            </template>
+          </el-table-column>
           <el-table-column label="操作" width="200">
             <template slot-scope="scope">
               <el-button type="primary" size="small" @click="handleEditMessage(scope.row)">修改</el-button>
@@ -46,12 +63,32 @@
             <el-button type="primary" @click="handleAddMessage('private')">新增个人消息</el-button>
           </el-col>
         </el-row>
-        <el-table :data="paginatedPrivateMessages" style="width: 100%" border>
-          <el-table-column prop="title" label="标题" width="150"></el-table-column>
-          <el-table-column prop="content" label="内容"></el-table-column>
-          <el-table-column prop="sender" label="发送者" width="120"></el-table-column>
-          <el-table-column prop="receiver" label="接收者" width="120"></el-table-column>
-          <el-table-column prop="time" label="时间" width="180"></el-table-column>
+        <el-table :data="paginatedPrivateMessages" style="width: 100%" border :row-style="{height: '80px'}" :cell-style="{padding: '5px'}">
+          <el-table-column prop="title" label="标题" width="150">
+            <template slot-scope="scope">
+              <div class="cell-content">{{ scope.row.title }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="content" label="内容">
+            <template slot-scope="scope">
+              <div class="cell-content">{{ scope.row.content }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="sender" label="发送者" width="120">
+            <template slot-scope="scope">
+              <div class="cell-content">{{ scope.row.sender }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="receiver" label="接收者" width="120">
+            <template slot-scope="scope">
+              <div class="cell-content">{{ scope.row.receiver }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="time" label="时间" width="180">
+            <template slot-scope="scope">
+              <div class="cell-content">{{ scope.row.time }}</div>
+            </template>
+          </el-table-column>
           <el-table-column label="操作" width="200">
             <template slot-scope="scope">
               <el-button type="text" @click="handleEditMessage(scope.row)">修改</el-button>
@@ -259,5 +296,27 @@ export default {
 
 .el-pagination {
   margin-top: 20px; /* 分页组件与表格之间的间距 */
+}
+
+/* 添加单元格内容样式 */
+.cell-content {
+  max-height: 70px;
+  overflow-y: auto;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+/* 自定义滚动条样式 */
+.cell-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cell-content::-webkit-scrollbar-thumb {
+  background-color: #dcdfe6;
+  border-radius: 3px;
+}
+
+.cell-content::-webkit-scrollbar-track {
+  background-color: #f5f7fa;
 }
 </style>

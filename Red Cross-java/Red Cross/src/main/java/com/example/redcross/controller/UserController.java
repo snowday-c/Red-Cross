@@ -114,7 +114,7 @@ public class UserController {
             }
             return Result.success();
         } catch (Exception e) {
-            return Result.error("系统异常，请稍后再试");
+            return Result.error("系统异常，redis连接失败，请稍后再试");
         }
     }
 
@@ -208,7 +208,7 @@ public class UserController {
             }
         }
         // 4. 检查用户名是否修改
-        if (!existingUser.getUserName().equals(user.getOldName())) {
+        if (!existingUser.getUserName().equals(user.getUserName())) {
             // 如果用户名已修改，检查新用户名是否已被其他用户占用
             if (userService.isUserNameExist(user.getUserName())) {
                 return Result.error("此用户名已注册");

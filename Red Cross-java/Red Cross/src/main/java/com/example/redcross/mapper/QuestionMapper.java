@@ -2,6 +2,7 @@ package com.example.redcross.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.redcross.entity.Exam;
+import com.example.redcross.entity.ExamType;
 import com.example.redcross.entity.Question;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -21,7 +22,7 @@ public interface QuestionMapper extends BaseMapper<Question> {
     void updateQuestion(Question question);
 
 
-    List<Question> getExam();
+    List<Question> getExam(Integer choice, Integer truefalse, Integer blank);
 
     void insertExam(String questionIds,Integer userId);
 
@@ -34,4 +35,13 @@ public interface QuestionMapper extends BaseMapper<Question> {
     void insertUserAnswer(String userAnswersJson, Integer examId);
 
     List<Exam> findAllExamByUserId(Integer userId);
+
+    ExamType getExamType();
+
+    Integer selectExam(Integer examTypeId);
+
+    Integer insertExamType(Integer choice, Integer truefalse, Integer blank, Integer score, Integer time);
+
+    List<ExamType> selectAllExam();
+
 }

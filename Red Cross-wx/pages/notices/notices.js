@@ -1,7 +1,8 @@
 const app = getApp();
 Page({
   data: {
-    notices: []
+    notices: [],
+    expandedId: null // 添加当前展开的公告ID
   },
 
   onLoad: function() {
@@ -43,6 +44,14 @@ Page({
           icon: 'none'
         });
       }
+    });
+  },
+
+  // 添加切换展开/收起的方法
+  toggleNotice(e) {
+    const messageId = e.currentTarget.dataset.id;
+    this.setData({
+      expandedId: this.data.expandedId === messageId ? null : messageId
     });
   }
 });
