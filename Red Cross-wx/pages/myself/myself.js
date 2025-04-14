@@ -8,16 +8,16 @@ Page({
     showSettingsMenu: false, // 是否显示设置菜单
     showDeleteAccountModal: false, // 是否显示注销账号弹窗
     avatarList: [
-      '/assets/avatar/avatar1.jpg',
-      '/assets/avatar/avatar2.jpg',
-      '/assets/avatar/avatar3.jpg',
-      '/assets/avatar/avatar4.jpg',
-      '/assets/avatar/avatar5.jpg',
-      '/assets/avatar/avatar6.jpg',
-      '/assets/avatar/avatar7.jpg',
-      '/assets/avatar/avatar8.jpg',
-      '/assets/avatar/avatar9.jpg',
-      '/assets/avatar/avatar10.jpg',
+      'https://120.27.161.155/files/avatar/avatar1.jpg',
+      'https://120.27.161.155/files/avatar/avatar2.jpg',
+      'https://120.27.161.155/files/avatar/avatar3.jpg',
+      'https://120.27.161.155/files/avatar/avatar4.jpg',
+      'https://120.27.161.155/files/avatar/avatar5.jpg',
+      'https://120.27.161.155/files/avatar/avatar6.jpg',
+      'https://120.27.161.155/files/avatar/avatar7.jpg',
+      'https://120.27.161.155/files/avatar/avatar8.jpg',
+      'https://120.27.161.155/files/avatar/avatar9.jpg',
+      'https://120.27.161.155/files/avatar/avatar10.jpg',
     ]
   },
 

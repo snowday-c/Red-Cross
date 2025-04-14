@@ -2,7 +2,7 @@
   <view class="header">
     <!-- 用户头像 -->
     <view class="avatar-container" bindtap="showEditOptions">
-      <image class="avatar" src="{{userInfo.pictureUrl ? userInfo.pictureUrl : '/assets/avatar/avatar0.jpg'}}" mode="aspectFill"/>
+      <image class="avatar" src="{{userInfo.pictureUrl ? userInfo.pictureUrl : 'https://120.27.161.155/files/avatar/avatar0.jpg'}}" mode="aspectFill"/>
     </view>
 
     <!-- 用户名 -->
@@ -50,9 +50,9 @@
 <view class="avatar-picker-modal" wx:if="{{showAvatarPicker}}">
   <view class="modal-content">
     <!-- 添加自定义上传按钮 -->
-    <view class="upload-button" bindtap="chooseAndUploadImage">
+    <!-- <view class="upload-button" bindtap="chooseAndUploadImage">
       <text>上传自定义头像</text>
-    </view>
+    </view> -->
     <!-- 使用 scroll-view 实现上下滑动 -->
     <scroll-view class="avatar-scroll" scroll-y>
       <view class="avatar-grid">

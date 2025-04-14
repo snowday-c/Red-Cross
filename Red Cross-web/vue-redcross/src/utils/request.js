@@ -2,8 +2,8 @@ import axios from 'axios'
 
 // 创建axios对象
 const request = axios.create({
-    baseURL: 'https://120.27.161.155:8090/api',//服务器环境
-    //  baseURL: 'http://localhost:8090/api',//本地环境
+    // baseURL: 'https://redcrosstest.asia:8090/api',//服务器环境120.27.161.155
+     baseURL: 'http://localhost:8090/api',//本地环境
     timeout: 5000
 })
 
