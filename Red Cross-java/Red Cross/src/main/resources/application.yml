@@ -1,9 +1,9 @@
 server:
   port: 8090
-  ssl:
-    key-store: classpath:redcrosstest.asia.jks
-    key-store-password: oxfp8627
-    key-store-type: JKS
+#  ssl:
+#    key-store: classpath:redcrosstest.asia.jks
+#    key-store-password: oxfp8627
+#    key-store-type: JKS
 spring:
   application:
     name: RedCross
@@ -42,3 +42,15 @@ mybatis:
 logging:
   level:
     com.example.redcross.mapper: DEBUG
+    com.example.redcross: INFO
+  file:
+    name: d:/DeskTop/Red Cross/logs/redcross.log
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
+      total-size-cap: 1GB
+      file-name-pattern: d:/DeskTop/Red Cross/logs/redcross-%d{yyyy-MM-dd}.%i.log

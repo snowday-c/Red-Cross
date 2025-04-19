@@ -11,9 +11,11 @@
     <!-- 设置按钮 -->
     <view class="settings-container" wx:if="{{userInfo.userId}}">
       <image class="settings-icon" src="/assets/icons/settings.png" bindtap="toggleSettingsMenu" />
+      <!-- 设置菜单 -->
       <view class="settings-menu" wx:if="{{showSettingsMenu}}">
-        <view class="menu-item" bindtap="navigateToChangePassword">修改密码</view>
-        <view class="menu-item" bindtap="showDeleteAccountModal">注销账号</view>
+        <view class="settings-item" bindtap="navigateToChangePassword">修改密码</view>
+        <view class="settings-item" bindtap="navigateToFeedback">用户反馈</view>
+        <view class="settings-item delete" bindtap="showDeleteAccountModal">注销账号</view>
       </view>
     </view>
 

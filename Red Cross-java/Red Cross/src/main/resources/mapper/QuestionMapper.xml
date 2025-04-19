@@ -95,4 +95,23 @@
         SET score = #{score}
         WHERE exam_id = #{examId}
     </update>
+    
+    <!-- 查询所有考试成绩 -->
+    <select id="getAllGrade" resultType="java.util.Map">
+        SELECT e.exam_id, e.user_id, u.user_name, e.score, e.exam_time
+        FROM exam e
+        LEFT JOIN user u ON e.user_id = u.user_id
+        WHERE e.score IS NOT NULL
+        ORDER BY e.exam_time DESC
+    </select>
+    
+    <!-- 查询最近50次考试成绩 -->
+    <select id="getLastGrade" resultType="java.util.Map">
+        SELECT e.exam_id, e.user_id, u.user_name, e.score, e.exam_time
+        FROM exam e
+        LEFT JOIN user u ON e.user_id = u.user_id
+        WHERE e.score IS NOT NULL
+        ORDER BY e.exam_time DESC
+        LIMIT 10
+    </select>
 </mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.redcross.mapper.AdviceMapper">
+    
+    <!-- 插入用户反馈 -->
+    <insert id="insertAdvice" parameterType="com.example.redcross.entity.Advice">
+        INSERT INTO advice (advice_content, advice_sender, advice_time, advice_type)
+        VALUES (#{adviceContent}, #{adviceSender}, #{adviceTime}, #{adviceType})
+    </insert>
+    
+    <!-- 获取所有反馈信息 -->
+    <select id="getAllAdvice" resultType="com.example.redcross.entity.Advice">
+        SELECT * FROM advice ORDER BY advice_time DESC
+    </select>
+    
+    <!-- 获取未处理的反馈信息 -->
+    <select id="getUnhandledAdvice" resultType="com.example.redcross.entity.Advice">
+        SELECT * FROM advice WHERE advice_type = '未处理' ORDER BY advice_time DESC
+    </select>
+    
+    <!-- 更新反馈信息状态 -->
+    <update id="updateAdviceType">
+        UPDATE advice SET advice_type = #{adviceType}, advice_handler = #{adviceHandler} WHERE advice_id = #{adviceId}
+    </update>
+    
+</mapper>

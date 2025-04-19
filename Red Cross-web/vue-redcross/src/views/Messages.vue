@@ -60,7 +60,17 @@
             <span>个人消息</span>
           </el-col>
           <el-col>
-            <el-button type="primary" @click="handleAddMessage('private')">新增个人消息</el-button>
+            <div>
+              <el-input
+                v-model="searchReceiver"
+                placeholder="请输入接收者用户名筛选"
+                style="width: 200px; margin-right: 10px;"
+                clearable
+                @clear="fetchPrivateMessages"
+              ></el-input>
+              <el-button type="primary" @click="searchPrivateMessages">筛选</el-button>
+              <el-button type="primary" style="margin-left: 10px;" @click="handleAddMessage('private')">新增个人消息</el-button>
+            </div>
           </el-col>
         </el-row>
         <el-table :data="paginatedPrivateMessages" style="width: 100%" border :row-style="{height: '80px'}" :cell-style="{padding: '5px'}">
@@ -100,7 +110,7 @@
         <el-pagination
           background
           layout="prev, pager, next"
-          :total="privateMessages.length"
+          :total="filteredPrivateMessages.length"
           :page-size="pageSize"
           :current-page="privateCurrentPage"
           @current-change="handlePrivatePageChange"
@@ -142,6 +152,8 @@ export default {
       activeTab: 'public', // 当前选中的选项卡
       publicMessages: [], // 公共消息列表
       privateMessages: [], // 个人消息列表
+      filteredPrivateMessages: [], // 筛选后的个人消息列表
+      searchReceiver: '', // 接收者筛选
       dialogVisible: false, // 对话框是否显示
       dialogTitle: '', // 对话框标题
       currentMessage: { messageId: null, title: '', content: '', receiver: '', messageType: null, sender: '', time: '' }, // 当前操作的消息
@@ -161,7 +173,7 @@ export default {
     paginatedPrivateMessages() {
       const start = (this.privateCurrentPage - 1) * this.pageSize;
       const end = start + this.pageSize;
-      return this.privateMessages.slice(start, end);
+      return this.filteredPrivateMessages.slice(start, end);
     },
   },
   created() {
@@ -185,9 +197,23 @@ export default {
         const response = await request.get('/message/private');
         // 按照 messageId 从大到小排序
         this.privateMessages = response.data.data.sort((a, b) => b.messageId - a.messageId);
+        this.filteredPrivateMessages = [...this.privateMessages]; // 初始化筛选后的消息列表
+        this.searchReceiver = ''; // 重置搜索条件
       } catch (error) {
         console.error('获取个人消息失败:', error);
       }
+    },
+    // 筛选个人消息
+    searchPrivateMessages() {
+      if (!this.searchReceiver) {
+        this.filteredPrivateMessages = [...this.privateMessages];
+      } else {
+        this.filteredPrivateMessages = this.privateMessages.filter(
+          message => message.receiver.includes(this.searchReceiver)
+        );
+      }
+      // 重置页码
+      this.privateCurrentPage = 1;
     },
     // 新增消息
     handleAddMessage(type) {

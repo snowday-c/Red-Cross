@@ -1,0 +1,38 @@
+<view class="container">
+  <view class="feedback-form">
+    <view class="form-title">用户反馈</view>
+    
+    <view class="form-item">
+      <textarea 
+        class="feedback-input" 
+        placeholder="请输入您的反馈内容..." 
+        bindinput="onContentInput"
+        value="{{feedbackContent}}"
+        maxlength="500"
+      ></textarea>
+      <view class="word-count">{{feedbackContent.length}}/500</view>
+    </view>
+    
+    <view class="form-item checkbox-container">
+      <checkbox 
+        checked="{{isAnonymous}}" 
+        bindtap="toggleAnonymous"
+        color="#07c160"
+      />
+      <text class="checkbox-label" bindtap="toggleAnonymous">匿名提交</text>
+    </view>
+    
+    <view class="tips">
+      <text>提示：选择匿名提交后，您的用户名将不会被显示。</text>
+    </view>
+    
+    <button 
+      class="submit-btn" 
+      bindtap="submitFeedback" 
+      loading="{{submitting}}" 
+      disabled="{{submitting}}"
+    >
+      提交反馈
+    </button>
+  </view>
+</view>

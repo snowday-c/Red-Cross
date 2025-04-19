@@ -53,6 +53,14 @@
             <i class="el-icon-s-order"></i>
             <span>证书管理</span>
           </el-menu-item>
+          <el-menu-item index="/management/feedback">
+            <i class="el-icon-chat-line-square"></i>
+            <span>反馈管理</span>
+          </el-menu-item>
+          <el-menu-item index="/score-analysis">
+            <i class="el-icon-data-analysis"></i>
+            <span slot="title">成绩分析</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
 

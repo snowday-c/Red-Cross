@@ -7,6 +7,7 @@ import com.example.redcross.entity.Question;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface QuestionMapper extends BaseMapper<Question> {
@@ -44,4 +45,15 @@ public interface QuestionMapper extends BaseMapper<Question> {
 
     List<ExamType> selectAllExam();
 
+    /**
+     * 获取所有考试成绩
+     * @return 所有考试成绩列表
+     */
+    List<Map<String, Object>> getAllGrade();
+
+    /**
+     * 获取最近50次考试成绩
+     * @return 最近50次考试成绩列表
+     */
+    List<Map<String, Object>> getLastGrade();
 }

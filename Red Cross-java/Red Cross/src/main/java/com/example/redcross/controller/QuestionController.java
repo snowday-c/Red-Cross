@@ -240,4 +240,17 @@ public class QuestionController {
 
         return Result.success(exams);
     }
+
+    @GetMapping("/getAllGrade") // 查询全部成绩
+    public Result getAllGrade() {
+        List<Map<String, Object>> grades = questionService.getAllGrade();
+        return Result.success(grades);
+    }
+    
+    @GetMapping("/getLastGrade") // 查询最近50次考试的成绩
+    public Result getLastGrade() {
+        List<Map<String, Object>> grades = questionService.getLastGrade();
+        return Result.success(grades);
+    }
+
 }

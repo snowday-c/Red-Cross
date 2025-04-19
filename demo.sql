@@ -11,11 +11,34 @@
  Target Server Version : 80036 (8.0.36)
  File Encoding         : 65001
 
- Date: 19/03/2025 18:32:29
+ Date: 19/04/2025 22:07:18
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for advice
+-- ----------------------------
+DROP TABLE IF EXISTS `advice`;
+CREATE TABLE `advice`  (
+  `advice_id` int NOT NULL AUTO_INCREMENT COMMENT '用户反馈id',
+  `advice_content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '用户反馈内容',
+  `advice_sender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '反馈的用户',
+  `advice_time` datetime NULL DEFAULT NULL COMMENT '反馈时间',
+  `advice_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否处理：未处理，已处理',
+  `advice_handler` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '处理人',
+  PRIMARY KEY (`advice_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of advice
+-- ----------------------------
+INSERT INTO `advice` VALUES (3, '发现一个问题', 'zwj', '2025-04-17 22:06:33', '已处理', '张三');
+INSERT INTO `advice` VALUES (4, '发现第二个个问题', 'zwj', '2025-04-17 22:09:13', '已处理', 'clt');
+INSERT INTO `advice` VALUES (5, '额外人生巅峰', '匿名用户', '2025-04-18 16:05:19', '未处理', NULL);
+INSERT INTO `advice` VALUES (6, '二次额外人生巅峰二次额外人生巅峰二次额外人生巅峰二次额外人生巅峰二次额外人生巅峰二次额外人生巅峰二次额外人生巅峰二次额外人生巅峰二次额外人生巅峰二次额外人生巅峰二次额外人生巅峰二次额外人生巅峰二次额外人生巅峰二次额外人生巅峰', '匿名用户', '2025-04-18 16:05:47', '未处理', NULL);
+INSERT INTO `advice` VALUES (7, '是非得失服', '张三', '2025-04-18 16:06:53', '未处理', NULL);
 
 -- ----------------------------
 -- Table structure for certificate
@@ -30,15 +53,16 @@ CREATE TABLE `certificate`  (
   `certificate_type` int NOT NULL COMMENT '证书状态：0审核中，1已发放，-1未通过审核',
   `approver` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '审批人',
   PRIMARY KEY (`certificate_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of certificate
 -- ----------------------------
-INSERT INTO `certificate` VALUES (4, 3, '荣誉证书', '红十字荣誉证书001', '2023-03-19 10:48:56', 1, 'clt');
-INSERT INTO `certificate` VALUES (7, 4, '荣誉证书', '荣誉证书001', '2023-03-17 22:29:32', 1, 'clt');
-INSERT INTO `certificate` VALUES (8, 4, '66666', '444444444444444444', '2025-03-19 15:45:23', 1, NULL);
-INSERT INTO `certificate` VALUES (10, 3, '', '', '2025-03-19 15:14:36', -1, NULL);
+INSERT INTO `certificate` VALUES (4, 3, '红十字水上安全救生员资格证书', '本证书确认zwj已完成红十字救生员培训并通过考核，具备在紧急情况下实施水上救援的资格和能力', '2023-03-19 10:48:56', 1, 'clt');
+INSERT INTO `certificate` VALUES (7, 4, '红十字急救与救生技能认证证书', '兹证明张三同志已完成红十字救生员全部培训课程，经考核合格，具备红十字救生员资格，特发此证', '2023-03-17 22:29:32', 1, 'clt');
+INSERT INTO `certificate` VALUES (10, 3, '', '', '2024-03-19 22:47:46', 0, 'clt');
+INSERT INTO `certificate` VALUES (11, 4, '红十字救生员培训合格证书', '张三学员已完成红十字水上安全救生员培训计划，掌握相关救生技能，准予颁发此资格证书。', '2024-03-24 17:57:16', 1, 'clt');
+INSERT INTO `certificate` VALUES (12, 4, '红十字急救与救生技能认证证书', '本证书确认张三已完成红十字救生员培训并通过考核，具备在紧急情况下实施水上救援的资格和能力', '2025-03-30 23:31:00', 1, 'clt');
 
 -- ----------------------------
 -- Table structure for exam
@@ -52,7 +76,7 @@ CREATE TABLE `exam`  (
   `score` int NULL DEFAULT NULL COMMENT '得分',
   `exam_time` datetime NULL DEFAULT NULL COMMENT '考试时间',
   PRIMARY KEY (`exam_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of exam
@@ -61,7 +85,7 @@ INSERT INTO `exam` VALUES (11, 4, '[49, 20, 46, 65, 76, 93]', '[\"A\", \"B\", \"
 INSERT INTO `exam` VALUES (12, 4, '[51, 33, 52, 62, 64, 96]', '[\"D\", \"A\", \"B\", \"T\", \"T\", \"呼吸道通畅\"]', 60, '2025-03-02 10:52:53');
 INSERT INTO `exam` VALUES (13, 4, '[15, 28, 34, 60, 63, 104]', '[\"B\", \"B\", \"B\", \"T\", \"T\", \"1\"]', 120, '2025-03-03 10:52:56');
 INSERT INTO `exam` VALUES (14, 4, '[28, 23, 19, 74, 67, 94]', '[\"D\", \"B\", \"C\", \"F\", \"T\", \"降温\"]', 40, '2025-03-04 10:53:00');
-INSERT INTO `exam` VALUES (15, 4, '[41, 39, 24, 83, 81, 87]', NULL, NULL, '2025-03-05 10:53:05');
+INSERT INTO `exam` VALUES (15, 4, '[41, 39, 24, 83, 81, 87]', NULL, 0, '2025-03-05 10:53:05');
 INSERT INTO `exam` VALUES (16, 4, '[27, 16, 40, 65, 75, 95]', '[\"B\", \"C\", \"A\", \"T\", \"T\", \"伤害\"]', 40, '2025-03-06 10:53:09');
 INSERT INTO `exam` VALUES (17, 1, '[27, 20, 31, 79, 73, 100]', '[\"A\", \"B\", \"B\", \"T\", \"T\", \"呼吸\"]', 40, '2025-03-07 10:53:13');
 INSERT INTO `exam` VALUES (18, 1, '[40, 27, 21, 70, 62, 87]', '[\"B\", \"B\", \"B\", \"F\", \"T\", \"救援\"]', 80, '2025-03-08 10:53:16');
@@ -69,11 +93,43 @@ INSERT INTO `exam` VALUES (19, 1, '[34, 47, 27, 55, 70, 86]', '[\"B\", \"B\", \"
 INSERT INTO `exam` VALUES (20, 3, '[54, 44, 49, 55, 77, 98]', '[\"B\", \"B\", \"B\", \"T\", \"T\", \"消毒\"]', 100, '2025-03-10 10:53:24');
 INSERT INTO `exam` VALUES (21, 4, '[46, 27, 21, 71, 66, 104]', '[\"B\", \"B\", \"B\", \"F\", \"F\", \"3\"]', 80, '2025-03-12 12:26:40');
 INSERT INTO `exam` VALUES (22, 4, '[28, 30, 51, 80, 62, 104]', '[\"B\", \"B\", \"B\", \"F\", \"T\", \"3\"]', 80, '2025-03-17 16:27:51');
-INSERT INTO `exam` VALUES (23, 4, '[30, 20, 47, 61, 66, 87]', NULL, NULL, '2025-03-17 16:34:44');
+INSERT INTO `exam` VALUES (23, 4, '[30, 20, 47, 61, 66, 87]', NULL, 0, '2025-03-17 16:34:44');
 INSERT INTO `exam` VALUES (24, 4, '[21, 48, 51, 56, 71, 89]', '[\"B\", \"B\", \"B\", \"F\", \"F\", \"呼叫\"]', 60, '2025-03-17 22:06:38');
 INSERT INTO `exam` VALUES (25, 4, '[21, 28, 38, 84, 69, 89]', '[\"B\", \"B\", \"B\", \"F\", \"T\", \"呼叫\"]', 80, '2025-03-17 22:07:13');
 INSERT INTO `exam` VALUES (26, 4, '[36, 38, 41, 64, 82, 96]', '[\"B\", \"B\", \"B\", \"F\", \"F\", \"\"]', 80, '2025-03-17 22:12:44');
 INSERT INTO `exam` VALUES (27, 4, '[42, 38, 44, 78, 76, 102]', '[\"B\", \"B\", \"B\", \"F\", \"F\", \"冷静\"]', 120, '2025-03-17 22:18:32');
+INSERT INTO `exam` VALUES (28, 4, '[48, 43, 46, 74, 59, 93]', '[\"B\", \"B\", \"B\", \"F\", \"F\", \"水中\"]', 100, '2025-03-20 12:58:55');
+INSERT INTO `exam` VALUES (29, 4, '[20, 25, 45, 67, 59, 98]', '[\"B\", \"D\", \"D\", \"T\", \"F\", \"3\"]', 100, '2025-03-20 22:16:43');
+INSERT INTO `exam` VALUES (30, 4, '[49, 48, 34, 80, 64, 96]', NULL, 0, '2025-03-28 20:25:29');
+INSERT INTO `exam` VALUES (31, 4, '[50, 27, 20, 58, 82, 86]', '[\"B\", \"B\", \"B\", \"T\", \"F\", \"564\"]', 100, '2025-03-28 20:25:58');
+INSERT INTO `exam` VALUES (32, 4, '[52, 17, 34, 83, 65, 93]', NULL, 0, '2025-03-31 13:51:56');
+INSERT INTO `exam` VALUES (33, 1, '[53, 18, 31, 23, 29, 60, 82, 77, 90, 101]', NULL, 0, '2025-04-04 20:35:51');
+INSERT INTO `exam` VALUES (34, 1, '[22, 39, 35, 19, 41, 34, 51, 42, 28, 53, 68, 82, 55, 61, 75, 85, 99, 92, 89, 98]', '[\"B\", \"B\", \"B\", \"B\", \"C\", \"B\", \"B\", \"B\", \"B\", \"D\", \"F\", \"F\", \"T\", \"T\", \"T\", \"456\", \"456\", \"456456\", \"456456\", \"45645456\"]', 66, '2025-04-04 21:16:21');
+
+-- ----------------------------
+-- Table structure for examtype
+-- ----------------------------
+DROP TABLE IF EXISTS `examtype`;
+CREATE TABLE `examtype`  (
+  `examtype_id` int NOT NULL AUTO_INCREMENT COMMENT '题型id',
+  `choice` int NULL DEFAULT NULL COMMENT '选择题数量',
+  `truefalse` int NULL DEFAULT NULL COMMENT '判断题数量',
+  `blank` int NULL DEFAULT NULL COMMENT '填空题数量',
+  `score` int NULL DEFAULT NULL COMMENT '每道题分数',
+  `time` int NULL DEFAULT NULL COMMENT '考试时长（分钟）',
+  `current` int NULL DEFAULT NULL COMMENT '0：非当前 1：当前',
+  PRIMARY KEY (`examtype_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of examtype
+-- ----------------------------
+INSERT INTO `examtype` VALUES (1, 3, 2, 1, 20, 30, 0);
+INSERT INTO `examtype` VALUES (2, 5, 3, 2, 12, 60, 0);
+INSERT INTO `examtype` VALUES (3, 10, 5, 5, 6, 80, 0);
+INSERT INTO `examtype` VALUES (4, 15, 10, 5, 4, 100, 0);
+INSERT INTO `examtype` VALUES (7, 4, 2, 2, 15, 40, 1);
+INSERT INTO `examtype` VALUES (8, 1, 1, 1, 40, 15, 0);
 
 -- ----------------------------
 -- Table structure for message
@@ -88,7 +144,7 @@ CREATE TABLE `message`  (
   `time` datetime NOT NULL COMMENT '发送时间',
   `message_type` int NOT NULL COMMENT '通知类型：0公共 1个人',
   PRIMARY KEY (`message_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 43 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of message
@@ -102,7 +158,7 @@ INSERT INTO `message` VALUES (9, '私人消息1', '私人消息1', 'clt', '张�
 INSERT INTO `message` VALUES (10, '私人消息2', '私人消息2', 'clt', '张三', '2025-02-19 11:21:52', 1);
 INSERT INTO `message` VALUES (12, '私人消息4', '私人消息4', 'clt', '李四', '2025-02-19 11:28:23', 1);
 INSERT INTO `message` VALUES (15, '公共通知001', '公共通知001', 'clt', '', '2025-02-26 15:22:41', 0);
-INSERT INTO `message` VALUES (16, '公共通知002', '公共通知002', 'clt', '', '2025-02-26 15:24:04', 0);
+INSERT INTO `message` VALUES (16, '公共通知002', '我是公共通知002', 'clt', '', '2025-03-28 16:46:18', 0);
 INSERT INTO `message` VALUES (17, '个人消息001', '个人消息001', 'clt', '张三', '2025-02-26 15:24:43', 1);
 INSERT INTO `message` VALUES (20, '公共123123', '公共123123', 'zwj', '', '2025-02-26 17:49:00', 0);
 INSERT INTO `message` VALUES (21, '你是一个好人', '你是一个好人', 'zwj', '张三', '2025-02-26 17:54:36', 1);
@@ -117,6 +173,15 @@ INSERT INTO `message` VALUES (29, '证书申请结果', '您申请的证书未�
 INSERT INTO `message` VALUES (30, '证书申请结果', '您申请的证书未通过审核！如有疑问请联系管理员。', '系统', 'zwj', '2025-03-19 15:14:36', 1);
 INSERT INTO `message` VALUES (31, '证书申请结果', '您申请的证书未通过审核！如有疑问请联系管理员。', '系统', 'zwj', '2025-03-19 15:43:57', 1);
 INSERT INTO `message` VALUES (32, '证书申请结果', '您申请的证书已通过审核！', '系统', '张三', '2025-03-19 15:45:23', 1);
+INSERT INTO `message` VALUES (33, '证书申请结果', '您申请的证书未通过审核！如有疑问请联系管理员。', '系统', 'zwj', '2025-03-19 22:45:11', 1);
+INSERT INTO `message` VALUES (34, '证书申请结果', '您申请的证书未通过审核！如有疑问请联系管理员。', '系统', '张三', '2025-03-19 22:46:51', 1);
+INSERT INTO `message` VALUES (35, '证书申请结果', '您申请的证书未通过审核！如有疑问请联系管理员。', '系统', 'zwj', '2025-03-19 22:47:46', 1);
+INSERT INTO `message` VALUES (37, '证书申请结果', '您申请的证书已通过审核！', '系统', '张三', '2025-03-19 23:03:33', 1);
+INSERT INTO `message` VALUES (38, '证书申请结果', '您申请的证书已通过审核！', '系统', '张三', '2025-03-24 17:57:16', 1);
+INSERT INTO `message` VALUES (39, '阿斯达神殿', '啊实打实大师大撒大声地', '张三', '', '2025-03-29 19:27:54', 0);
+INSERT INTO `message` VALUES (40, '阿打发发生', '	\r\n递四方速递发大水发大水发打撒', 'clt', '', '2025-03-29 19:28:16', 0);
+INSERT INTO `message` VALUES (41, '证书申请结果', '您申请的证书已通过审核！', '系统', '张三', '2025-03-30 23:31:00', 1);
+INSERT INTO `message` VALUES (42, '尊敬的用户', '我们要跑路了，拜拜', 'clt', '', '2025-04-14 18:51:20', 0);
 
 -- ----------------------------
 -- Table structure for question
@@ -128,7 +193,7 @@ CREATE TABLE `question`  (
   `question` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '题目',
   `answer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '答案',
   PRIMARY KEY (`question_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 105 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 107 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of question
@@ -143,7 +208,7 @@ INSERT INTO `question` VALUES (21, 1, '以下哪种情况不需要立即进行�
 INSERT INTO `question` VALUES (22, 1, '救生员在救援过程中应如何保持自身安全？A. 忽略自身安全 B. 使用救生设备 C. 直接跳入水中 D. 等待他人救援', 'B');
 INSERT INTO `question` VALUES (23, 1, '在进行心肺复苏时，按压频率应为每分钟多少次？A. 60-80 B. 80-100 C. 100-120 D. 120-140', 'C');
 INSERT INTO `question` VALUES (24, 1, '救生员在救援过程中应如何与溺水者沟通？A. 大声喊叫 B. 保持冷静，使用简单指令 C. 忽略溺水者 D. 等待专业人员', 'B');
-INSERT INTO `question` VALUES (25, 1, '以下哪种设备是救生员必备的？A. 救生圈 B. 呼吸器 C. 氧气瓶 D. 以上都是', 'D');
+INSERT INTO `question` VALUES (25, 1, '以下哪种设备是救生员必备的？A. 救生圈 B. 充电器 C. 氦气瓶 D. 以上都是', 'A');
 INSERT INTO `question` VALUES (26, 1, '救生员在救援过程中应如何评估溺水者的情况？A. 忽略评估 B. 快速评估呼吸和意识 C. 等待专业人员 D. 直接进行心肺复苏', 'B');
 INSERT INTO `question` VALUES (27, 1, '在进行心肺复苏时，按压与人工呼吸的比例是多少？A. 15:2 B. 30:2 C. 5:1 D. 10:1', 'B');
 INSERT INTO `question` VALUES (28, 1, '救生员在救援过程中应如何保持溺水者的体温？A. 忽略体温 B. 使用保温毯 C. 直接进行心肺复苏 D. 等待专业人员', 'B');
@@ -203,7 +268,7 @@ INSERT INTO `question` VALUES (81, 2, '救生员在救援过程中应优先考�
 INSERT INTO `question` VALUES (82, 2, '救生员在救援过程中应忽略溺水者的意识状态。', 'F');
 INSERT INTO `question` VALUES (83, 2, '救生员在救援过程中应优先考虑使用呼吸器。', 'F');
 INSERT INTO `question` VALUES (84, 2, '救生员在救援过程中应忽略溺水者的脉搏情况。', 'F');
-INSERT INTO `question` VALUES (85, 3, '救生员的主要职责是确保水域中的___。', '安全');
+INSERT INTO `question` VALUES (85, 2, '救生员在进行救援时，首先应该直接跳入水中', 'F');
 INSERT INTO `question` VALUES (86, 3, '当有人溺水时，救生员首先应该___，确保自己安全。', '评估环境');
 INSERT INTO `question` VALUES (87, 3, '在紧急情况下，呼叫___是第一步。', '紧急救援');
 INSERT INTO `question` VALUES (88, 3, '救生员在进行人工呼吸时，要保证___畅通。', '气道');
@@ -223,6 +288,7 @@ INSERT INTO `question` VALUES (101, 3, '在进行水上急救时，救生员的�
 INSERT INTO `question` VALUES (102, 3, '救生员在进行急救时，应该时刻保持___的心态。', '冷静');
 INSERT INTO `question` VALUES (103, 3, '如果救生员无法单独救援溺水者，应该尽快___。', '呼叫支援');
 INSERT INTO `question` VALUES (104, 3, '在施行人工呼吸时，救生员的每次吹气时间应保持___秒。', '1');
+INSERT INTO `question` VALUES (105, 3, '救生员的主要职责是确保水域中的___。', '安全');
 
 -- ----------------------------
 -- Table structure for retrain
@@ -234,16 +300,20 @@ CREATE TABLE `retrain`  (
   `user_id` int NOT NULL COMMENT '用户',
   `train_place` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '培训地点',
   `train_time` datetime NOT NULL COMMENT '当前培训时间',
-  `train_next` datetime NOT NULL COMMENT '下一次培训时间',
+  `train_next` datetime NOT NULL COMMENT '下一次最远复训时间',
+  `participate_type` int NOT NULL COMMENT '是否参与活动：0未参加 1已参加',
   PRIMARY KEY (`retrain_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of retrain
 -- ----------------------------
-INSERT INTO `retrain` VALUES (1, 4, 4, '北京1', '2023-10-01 00:00:00', '2024-04-01 00:00:00');
-INSERT INTO `retrain` VALUES (2, 5, 14, '上海', '2023-10-01 00:00:00', '2024-04-01 00:00:00');
-INSERT INTO `retrain` VALUES (7, 12, 4, '郑州', '2025-03-20 00:00:00', '2025-09-20 00:00:00');
+INSERT INTO `retrain` VALUES (1, 4, 4, '北京1', '2023-10-01 00:00:00', '2024-10-01 00:00:00', 1);
+INSERT INTO `retrain` VALUES (2, 5, 14, '上海', '2023-10-01 00:00:00', '2024-10-01 00:00:00', 1);
+INSERT INTO `retrain` VALUES (7, 12, 4, '郑州', '2024-03-20 00:00:00', '2025-03-20 00:00:00', 1);
+INSERT INTO `retrain` VALUES (9, 15, 1, '北京', '2025-03-25 14:00:00', '2026-03-25 14:00:00', 1);
+INSERT INTO `retrain` VALUES (10, 15, 4, '北京', '2025-03-25 14:00:00', '2026-03-25 14:00:00', 1);
+INSERT INTO `retrain` VALUES (11, 16, 4, '洛杉矶', '2025-05-25 14:00:00', '2026-05-25 14:00:00', 0);
 
 -- ----------------------------
 -- Table structure for train
@@ -257,17 +327,22 @@ CREATE TABLE `train`  (
   `train_people` int NOT NULL COMMENT '可参加培训人数',
   `current_people` int NULL DEFAULT NULL COMMENT '当前报名人数',
   `user_ids` json NULL COMMENT '参加培训用户id',
+  `participate_ids` json NULL COMMENT '创建活动签到用户id',
   PRIMARY KEY (`train_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of train
 -- ----------------------------
-INSERT INTO `train` VALUES (4, '2023-10-01 00:00:00', '北京1', -1, 80, 6, '[1, 2, 3, 4, 5, 6]');
-INSERT INTO `train` VALUES (5, '2023-10-01 00:00:00', '上海', -1, 70, 3, '[11, 12, 13]');
-INSERT INTO `train` VALUES (6, '2023-10-01 00:00:00', '广州', -1, 60, 1, '[24]');
-INSERT INTO `train` VALUES (12, '2025-03-20 00:00:00', '郑州', 0, 75, 2, '[1, 4]');
-INSERT INTO `train` VALUES (14, '2025-03-20 00:00:00', '洛阳', 0, 75, 0, '[]');
+INSERT INTO `train` VALUES (4, '2023-10-01 00:00:00', '北京1', -1, 80, 6, '[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]', '[1, 2, 3, 5, 6, 4]');
+INSERT INTO `train` VALUES (5, '2023-10-01 00:00:00', '上海', -1, 70, 3, '[11, 12, 13]', '[11, 12, 13]');
+INSERT INTO `train` VALUES (6, '2023-10-01 00:00:00', '广州', -1, 60, 1, '[24]', '[24]');
+INSERT INTO `train` VALUES (12, '2025-03-20 00:00:00', '郑州', -1, 75, 1, '[4]', '[4]');
+INSERT INTO `train` VALUES (15, '2025-03-25 14:00:00', '北京', -1, 40, 2, '[1, 4]', '[1, 4]');
+INSERT INTO `train` VALUES (16, '2025-05-25 14:00:00', '洛杉矶', 0, 40, 1, '[4]', '[]');
+INSERT INTO `train` VALUES (17, '2025-05-25 14:00:00', '伦敦', 0, 40, 0, '[]', '[]');
+INSERT INTO `train` VALUES (18, '2025-09-03 14:00:00', '天堂', 0, 20, 0, '[]', '[]');
+INSERT INTO `train` VALUES (19, '2025-09-03 14:00:00', '地府', 0, 20, 0, '[]', '[]');
 
 -- ----------------------------
 -- Table structure for user
@@ -281,6 +356,7 @@ CREATE TABLE `user`  (
   `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户名',
   `account` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '登录账号',
   `user_type` int NOT NULL DEFAULT 0 COMMENT '用户身份：0用户1管理员2超级管理员',
+  `salt` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '加密',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `email`(`email` ASC) USING BTREE,
   UNIQUE INDEX `account`(`account` ASC) USING BTREE,
@@ -290,15 +366,14 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('/assets/avatar/avatar2.jpg', 1, '2572886630@qq.com', '123456', 'clt', '123456', 2);
-INSERT INTO `user` VALUES ('/assets/avatar/avatar1.jpg', 3, '1842501791@qq.com', '1234567', 'zwj', '1234567', 1);
-INSERT INTO `user` VALUES ('/assets/avatar/avatar3.jpg', 4, '8888@qq.com', '123456', '张三', '123456777', 0);
-INSERT INTO `user` VALUES ('', 5, '99998@qq.com', '123456', '李四', '1234567777', 1);
-INSERT INTO `user` VALUES (NULL, 9, '12345678@123com', '123456', '王五', '15846795', 0);
-INSERT INTO `user` VALUES (NULL, 15, 'chenlintao001@2925.com', '123456', 'CLT0011', 'clt123456001', 0);
-INSERT INTO `user` VALUES (NULL, 16, 'chenlintao002@2925.com', '123456', 'CLT002', 'clt123456002', 0);
-INSERT INTO `user` VALUES (NULL, 17, 'chenlintao156174@2925.com', '123456', 'clt001', '156174', 0);
-INSERT INTO `user` VALUES (NULL, 18, 'chenlintao147258@2925.com', '123456', 'clt147258', '147258', 0);
+INSERT INTO `user` VALUES ('https://120.27.161.155/files/avatar/avatar2.jpg', 1, '2572886630@qq.com', '123456', 'clt', '123456', 2, NULL);
+INSERT INTO `user` VALUES ('/assets/avatar/avatar1.jpg', 3, '1842501791@qq.com', '123456', 'zwj', '1234567', 1, NULL);
+INSERT INTO `user` VALUES ('https://120.27.161.155/files/avatar/avatar4.jpg', 4, '8888@qq.com', '123456', '张三', '123456777', 1, NULL);
+INSERT INTO `user` VALUES ('/assets/avatar/avatar3.jpg', 5, '99998@qq.com', '123456', '李四', '1234567777', 0, NULL);
+INSERT INTO `user` VALUES (NULL, 9, '12345678@123com', '123456', '王五', '15846795', 0, NULL);
+INSERT INTO `user` VALUES (NULL, 16, 'chenlintao002@2925.com', '123456', 'CLT002', 'clt123456002', 0, NULL);
+INSERT INTO `user` VALUES (NULL, 17, 'chenlintao156174@2925.com', '123456', 'clt001', '156174', 0, NULL);
+INSERT INTO `user` VALUES (NULL, 18, 'chenlintao147258@2925.com', '123456', 'clt147258', '147258', 0, NULL);
 
 -- ----------------------------
 -- Procedure structure for RemoveUserFromTrain

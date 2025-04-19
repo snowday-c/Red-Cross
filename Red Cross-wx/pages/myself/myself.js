@@ -310,6 +310,10 @@ logout() {
     this.hideEditOptions();
   },
 
+  // 添加用户反馈功能
+  
+
+  // 1. 首先修改 myself.js 文件，添加反馈功能入口
   // 切换设置菜单显示状态
   toggleSettingsMenu() {
     this.setData({
@@ -323,6 +327,15 @@ logout() {
     this.setData({ showSettingsMenu: false });
     wx.navigateTo({
       url: '/pages/changePassword/changePassword'
+    });
+  },
+  
+  // 跳转到用户反馈页面
+  navigateToFeedback() {
+    if (!this.checkLogin()) return;
+    this.setData({ showSettingsMenu: false });
+    wx.navigateTo({
+      url: '/pages/feedback/feedback'
     });
   },
 

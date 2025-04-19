@@ -1,8 +1,8 @@
 // app.js
 App({
   globalData: {
-    baseUrl: 'https://120.27.161.155:8090/api'
-    // baseUrl: 'http://localhost:8090/api'
+    // baseUrl: 'https://120.27.161.155:8090/api'
+    baseUrl: 'http://localhost:8099/api'
   },
 
   /**

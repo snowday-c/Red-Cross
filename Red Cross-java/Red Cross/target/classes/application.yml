@@ -9,7 +9,7 @@ spring:
     name: RedCross
   datasource:
     url: jdbc:mysql://localhost:3306/demo?useSSL=false&serverTimezone=UTC
-    username: root
+    username: demo
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
 
@@ -42,3 +42,15 @@ mybatis:
 logging:
   level:
     com.example.redcross.mapper: DEBUG
+    com.example.redcross: INFO
+  file:
+    name: /home/redcrossLogs/redcross.log
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
+      total-size-cap: 1GB
+      file-name-pattern: /home/redcrossLogs/redcross-%d{yyyy-MM-dd}.%i.log

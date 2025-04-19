@@ -4,12 +4,15 @@
     <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
       <h2>等待审核证书</h2>
       <el-tooltip placement="bottom">
-        <div slot="content">红十字救生员证书审核标准：<br/>1.检查申请人是否已经具有未过期限(1年)的证书
-          <br/>2.核对申请人是否具有最近一年内的培训签到记录</div>
-          <span style="color: #909399; cursor: help;">
+        <div slot="content" style="font-size: 14px; line-height: 1.5;">
+          <strong style="font-size: 16px;">红十字救生员证书审核标准：</strong><br/>
+          1.检查申请人是否已经具有未过期限(1年)的证书<br/>
+          2.核对申请人是否具有最近一年内的培训签到记录
+        </div>
+        <span style="color: #909399; cursor: help; font-size: 16px; font-weight: 500;">
           <i class="el-icon-info"></i> 审核标准
         </span>
-        </el-tooltip>
+      </el-tooltip>
     </div>
     <el-table :data="paginatedWaitCertificates" style="width: 100%" border :row-style="{height: '80px'}" :cell-style="{padding: '5px'}">
       <el-table-column prop="userId" label="用户ID" width="100">
@@ -37,15 +40,19 @@
     ></el-pagination>
 
     <!-- 已发放证书 -->
-    <h2>已发放证书</h2>
-    <el-input
-      v-model="searchUserId"
-      placeholder="请输入用户ID筛选"
-      style="width: 200px; margin-bottom: 20px;"
-      clearable
-      @clear="fetchApprovedCertificates"
-    ></el-input>
-    <el-button type="primary" @click="fetchApprovedCertificates">筛选</el-button>
+    <div style="margin-top: 30px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+      <h2>已发放证书</h2>
+      <div>
+        <el-input
+          v-model="searchUserId"
+          placeholder="请输入用户ID筛选"
+          style="width: 200px; margin-right: 10px;"
+          clearable
+          @clear="fetchApprovedCertificates"
+        ></el-input>
+        <el-button type="primary" @click="fetchApprovedCertificates">筛选</el-button>
+      </div>
+    </div>
 
     <el-table :data="paginatedApprovedCertificates" style="width: 100%" border :row-style="{height: '80px'}" :cell-style="{padding: '5px'}">
       <el-table-column prop="userId" label="用户ID" width="100">
@@ -314,8 +321,8 @@ h1 {
   margin-top: 0px;
 }
 h2 {
-  margin-top: 30px;
-  margin-bottom: 20px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .cell-content {

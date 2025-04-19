@@ -17,7 +17,8 @@
     "pages/messages/messages",
     "pages/notices/notices",
     "pages/deleteAccount/deleteAccount",
-    "pages/changePassword/changePassword"
+    "pages/changePassword/changePassword",
+    "pages/feedback/feedback"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ff6666",

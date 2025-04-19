@@ -5,6 +5,7 @@ import com.example.redcross.entity.ExamType;
 import com.example.redcross.entity.Question;
 
 import java.util.List;
+import java.util.Map;
 
 public interface QuestionService {
 
@@ -42,4 +43,17 @@ public interface QuestionService {
     List<ExamType> selectAllExam();
 
     ExamType selectCurrentExam();
+
+
+    /**
+     * 获取所有考试成绩
+     * @return 所有考试成绩列表
+     */
+    List<Map<String, Object>> getAllGrade();
+
+    /**
+     * 获取最近50次考试成绩
+     * @return 最近50次考试成绩列表
+     */
+    List<Map<String, Object>> getLastGrade();
 }

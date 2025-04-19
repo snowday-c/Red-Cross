@@ -3,12 +3,14 @@ import Router from 'vue-router';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import Management from '../views/Management.vue';
-
+import Feedback from '../views/Feedback.vue';
 import Users from '../views/Users.vue';
 import Messages from '@/views/Messages.vue';
 import Questions from '@/views/Questions.vue';
 import Trains from '@/views/Trains.vue';
 import Certificates from '@/views/Certificates.vue';
+import ScoreAnalysis from '@/views/ScoreAnalysis.vue'
+
 Vue.use(Router);
 
 const routes = [
@@ -72,8 +74,22 @@ const routes = [
       }
       },
       {
+        path: 'feedback',
+        component: Feedback,
+        meta:{
+          title:"反馈处理"
+      }
+      },
+      {
         path: '',
         redirect: 'users', // 默认重定向到
+      },
+      {
+        path: '/score-analysis',
+        component: ScoreAnalysis,
+        meta: { 
+          title: '成绩分析' 
+        }
       }
     ]
   }
@@ -105,5 +121,7 @@ router.beforeResolve((to, from, next) => {
 //   // 这里可以根据实际情况从 localStorage 或 Vuex 中获取登录状态
 //   return localStorage.getItem('isLoggedIn') === 'true';
 // }
+
+
 
 export default router;

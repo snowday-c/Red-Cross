@@ -7,7 +7,9 @@ import com.example.redcross.mapper.QuestionMapper;
 import com.example.redcross.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -100,5 +102,15 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public ExamType selectCurrentExam() {
         return questionMapper.getExamType();
+    }
+
+    @Override
+    public List<Map<String, Object>> getAllGrade() {
+        return questionMapper.getAllGrade();
+    }
+
+    @Override
+    public List<Map<String, Object>> getLastGrade() {
+        return questionMapper.getLastGrade();
     }
 }
