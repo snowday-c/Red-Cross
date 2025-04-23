@@ -18,7 +18,7 @@
 
     <!-- 培训列表表格 -->
     <el-table :data="paginatedTrainList" style="width: 100%" border :row-style="{height: '80px'}" :cell-style="{padding: '5px'}">
-      <el-table-column prop="trainTime" label="培训时间" width="160">
+      <el-table-column prop="trainTime" label="培训时间" width="120">
         <template slot-scope="scope">
           <div class="cell-content">{{ scope.row.trainTime }}</div>
         </template>
@@ -28,10 +28,10 @@
           <div class="cell-content">{{ scope.row.trainPlace }}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="trainType" label="培训状态" width="100" :formatter="formatTrainType"></el-table-column>
+      <el-table-column prop="trainType" label="培训状态" width="80" :formatter="formatTrainType"></el-table-column>
       <el-table-column prop="trainPeople" label="培训人数" width="80"></el-table-column>
-      <el-table-column prop="currentPeople" label="当前人数" width="80"></el-table-column>
-      <el-table-column label="报名用户" width="200">
+      <el-table-column prop="currentPeople" label="报名人数" width="80"></el-table-column>
+      <el-table-column label="报名用户" width="185">
         <template slot-scope="scope">
           <div class="cell-content">
             <span v-if="!scope.row.userIds || JSON.parse(scope.row.userIds).length === 0">无</span>
@@ -41,7 +41,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="签到用户" width="200">
+      <el-table-column label="签到用户" width="185">
         <template slot-scope="scope">
           <div class="cell-content">
             <span v-if="!scope.row.participateIds || JSON.parse(scope.row.participateIds).length === 0">无</span>
@@ -51,10 +51,20 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="170">
+      <el-table-column label="操作" width="230">
         <template slot-scope="scope">
+            <!-- 只为培训中(1)和报名中(0)的培训显示二维码按钮 -->
+            <el-button 
+            v-if="scope.row.trainType === 0 || scope.row.trainType === 1" 
+            type="success" 
+            size="small" 
+            @click="showQRCode(scope.row)"
+          >
+            二维码
+          </el-button>
           <el-button type="primary" size="small" @click="handleEdit(scope.row)">修改</el-button>
           <el-button type="danger" size="small" @click="handleDelete(scope.row)">删除</el-button>
+
         </template>
       </el-table-column>
     </el-table>
@@ -117,6 +127,21 @@
         <el-button type="primary" @click="confirmEdit">保存</el-button>
       </span>
     </el-dialog>
+    
+    <!-- 二维码对话框 -->
+    <el-dialog :visible.sync="qrCodeDialogVisible" title="培训签到二维码" width="30%" center>
+      <div style="text-align: center;">
+        <div ref="qrCodeContainer" style="margin: 0 auto; width: 200px;"></div>
+        <p style="margin-top: 15px;">培训ID: {{ currentTrainId }}</p>
+        <p style="color: #E6A23C; font-size: 14px;">
+          <i class="el-icon-time"></i> 二维码有效期为18小时
+        </p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="downloadQRCode">下载二维码</el-button>
+        <el-button @click="qrCodeDialogVisible = false">关闭</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -124,6 +149,7 @@
 import request from '@/utils/request';
 import dayjs from 'dayjs';
 import { MessageBox } from 'element-ui';
+import QRCode from 'qrcodejs2'; // 引入二维码生成库
 
 export default {
   data() {
@@ -131,6 +157,8 @@ export default {
       trainList: [],
       filteredTrainList: [],
       searchUserId: '',
+      pageSize: 5,
+      currentPage: 1,
       publishDialogVisible: false,
       editDialogVisible: false,
       newTrain: {
@@ -139,8 +167,11 @@ export default {
         trainPeople: 0
       },
       currentTrain: {},
-      pageSize: 5,
-      currentPage: 1,
+      
+      // 新增二维码相关数据
+      qrCodeDialogVisible: false,
+      currentTrainId: null,
+      qrCodeInstance: null
     };
   },
   created() {
@@ -278,6 +309,73 @@ export default {
     handlePageChange(page) {
       this.currentPage = page;
     },
+    
+    // 显示二维码对话框
+    showQRCode(train) {
+      this.currentTrainId = train.trainId;
+      this.qrCodeDialogVisible = true;
+      
+      // 在对话框打开后生成二维码
+      this.$nextTick(() => {
+        this.generateQRCode();
+      });
+    },
+    
+    // 生成二维码
+    generateQRCode() {
+      // 清除之前的二维码实例
+      if (this.qrCodeInstance) {
+        this.qrCodeInstance.clear();
+      }
+      
+      const container = this.$refs.qrCodeContainer;
+      if (container) {
+        // 清空容器
+        container.innerHTML = '';
+        
+        // 创建二维码数据，添加过期时间
+        const now = new Date();
+        const expireTime = new Date(now.getTime() + 18 * 60 * 60 * 1000); // 18小时后过期
+        
+        const qrData = JSON.stringify({
+          trainId: this.currentTrainId,
+          type: 'sign_in',
+          expireTime: expireTime.getTime() // 添加过期时间戳
+        });
+        
+        // 生成二维码
+        this.qrCodeInstance = new QRCode(container, {
+          text: qrData,
+          width: 200,
+          height: 200,
+          colorDark: '#000000',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.H
+        });
+        
+        // 显示过期时间
+        const expireTimeElement = document.createElement('p');
+        expireTimeElement.textContent = `有效期至: ${expireTime.toLocaleString()}`;
+        expireTimeElement.style.color = '#666';
+        expireTimeElement.style.fontSize = '14px';
+        expireTimeElement.style.marginTop = '10px';
+        container.appendChild(expireTimeElement);
+      }
+    },
+    
+    // 下载二维码
+    downloadQRCode() {
+      const canvas = this.$refs.qrCodeContainer.querySelector('canvas');
+      if (canvas) {
+        const url = canvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.download = `培训签到二维码_${this.currentTrainId}.png`;
+        a.href = url;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+    }
   }
 };
 </script>

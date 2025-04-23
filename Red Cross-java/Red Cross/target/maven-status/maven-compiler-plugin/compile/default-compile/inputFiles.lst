@@ -4,6 +4,7 @@ D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\common\JwtInte
 D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\common\JwtTokenUtils.java
 D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\common\Result.java
 D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\common\WebConfig.java
+D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\config\SchedulingConfig.java
 D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\controller\AdviceController.java
 D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\controller\CertificateController.java
 D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\controller\MessageController.java
@@ -43,4 +44,5 @@ D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\service\Messag
 D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\service\QuestionService.java
 D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\service\TrainService.java
 D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\service\UserService.java
+D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\task\TrainStatusTask.java
 D:\DeskTop\Red Cross\Red Cross\src\main\java\com\example\redcross\utils\LogUtils.java

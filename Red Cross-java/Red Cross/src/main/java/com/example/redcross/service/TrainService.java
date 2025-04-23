@@ -37,4 +37,13 @@ public interface TrainService {
     Integer DeleteRetrain(Integer trainId, Integer userId);
 
     Integer ParticipateTrain(Integer trainId, Integer userId);
+
+    // 根据ID获取培训信息
+    Train getTrainById(Integer trainId);
+    
+    // 检查用户是否已报名培训
+    boolean isUserRegistered(Integer trainId, Integer userId);
+    
+    // 检查用户是否已签到
+    boolean isUserParticipated(Integer trainId, Integer userId);
 }

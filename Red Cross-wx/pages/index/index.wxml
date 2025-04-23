@@ -50,7 +50,7 @@
   <view class="notice-container">
     <view class="notice-header">
       <view class="notice-title-wrapper">
-        <image src="/assets/icons/000.png" class="notice-icon"></image>
+        <image src="/assets/icons/notice.png" class="notice-icon"></image>
         <text class="notice-title">公告</text>
       </view>
       <navigator url="/pages/notices/notices" class="more-notice">更多 ></navigator>
@@ -64,15 +64,15 @@
   <!-- 宣传标语区域 -->
   <view class="slogan-container">
     <view class="slogan-item">
-      <image src="/assets/icons/001.png" class="slogan-icon"></image>
+      <image src="/assets/icons/slogan.png" class="slogan-icon"></image>
       <text class="slogan-text">专业培训铸就生命防线，红十字守护每一刻安全</text>
     </view>
     <view class="slogan-item">
-      <image src="/assets/icons/001.png" class="slogan-icon"></image>
+      <image src="/assets/icons/slogan.png" class="slogan-icon"></image>
       <text class="slogan-text">从理论到实战，我们培养的不只是救生员——更是生命的守护者</text>
     </view>
     <view class="slogan-item">
-      <image src="/assets/icons/001.png" class="slogan-icon"></image>
+      <image src="/assets/icons/slogan.png" class="slogan-icon"></image>
       <text class="slogan-text">一键管理，全程护航——让每一次救援都高效精准</text>
     </view>
   </view>

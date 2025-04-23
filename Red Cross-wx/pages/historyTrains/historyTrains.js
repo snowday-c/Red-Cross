@@ -106,7 +106,16 @@ Page({
   toggleTip() {
     this.setData({
       showTip: !this.data.showTip,
-      tipContent: '请在复训截止时间前进行再次培训'
+      tipContent: '培训签到需要在个人中心扫码签到，请在复训截止时间前进行再次培训'
     });
+  },
+  
+  // 点击页面其他位置关闭提示
+  closeTipIfOpen() {
+    if (this.data.showTip) {
+      this.setData({
+        showTip: false
+      });
+    }
   }
 });

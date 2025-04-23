@@ -1,69 +1,83 @@
-<view class="container">
+<view class="container" bindtap="closeSettingsMenu">
   <view class="header">
-    <!-- 用户头像 -->
-    <view class="avatar-container" bindtap="showEditOptions">
-      <image class="avatar" src="{{userInfo.pictureUrl ? userInfo.pictureUrl : 'https://120.27.161.155/files/avatar/avatar0.jpg'}}" mode="aspectFill"/>
-    </view>
-
-    <!-- 用户名 -->
-    <text class="username">{{userInfo.userName || '未登录'}}</text>
-
-    <!-- 设置按钮 -->
-    <view class="settings-container" wx:if="{{userInfo.userId}}">
-      <image class="settings-icon" src="/assets/icons/settings.png" bindtap="toggleSettingsMenu" />
-      <!-- 设置菜单 -->
-      <view class="settings-menu" wx:if="{{showSettingsMenu}}">
-        <view class="settings-item" bindtap="navigateToChangePassword">修改密码</view>
-        <view class="settings-item" bindtap="navigateToFeedback">用户反馈</view>
-        <view class="settings-item delete" bindtap="showDeleteAccountModal">注销账号</view>
+    <!-- 顶部按钮区域 -->
+    <view class="top-buttons">
+      <!-- 扫码签到按钮 -->
+      <view class="scan-container" catchtap="scanQRCode" wx:if="{{userInfo.userId}}">
+        <image class="scan-icon" src="/assets/icons/scan.png" mode="aspectFit"/>
+        <text class="scan-text">扫码签到</text>
+      </view>
+      
+      <!-- 设置按钮 -->
+      <view class="settings-container" wx:if="{{userInfo.userId}}" catchtap="toggleSettingsMenu">
+        <image class="settings-icon" src="/assets/icons/settings.png" mode="aspectFit"/>
+        <text class="settings-text">设置</text>
       </view>
     </view>
-
-    <!-- 退出登录按钮（仅在登录后显示） -->
-    <button class="logout-button" wx:if="{{userInfo.userId}}" bindtap="logout">退出登录</button>
+    
+    <!-- 设置菜单 -->
+    <view class="settings-menu" wx:if="{{showSettingsMenu}}">
+      <view class="settings-item" catchtap="navigateToChangePassword">修改密码</view>
+      <view class="settings-item" catchtap="navigateToFeedback">用户反馈</view>
+      <view class="settings-item delete" catchtap="showDeleteAccountModal">注销账号</view>
+    </view>
+    
+    <!-- 用户信息区域 -->
+    <view class="user-info">
+      <!-- 用户头像 - 左侧 -->
+      <view class="avatar-container" catchtap="showEditOptions">
+        <image class="avatar" src="{{userInfo.pictureUrl ? userInfo.pictureUrl : 'https://120.27.161.155/files/avatar/avatar0.jpg'}}" mode="aspectFill"/>
+      </view>
+      
+      <!-- 用户名 - 中间 -->
+      <text class="username">{{userInfo.userName || '未登录'}}</text>
+      
+      <!-- 退出登录按钮 - 右侧 -->
+      <button class="logout-button" wx:if="{{userInfo.userId}}" catchtap="logout">退出登录</button>
+    </view>
   </view>
-
+  
+  <!-- 功能菜单 -->
   <view class="content">
-    <view class="item" bindtap="navigateToHistoryScores">
+    <view class="item" catchtap="navigateToHistoryScores">
+      <image class="item-icon" src="/assets/icons/knowledge.png" mode="aspectFit"/>
       <text class="label">知识培训</text>
     </view>
-    <view class="item" bindtap="navigateToHistoryTrains">
+    <view class="item" catchtap="navigateToHistoryTrains">
+      <image class="item-icon" src="/assets/icons/skill.png" mode="aspectFit"/>
       <text class="label">技能培训</text>
     </view>
-    <view class="item" bindtap="navigateToCertificates">
+    <view class="item" catchtap="navigateToCertificates">
+      <image class="item-icon" src="/assets/icons/certificate.png" mode="aspectFit"/>
       <text class="label">荣誉证书</text>
     </view>
-    <view class="item" bindtap="navigateToMessages">
+    <view class="item" catchtap="navigateToMessages">
+      <image class="item-icon" src="/assets/icons/message.png" mode="aspectFit"/>
       <text class="label">消息通知</text>
     </view>
   </view>
 </view>
 
-<!-- 修改头像和用户名的弹窗 -->
+<!-- 其他弹窗保持不变 -->
 <view class="edit-modal" wx:if="{{showEditModal}}">
   <view class="modal-content">
-    <view class="option" bindtap="changeAvatar">修改头像</view>
-    <view class="option" bindtap="changeUsername">修改用户名</view>
-    <view class="option cancel" bindtap="hideEditOptions">取消</view>
+    <view class="option" catchtap="changeAvatar">修改头像</view>
+    <view class="option" catchtap="changeUsername">修改用户名</view>
+    <view class="option cancel" catchtap="hideEditOptions">取消</view>
   </view>
 </view>
 
 <!-- 自定义头像选择弹窗 -->
 <view class="avatar-picker-modal" wx:if="{{showAvatarPicker}}">
   <view class="modal-content">
-    <!-- 添加自定义上传按钮 -->
-    <!-- <view class="upload-button" bindtap="chooseAndUploadImage">
-      <text>上传自定义头像</text>
-    </view> -->
-    <!-- 使用 scroll-view 实现上下滑动 -->
     <scroll-view class="avatar-scroll" scroll-y>
       <view class="avatar-grid">
-        <view class="avatar-item" wx:for="{{avatarList}}" wx:key="index" bindtap="selectAvatar" data-index="{{index}}">
+        <view class="avatar-item" wx:for="{{avatarList}}" wx:key="index" catchtap="selectAvatar" data-index="{{index}}">
           <image class="avatar-image" src="{{item}}" mode="aspectFill"></image>
         </view>
       </view>
     </scroll-view>
-    <view class="option cancel" bindtap="hideAvatarPicker">取消</view>
+    <view class="option cancel" catchtap="hideAvatarPicker">取消</view>
   </view>
 </view>
 
@@ -73,8 +87,8 @@
     <view class="modal-title">确认注销账号</view>
     <view class="modal-text">注销账号将永久删除您的所有数据，且无法恢复。确定要继续吗？</view>
     <view class="modal-buttons">
-      <view class="modal-button cancel" bindtap="hideDeleteAccountModal">取消</view>
-      <view class="modal-button confirm" bindtap="deleteAccount">确认注销</view>
+      <view class="modal-button cancel" catchtap="hideDeleteAccountModal">取消</view>
+      <view class="modal-button confirm" catchtap="deleteAccount">确认注销</view>
     </view>
   </view>
 </view>

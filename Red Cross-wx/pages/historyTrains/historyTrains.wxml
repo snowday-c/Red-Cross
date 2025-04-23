@@ -1,6 +1,6 @@
-<view class="container">
+<view class="container" bindtap="closeTipIfOpen">
   <!-- 提示图标 -->
-  <view class="tip-icon" bindtap="toggleTip">
+  <view class="tip-icon" catchtap="toggleTip">
     <image src="/assets/icons/warning.png" mode="aspectFit"></image>
   </view>
   
@@ -17,11 +17,11 @@
       <text class="train-place">培训地点：{{item.trainPlace}}</text>
       <text class="train-time">培训时间：{{item.trainTime}}</text>
       <text class="train-next">复训截止时间：{{item.trainNext}}</text>
-      <text class="train-participateType">签到状态：{{item.participateTypeText}}</text>
+      <text class="train-participateType">签到状态：<text class="{{item.participateType === '0' ? 'status-unsigned' : 'status-signed'}}">{{item.participateTypeText}}</text></text>
     </view>
     <!-- 取消报名按钮 -->
     <block wx:if="{{item.canCancel}}">
-      <button class="cancel-btn" bindtap="handleCancel" data-train-id="{{item.trainId}}">取消报名</button>
+      <button class="cancel-btn" catchtap="handleCancel" data-train-id="{{item.trainId}}">取消报名</button>
     </block>
   </view>
 </view>

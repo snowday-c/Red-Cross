@@ -38,4 +38,19 @@ public interface TrainMapper {
     Integer DeleteRetrain(Integer trainId, Integer userId);
 
     Integer ParticipateTrain(Integer trainId, Integer userId);
+
+    // 将到达指定时间的培训状态更新为进行中
+    Integer updateTrainToOngoing(String currentTime);
+    
+    // 将超过指定时间12小时的培训状态更新为已结束
+    Integer updateTrainToFinished(String currentTime);
+
+    // 根据ID获取培训信息
+    Train getTrainById(Integer trainId);
+    
+    // 检查用户是否已报名培训
+    Integer isUserRegistered(Integer trainId, Integer userId);
+    
+    // 检查用户是否已签到
+    Integer isUserParticipated(Integer trainId, Integer userId);
 }

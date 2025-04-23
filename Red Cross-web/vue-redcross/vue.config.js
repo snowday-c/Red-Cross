@@ -19,8 +19,8 @@ module.exports = {
     port: 3200,     //项目端口
     proxy: {
       '/api': {
-        // target: 'https://redcrosstest.asia:8090', // 服务器地址120.27.161.155
-        target: 'http://localhost:8090', // 本地后端地址
+        target: 'https://redcrosstest.asia:8090', // 服务器地址120.27.161.155
+        // target: 'http://localhost:8090', // 本地后端地址
         changeOrigin: true,
         pathRewrite: {
           '^/api': '' // 去掉发送的请求路径中的 /api

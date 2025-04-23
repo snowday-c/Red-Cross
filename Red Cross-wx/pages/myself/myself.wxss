@@ -2,24 +2,159 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 0;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background-color: #ffffff;
 }
 
+/* 顶部区域 */
 .header {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  width: 110%;
-  margin-bottom: 20px;
+  width: 100%;
+  background-color: #ff9844;
+  padding: 0;
+  position: relative;
 }
 
+/* 顶部按钮区域 */
+.top-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 20rpx 0;
+}
+
+/* 扫码按钮样式 */
+.scan-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15rpx 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.scan-icon {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 10rpx;
+}
+
+.scan-text {
+  font-size: 28rpx;
+  color: #fff;
+  font-weight: 500;
+}
+
+/* 设置按钮 */
+.settings-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15rpx 0;
+}
+
+.settings-text {
+  font-size: 28rpx;
+  color: #fff;
+  font-weight: 500;
+}
+
+.settings-icon {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 10rpx;
+}
+
+.settings-menu {
+  position: absolute;
+  right: 20rpx;
+  top: 100rpx;
+  width: 300rpx;
+  background: #fff;
+  border-radius: 10rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.15);
+  overflow: hidden;
+  z-index: 100;
+}
+
+.settings-item {
+  padding: 25rpx 20rpx;
+  font-size: 28rpx;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+  text-align: center;
+}
+
+.settings-item:last-child {
+  border-bottom: none;
+}
+
+.settings-item:active {
+  background-color: #f5f5f5;
+}
+
+.settings-item.delete {
+  color: #ff4d4f;
+}
+
+/* 用户信息区域 */
+/* 用户信息区域 - 修改为水平布局 */
+.user-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 30rpx 20rpx;
+  box-sizing: border-box;
+}
+
+/* 头像样式 - 调整位置 */
 .avatar-container {
-  margin-left: 20rpx;
-  width: 100px;
-  height: 100px;
+  width: 180rpx;
+  height: 180rpx;
   border-radius: 50%;
   overflow: hidden;
-  padding: 2px;
-  background: #000;
+  margin-bottom: 0;
+  border: 3rpx solid #fff;
+  flex-shrink: 0;
+}
+
+/* 用户名样式 - 居中显示 */
+.username {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #fff;
+  margin: 0;
+  text-align: center;
+  flex: 1;
+  padding: 0 20rpx;
+}
+
+/* 退出登录按钮 - 调整为更小的尺寸 */
+.logout-button {
+  max-width: 200rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #ff5a5f;
+  font-size: 24rpx;
+  font-weight: bold;
+  border-radius: 28rpx;
+  padding: 0;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* 移除不需要的用户信息行样式 */
+.user-info-row {
+  display: none;
 }
 
 .avatar {
@@ -29,177 +164,54 @@
   display: block;
 }
 
-.username {
-  margin-left: 3%;
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 150px;
-}
-
-.logout-button {
-  max-width: 180rpx;
-  min-height: 50rpx;
-  background-color: rgb(240, 97, 97);
-  border: none;
-  color: rgb(0, 0, 0);
-  font-size: 16px;
-  padding: 0px 0px;
-}
-
+/* 功能菜单区域 */
 .content {
-  margin-top: 5%;
   width: 100%;
+  margin-top: 0;
+  background-color: #fff;
 }
 
 .item {
-  padding: 15px;
-  border-top: 1px solid rgb(177, 89, 89);
+  padding: 30rpx;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item:active {
+  background-color: #f9f9f9;
+}
+
+.item-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 20rpx;
 }
 
 .label {
-  font-size: 16px;
+  font-size: 30rpx;
   color: #333;
+  flex: 1;
 }
 
-.edit-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  width: 80%;
-  background: #fff;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.option {
-  padding: 15px;
-  text-align: center;
-  font-size: 16px;
-  color: #333;
-  border-bottom: 1px solid #eee;
-}
-
-.option:last-child {
-  border-bottom: none;
-}
-
-.cancel {
-  color: #f00;
-}
-
-.avatar-picker-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  width: 90%;
-  background: #fff;
-  border-radius: 10px;
-  overflow: hidden;
-  max-height: 80vh;
-}
-
-.avatar-scroll {
-  height: 60vh;
-}
-
-.avatar-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  padding: 15px;
-}
-
-.avatar-item {
-  width: 37%;
-  margin-bottom: 10px;
-  padding: 2px;
-  background: #000;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.avatar-image {
-  width: 100%;
-  height: 100px;
-  border-radius: 50%;
+/* 添加右箭头图标 */
+.item::after {
+  content: '';
   display: block;
+  width: 15rpx;
+  height: 15rpx;
+  border-top: 2rpx solid #ccc;
+  border-right: 2rpx solid #ccc;
+  transform: rotate(45deg);
+  margin-right: 10rpx;
 }
 
-.option.cancel {
-  padding: 15px;
-  text-align: center;
-  font-size: 16px;
-  color: #f00;
-  border-top: 1px solid #eee;
-}
-
-.settings-container {
-  position: absolute;
-  right: 5rpx;       
-  top: 2rpx;
-  z-index: 10;
-}
-
-.settings-icon {
-  width: 40rpx;
-  height: 40rpx;
-  display: block;
-}
-
-.settings-menu {
-  position: absolute;
-  right: 0;
-  top: 60rpx;
-  width: 300rpx;
-  background: rgb(158, 147, 147);
-  border-radius: 8rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.1);
-  overflow: hidden;
-}
-
-.settings-item {
-  padding: 12px 15px;
-  font-size: 14px;
-  color: #333;
-  border-bottom: 1px solid #eee;
-  text-align: center;
-}
-
-.settings-item:last-child {
-  border-bottom: none;
-}
-
-.settings-item:active {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.settings-item.delete {
-  color: #ff4d4f;
-}
-
-.delete-account-modal {
+/* 弹窗样式保持不变 */
+.edit-modal, .avatar-picker-modal, .delete-account-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -212,61 +224,31 @@
   z-index: 1000;
 }
 
-.delete-account-modal .modal-content {
+.modal-content {
   width: 80%;
   background: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  box-sizing: border-box;
+  border-radius: 10rpx;
+  overflow: hidden;
 }
 
-.delete-account-modal .modal-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 15px;
+.option {
+  padding: 30rpx;
   text-align: center;
-}
-
-.delete-account-modal .modal-text {
-  font-size: 15px;
-  color: #666;
-  margin-bottom: 20px;
-  line-height: 1.5;
-}
-
-.delete-account-modal .modal-buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-.delete-account-modal .modal-button {
-  flex: 1;
-  text-align: center;
-  padding: 10px 0;
-  border-radius: 5px;
-}
-
-.delete-account-modal .cancel {
-  background-color: #f5f5f5;
+  font-size: 30rpx;
   color: #333;
-  margin-right: 10px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
-.delete-account-modal .confirm {
-  background-color: #ff4d4f;
-  color: #fff;
+.option:last-child {
+  border-bottom: none;
 }
 
-.upload-button {
-  width: 100%;
-  padding: 15px;
-  text-align: center;
-  font-size: 16px;
-  color: #07c160;
-  border-bottom: 1px solid #eee;
-  background-color: #f8f8f8;
+.option:active {
+  background-color: #f5f5f5;
 }
 
-.upload-button:active {
-  background-color: #e8e8e8;
+.cancel {
+  color: #ff5a5f;
 }
+
+/* 其他样式保持不变 */

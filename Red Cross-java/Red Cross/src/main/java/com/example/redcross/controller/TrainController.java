@@ -103,14 +103,43 @@ public class TrainController {
         return Result.error("取消报名失败，请稍后再试！");
 
     }
+
     @PostMapping("/participate")     //培训签到
     public Result ParticipateTrain(@RequestBody Train train){
+        // 获取参数
         Integer trainId = train.getTrainId();
         Integer userId = train.getUserId();
-        if(trainService.ParticipateTrain(trainId,userId) == 2){
-            return Result.success("签到成功！");
+        
+        // 参数校验
+        if (trainId == null || userId == null) {
+            return Result.error("参数不完整");
         }
-        return Result.error("签到失败，请稍后再试！");
+        
+        // 检查培训是否存在且状态为进行中
+        Train trainInfo = trainService.getTrainById(trainId);
+        if (trainInfo == null) {
+            return Result.error("培训不存在");
+        }
+        
+        if (trainInfo.getTrainType() != 1) {
+            return Result.error("该培训不在进行中，无法签到");
+        }
+        
+        // 检查用户是否已报名该培训
+        if (!trainService.isUserRegistered(trainId, userId)) {
+            return Result.error("您未报名该培训，无法签到");
+        }
+        
+        // 检查用户是否已签到
+        if (trainService.isUserParticipated(trainId, userId)) {
+            return Result.error("您已签到，请勿重复操作");
+        }
+        
+        // 执行签到操作
+        if(trainService.ParticipateTrain(trainId, userId) == 1){
+            return Result.success("签到成功");
+        }
+        return Result.error("签到失败，请稍后再试");
     }
 
     @PostMapping("/historyTrain")     //查询用户培训记录

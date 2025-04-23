@@ -88,4 +88,19 @@ public class TrainServiceImpl implements TrainService {
     public Integer ParticipateTrain(Integer trainId, Integer userId) {
         return trainMapper.ParticipateTrain(trainId,userId);
     }
+
+    @Override
+    public Train getTrainById(Integer trainId) {
+        return trainMapper.getTrainById(trainId);
+    }
+
+    @Override
+    public boolean isUserRegistered(Integer trainId, Integer userId) {
+        return trainMapper.isUserRegistered(trainId, userId) > 0;
+    }
+
+    @Override
+    public boolean isUserParticipated(Integer trainId, Integer userId) {
+        return trainMapper.isUserParticipated(trainId, userId) > 0;
+    }
 }

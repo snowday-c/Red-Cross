@@ -1,15 +1,16 @@
 server:
   port: 8090
-#  ssl:
-#    key-store: classpath:redcrosstest.asia.jks
-#    key-store-password: oxfp8627
-#    key-store-type: JKS
+  ssl:
+    key-store: classpath:redcrosstest.asia.jks
+    key-store-password: oxfp8627
+    key-store-type: JKS
 spring:
   application:
     name: RedCross
   datasource:
     url: jdbc:mysql://localhost:3306/demo?useSSL=false&serverTimezone=UTC
-    username: root
+#    username: root
+    username: demo
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
 
@@ -44,7 +45,8 @@ logging:
     com.example.redcross.mapper: DEBUG
     com.example.redcross: INFO
   file:
-    name: d:/DeskTop/Red Cross/logs/redcross.log
+#    name: d:/DeskTop/Red Cross/logs/redcross.log
+    name: /home/redcrossLogs/redcross.log
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
@@ -53,4 +55,5 @@ logging:
       max-file-size: 10MB
       max-history: 30
       total-size-cap: 1GB
-      file-name-pattern: d:/DeskTop/Red Cross/logs/redcross-%d{yyyy-MM-dd}.%i.log
+#      file-name-pattern: d:/DeskTop/Red Cross/logs/redcross-%d{yyyy-MM-dd}.%i.log
+      file-name-pattern: /home/redcrossLogs/redcross-%d{yyyy-MM-dd}.%i.log

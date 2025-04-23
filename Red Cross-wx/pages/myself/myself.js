@@ -310,11 +310,125 @@ logout() {
     this.hideEditOptions();
   },
 
-  // 添加用户反馈功能
+// 扫描二维码进行培训签到
+scanQRCode() {
+  if (!this.checkLogin()) return;
   
+  wx.scanCode({
+    onlyFromCamera: true,
+    scanType: ['qrCode'],
+    success: (res) => {
+      try {
+        // 解析二维码内容，获取培训ID
+        const qrData = res.result;
+        let trainId;
+        let expireTime;
+        
+        // 尝试解析二维码内容
+        try {
+          // 如果二维码内容是JSON格式
+          const jsonData = JSON.parse(qrData);
+          trainId = jsonData.trainId;
+          expireTime = jsonData.expireTime; // 获取过期时间
+        } catch (e) {
+          // 如果二维码内容是纯文本格式，可能直接就是培训ID
+          trainId = qrData;
+        }
+        
+        if (!trainId) {
+          wx.showToast({
+            title: '无效的二维码',
+            icon: 'none'
+          });
+          return;
+        }
+        
+        // 检查二维码是否过期
+        if (expireTime) {
+          const now = new Date().getTime();
+          if (now > expireTime) {
+            wx.showToast({
+              title: '二维码已失效',
+              icon: 'none'
+            });
+            return;
+          }
+        }
+        
+        // 获取用户ID
+        const userInfo = wx.getStorageSync('userInfo');
+        if (!userInfo || !userInfo.userId) {
+          wx.showToast({
+            title: '请先登录',
+            icon: 'none'
+          });
+          return;
+        }
+        
+        // 显示加载提示
+        wx.showLoading({
+          title: '签到中...',
+        });
+        
+        // 发送签到请求到后端
+        app.request({
+          url: '/train/participate',
+          method: 'POST',
+          data: {
+            userId: userInfo.userId,
+            trainId: trainId
+          },
+          success: (res) => {
+            wx.hideLoading();
+            if (res.data.code === '0') {
+              wx.showToast({
+                title: '签到成功',
+                icon: 'success'
+              });
+            } else {
+              wx.showToast({
+                title: res.data.message || '签到失败',
+                icon: 'none'
+              });
+            }
+          },
+          fail: () => {
+            wx.hideLoading();
+            wx.showToast({
+              title: '网络请求失败',
+              icon: 'none'
+            });
+          }
+        });
+      } catch (error) {
+        wx.showToast({
+          title: '二维码解析失败',
+          icon: 'none'
+        });
+        console.error('扫码签到失败:', error);
+      }
+    },
+    fail: (err) => {
+      wx.showToast({
+        title: '请选择二维码图片',
+        icon: 'none'
+      });
+      console.log('扫码取消或失败:', err);
+    }
+  });
+},
+  // 添加用户反馈功能
 
-  // 1. 首先修改 myself.js 文件，添加反馈功能入口
-  // 切换设置菜单显示状态
+  // 修改关闭设置菜单的方法
+  closeSettingsMenu() {
+    if (this.data.showSettingsMenu) {
+      this.setData({
+        showSettingsMenu: false
+      });
+    }
+  },
+  
+  // 修改toggleSettingsMenu方法，使用catchtap阻止事件冒泡
   toggleSettingsMenu() {
     this.setData({
       showSettingsMenu: !this.data.showSettingsMenu
@@ -462,3 +576,4 @@ logout() {
     });
   }
 });
+

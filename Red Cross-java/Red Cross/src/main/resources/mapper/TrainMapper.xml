@@ -65,17 +65,7 @@
                    0
                );
     </insert>
-    <!--  活动签到-->
-    <update id="ParticipateTrain">
-        UPDATE retrain r, train t
-        SET
-            r.participate_type = 1,
-            t.participate_ids = JSON_ARRAY_APPEND(t.participate_ids, '$', #{userId})
-        WHERE
-            r.train_id = #{trainId}
-          AND r.user_id = #{userId}
-          AND t.train_id = #{trainId}
-    </update>
+
 
     <!-- 取消报名 -->
     <update id="CancelTrain">
@@ -86,4 +76,69 @@
         DELETE FROM retrain WHERE train_id = #{trainId} AND user_id = #{userId}
     </delete>
 
+    <!-- 将到达指定时间的培训状态更新为进行中 -->
+    <update id="updateTrainToOngoing">
+        UPDATE train 
+        SET train_type = 1 
+        WHERE train_type = 0 
+        AND STR_TO_DATE(train_time, '%Y-%m-%d %H:%i:%s') &lt;= STR_TO_DATE(#{currentTime}, '%Y-%m-%d %H:%i:%s')
+    </update>
+
+    <!-- 将超过指定时间12小时的培训状态更新为已结束 -->
+    <update id="updateTrainToFinished">
+        UPDATE train 
+        SET train_type = -1 
+        WHERE train_type = 1 
+        AND DATE_ADD(STR_TO_DATE(train_time, '%Y-%m-%d %H:%i:%s'), INTERVAL 12 HOUR) &lt;= STR_TO_DATE(#{currentTime}, '%Y-%m-%d %H:%i:%s')
+    </update>
+
+    <!-- 根据ID获取培训信息 -->
+    <select id="getTrainById" resultType="com.example.redcross.entity.Train">
+        SELECT * FROM train WHERE train_id = #{trainId}
+    </select>
+
+    <!-- 检查用户是否已报名培训 -->
+    <select id="isUserRegistered" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM train 
+        WHERE train_id = #{trainId} 
+        AND JSON_CONTAINS(user_ids, CAST(#{userId} AS JSON))
+    </select>
+
+    <!-- 检查用户是否已签到 -->
+    <select id="isUserParticipated" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM train 
+        WHERE train_id = #{trainId} 
+        AND JSON_CONTAINS(participate_ids, CAST(#{userId} AS JSON))
+    </select>
+
+    <!--  活动签到-->
+    <!--    <update id="ParticipateTrain">-->
+    <!--        UPDATE retrain r, train t-->
+    <!--        SET-->
+    <!--            r.participate_type = 1,-->
+    <!--            t.participate_ids = JSON_ARRAY_APPEND(t.participate_ids, '$', #{userId})-->
+    <!--        WHERE-->
+    <!--            r.train_id = #{trainId}-->
+    <!--          AND r.user_id = #{userId}-->
+    <!--          AND t.train_id = #{trainId}-->
+    <!--    </update>-->
+
+    <!-- 修改培训签到方法 -->
+    <update id="ParticipateTrain">
+        UPDATE train t, retrain r
+        SET 
+            t.participate_ids = JSON_ARRAY_APPEND(
+                CASE 
+                    WHEN t.participate_ids IS NULL OR t.participate_ids = '' THEN JSON_ARRAY()
+                    ELSE t.participate_ids 
+                END, 
+                '$', 
+                #{userId}
+            ),
+            r.participate_type = 1
+        WHERE 
+            t.train_id = #{trainId}
+            AND r.train_id = #{trainId}
+            AND r.user_id = #{userId}
+    </update>
 </mapper>

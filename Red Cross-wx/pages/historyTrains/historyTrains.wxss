@@ -28,6 +28,17 @@
   margin-bottom: 5px;
 }
 
+/* 添加签到状态颜色 */
+.status-signed {
+  color: #07c160; /* 绿色 */
+  font-weight: bold;
+}
+
+.status-unsigned {
+  color: #ff4d4f; /* 红色 */
+  font-weight: bold;
+}
+
 .cancel-btn {
   background-color: #ff4d4f;
   color: #fff;
